@@ -1,0 +1,133 @@
+generated: '2026-09-04'
+method: derived
+source: >-
+  openapi/watchmaker-genomics-commerce-rest-swagger.json,
+  graphql/watchmaker-genomics-commerce.graphql,
+  wsdl/watchmaker-genomics-commerce-soap.wsdl, plus live probes of watchmakergenomics.com
+note: >-
+  Assertions are made against what the contracts on Watchmaker Genomics' own host actually
+  declare, and against pages probed on watchmakergenomics.com. No compliance claim is imported
+  from Adobe, Fastly or any other vendor whose infrastructure sits under this storefront. No
+  Compliance pointer is wired into apis.yml, because Watchmaker publishes no certification,
+  attestation or compliance program page — probed /quality-and-compliance 404,
+  /certifications 404, trust.watchmakergenomics.com NXDOMAIN.
+
+conformance:
+- id: graphql
+  conforms: true
+  evidence: >-
+    https://www.watchmakergenomics.com/graphql answers a full IntrospectionQuery with a
+    636-type schema (GraphQL June 2018 introspection shape, __schema/__Type/__Field), captured
+    verbatim as graphql/watchmaker-genomics-commerce.graphql.
+- id: swagger-2.0
+  conforms: true
+  evidence: >-
+    https://www.watchmakergenomics.com/rest/all/schema?services=all returns a document declaring
+    "swagger":"2.0" with 61 paths, 70 operations, 124 definitions and a securityDefinitions block.
+- id: openapi-3
+  conforms: false
+  evidence: >-
+    The self-served contract is Swagger 2.0 only. /openapi.json, /openapi.yaml and /swagger.json
+    on www.watchmakergenomics.com all return 404 with an HTML Magento error page.
+- id: wsdl-1.1
+  conforms: true
+  evidence: >-
+    https://www.watchmakergenomics.com/soap/all?wsdl&services=... returns a WSDL 1.1 document
+    (xmlns http://schemas.xmlsoap.org/wsdl/) whose targetNamespace is
+    https://www.watchmakergenomics.com/soap/all; /soap/all?wsdl_list=1 enumerates 200 services.
+- id: soap-1.2
+  conforms: true
+  evidence: The captured WSDL binds soap12 as well as soap 1.1 transports.
+- id: rfc9457
+  conforms: false
+  evidence: >-
+    Errors use the Magento error-response envelope ({message, parameters, errors, code, trace}),
+    not application/problem+json. No 4xx response in the Swagger declares a problem+json media type.
+- id: pagination
+  conforms: true
+  evidence: >-
+    GraphQL exposes pageSize/currentPage inputs and page_info {current_page, page_size,
+    total_pages} plus total_count on products, categoryList, search, blogPosts and customerOrders.
+    REST exposes searchCriteria[currentPage]/[pageSize] on GET /V1/search.
+- id: idempotency
+  conforms: false
+  evidence: >-
+    No idempotency key, request token or replay-protection parameter is declared on any of the 70
+    REST operations or 99 GraphQL mutations. See conventions/watchmaker-genomics-conventions.yml
+    (idempotency.coverage: none).
+- id: oauth2
+  conforms: false
+  evidence: >-
+    securityDefinitions declares one scheme, an apiKey in the header. /.well-known/oauth-authorization-server
+    and /.well-known/openid-configuration both 404 on www.watchmakergenomics.com. Adobe Commerce
+    also supports OAuth 1.0a for integrations, but this deployment declares nothing of the kind in
+    its own contract, so no OAuth conformance is asserted and no scopes/ artifact is written.
+- id: oidc
+  conforms: false
+  evidence: /.well-known/openid-configuration returned 404 on both hosts.
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: /.well-known/security.txt and /security.txt both returned 404 on www.watchmakergenomics.com.
+- id: rfc8594-sunset
+  conforms: false
+  evidence: No Sunset or Deprecation header was returned on any observed response and no deprecation policy is published.
+- id: hsts
+  conforms: true
+  evidence: 'strict-transport-security: max-age=31557600 observed on both the REST and GraphQL endpoints.'
+- id: tls-1.3
+  conforms: true
+  evidence: TLSv1.3 negotiated to www.watchmakergenomics.com (see security/watchmaker-genomics-domain-security.yml).
+- id: dmarc
+  conforms: true
+  evidence: 'watchmakergenomics.com publishes a DMARC record with p=reject.'
+- id: dnssec
+  conforms: false
+  evidence: No DNSSEC on watchmakergenomics.com.
+- id: llms-txt
+  conforms: true
+  evidence: >-
+    https://www.watchmakergenomics.com/llms.txt returns 200 text/plain, 3,340 bytes, in llms.txt
+    format with an H1, a blockquote summary and sectioned link lists. Saved as
+    llms/watchmaker-genomics-llms.txt.
+- id: robots-txt
+  conforms: true
+  evidence: https://www.watchmakergenomics.com/robots.txt returns 200 with a Sitemap directive.
+
+domain_standards:
+- id: ga4gh-file-formats
+  label: Genomics file formats (SAM/BAM/CRAM, FASTA, VCF)
+  conforms: true
+  surface: cli
+  evidence: >-
+    https://github.com/watchmaker-genomics/TVC — the TAPS+ Variant Caller takes an indexed
+    reference FASTA (.fai) and an aligned BAM (.bai, NM tag required) and emits VCF. The
+    published option set (--min-bq, --min-mapq, --min-depth, --min-ao) is expressed in the
+    domain's own vocabulary.
+  note: >-
+    This is file-format conformance in a first-party command-line tool, NOT a signature in an API
+    contract. It is recorded here because it is the only domain-standard signal Watchmaker
+    publishes, and it is deliberately scoped `surface: cli` so it is not read as a contract-level
+    domain_standard_conformance signature.
+- id: fhir
+  conforms: false
+  evidence: >-
+    Checked because the health / life-sciences regulatory regime lists FHIR first. Watchmaker is a
+    reagents manufacturer; it processes no patient data through any published interface and
+    serves no CapabilityStatement. Not applicable rather than failed.
+- id: ecommerce-domain-standard
+  conforms: false
+  evidence: >-
+    The commerce surface declares no schema.org Product feed endpoint, no OpenRTB, no EDI/X12
+    ordering surface and no GS1 identifiers in the contract. Product identity is a Magento SKU
+    (for example 7K0116-7K0117-7K0118-7K0120-7K0121) with no external standard scheme attached.
+
+certifications:
+  published: []
+  probes:
+  - {url: 'https://www.watchmakergenomics.com/quality-and-compliance', status: 404}
+  - {url: 'https://www.watchmakergenomics.com/certifications', status: 404}
+  - {url: 'https://trust.watchmakergenomics.com/', status: NXDOMAIN}
+  note: >-
+    No SOC 2, ISO 27001, ISO 13485, PCI DSS, HIPAA or FedRAMP claim was found on any page probed.
+    A reagents manufacturer may well hold quality certifications; none is published where a
+    machine can read it, so none is recorded.

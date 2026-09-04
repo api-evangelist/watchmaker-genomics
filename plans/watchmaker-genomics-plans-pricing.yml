@@ -1,0 +1,42 @@
+generated: '2026-09-04'
+method: searched
+source: >-
+  https://www.watchmakergenomics.com/request-quote (200),
+  https://www.watchmakergenomics.com/products (200),
+  https://www.watchmakergenomics.com/find-a-distributor (200), and a live anonymous GraphQL
+  products query against https://www.watchmakergenomics.com/graphql
+plan_count: 0
+note: >-
+  There are no API plans, tiers or quotas to record. Watchmaker Genomics sells reagents, not API
+  access: the storefront APIs are the commerce plumbing of its own web store and are not offered
+  as a product, so nobody buys them and no pricing attaches to them. Recorded as plan_count 0
+  rather than omitted, so the zero is a measurement rather than a gap.
+plans: []
+api_access_pricing:
+  offered: false
+  self_serve_signup: false
+  evidence:
+  - {url: 'https://www.watchmakergenomics.com/customer/account/create/', status: 404, note: 'Customer account registration is switched off on this storefront even though the footer links to it.'}
+  - {url: 'https://www.watchmakergenomics.com/customer/account/login/', status: 404, note: 'Same — the sign-in route 404s.'}
+  - {url: 'https://www.watchmakergenomics.com/customer/account', status: 200, note: 'Serves a "Customer Login" page; the linked register/login routes beneath it do not resolve.'}
+  note: >-
+    No API key can be obtained by a member of the public. Magento integration tokens are issued
+    from the admin, which is not reachable, so the credentialed portion of the REST and SOAP
+    surface is closed. The anonymous slice needs no credential at all.
+product_pricing:
+  published: true
+  currency: USD
+  mechanism: >-
+    Product prices are published in the storefront and are readable, without credentials, through
+    the GraphQL catalog — products(search:){items{price_range{minimum_price{final_price{value
+    currency}}}}}. This is reagent pricing, not API pricing, and is deliberately NOT recorded as
+    plans[].
+  quote_path: https://www.watchmakergenomics.com/request-quote
+  custom_path: https://www.watchmakergenomics.com/custom-solutions
+  distributor_path: https://www.watchmakergenomics.com/find-a-distributor
+  guest_checkout_enabled: true
+  guest_checkout_evidence: 'storeConfig.is_guest_checkout_enabled = true, queried live 2026-09-04'
+open_source_licensing:
+  note: >-
+    The first-party bioinformatics tools are free and openly licensed — TVC under LGPL-3.0,
+    taps-foundry under MIT, nf-cgroup-metrics under Apache-2.0. No paid tier exists for any of them.

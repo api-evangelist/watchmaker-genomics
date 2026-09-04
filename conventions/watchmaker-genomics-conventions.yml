@@ -1,0 +1,211 @@
+generated: '2026-09-04'
+method: derived
+source: >-
+  openapi/watchmaker-genomics-commerce-rest-swagger.json,
+  graphql/watchmaker-genomics-commerce.graphql, plus live response headers observed on
+  https://www.watchmakergenomics.com/rest/V1/directory/currency and
+  https://www.watchmakergenomics.com/graphql on 2026-09-04
+note: >-
+  Watchmaker Genomics publishes no API documentation of its own. Everything below is derived from
+  the contracts its Adobe Commerce (Magento 2) deployment self-serves and from headers observed on
+  live anonymous calls to its own host. No Adobe platform documentation was substituted for a
+  Watchmaker statement — where a convention is not evidenced on this deployment it is recorded as
+  undocumented.
+
+auth_style:
+  rest: >-
+    Swagger securityDefinitions declares a single scheme, api_key, an apiKey passed in the header.
+    Magento integration tokens are also accepted as Authorization: Bearer <token>; token issuance
+    endpoints POST /V1/integration/admin/token and POST /V1/integration/customer/token are present
+    in the published schema.
+  graphql: >-
+    Anonymous for catalog, CMS, search, guest-cart and checkout operations. Customer-scoped fields
+    require Authorization: Bearer <customer token> obtained from generateCustomerToken.
+  soap: WS-I basic profile over the same integration token.
+  observed_anonymous: true
+  evidence: GET /rest/V1/directory/currency returned 200 with no credential.
+
+idempotency:
+  coverage: none
+  scope: []
+  mechanism: null
+  header: null
+  retention: null
+  note: >-
+    Neither the Swagger document nor the GraphQL SDL declares any idempotency key, request-token
+    or replay-protection parameter on any mutating operation. POST /V1/guest-carts,
+    POST /V1/guest-carts/{cartId}/items, PUT /V1/guest-carts/{cartId}/order,
+    POST /V1/guest-carts/{cartId}/payment-information and the 99 GraphQL mutations all take no
+    idempotency input. A retried placeOrder is a second order. The only replay guard in evidence is
+    incidental: a cart id is consumed by order placement, so a repeat against the same cart id
+    fails rather than duplicating — that is state coupling, not an idempotency contract.
+
+pagination:
+  style: page-and-size
+  rest:
+    params:
+    - searchCriteria[currentPage]
+    - searchCriteria[pageSize]
+    - searchCriteria[sortOrders]
+    note: >-
+      Magento searchCriteria query parameters. On this deployment they appear on GET /V1/search;
+      the Magefan blog list endpoints instead take {page}/{limit} as PATH segments
+      (/V1/blog/post/list/{type}/{term}/{store_id}/{page}/{limit}).
+  graphql:
+    params:
+    - pageSize
+    - currentPage
+    response_fields:
+    - total_count
+    - page_info.current_page
+    - page_info.page_size
+    - page_info.total_pages
+    note: Applies to products, categoryList, search, blogPosts, customerOrders and wishlist items.
+
+field_selection:
+  graphql: Native — the client names the fields it wants; there is no sparse-fieldset parameter.
+  rest:
+    supported: false
+    note: No fields/expand parameter is declared on any operation in the published Swagger.
+
+metadata:
+  custom_attributes: >-
+    Both surfaces expose Magento EAV custom attributes — REST via custom_attributes[] on customer
+    and address entities, GraphQL via customAttributeMetadata / customAttributeMetadataV2 and the
+    attributesList / attributesForm queries. This is where Watchmaker's own product attributes
+    (catalog numbers, kit contents, format) surface.
+
+request_tracing:
+  headers_observed:
+  - traceresponse
+  - x-debug-info
+  - x-platform-server
+  - x-magento-cache-id
+  note: >-
+    Responses carry a W3C-format traceresponse header (00-<trace-id>-<span-id>-01) on both the REST
+    and GraphQL endpoints, plus Adobe Commerce Cloud instance and cache identifiers. No
+    request-id header is accepted on input and none is documented.
+
+versioning:
+  rest: >-
+    Path-segment major version, /rest/<store>/V1/... . The schema document reports
+    info.version 2.4 (the Adobe Commerce platform release, not a Watchmaker API version).
+  graphql: Unversioned single endpoint at /graphql; changes arrive with platform upgrades.
+  soap: >-
+    Per-service V1 suffix in the service name (for example storeStoreRepositoryV1); the WSDL
+    targetNamespace is https://www.watchmakergenomics.com/soap/all.
+  store_scoping: >-
+    /rest/all/ and /rest/default/ both resolve on this deployment and return the same schema;
+    "all" is the all-store-views scope.
+
+error_envelope:
+  format: magento-error-response
+  rfc9457: false
+  media_type: application/json
+  shape:
+    message: Human-readable message, may contain %placeholder tokens
+    parameters: Array of {resources, fieldName, fieldValue} substituted into message
+    errors: Array of nested {message, parameters} for multi-error responses
+    code: Integer error code
+    trace: Stack trace (suppressed in production mode)
+  required:
+  - message
+  detail: See errors/watchmaker-genomics-problem-types.yml
+
+rate_limit_signaling:
+  headers: []
+  status_on_exhaustion: null
+  note: >-
+    No RateLimit-*, X-RateLimit-* or Retry-After header was returned on any observed anonymous
+    response, and no limit is declared in the Swagger or SDL. See
+    rate-limits/watchmaker-genomics-rate-limits.yml.
+
+caching:
+  rest: cache-control no-store on the observed anonymous response.
+  graphql: >-
+    cache-control max-age=0, must-revalidate, no-cache, no-store, plus an x-magento-cache-id
+    identifying the Fastly cache key. Fastly (x-served-by / x-cache) fronts both surfaces.
+  cookies: >-
+    The GraphQL endpoint sets PHPSESSID and private_content_version cookies on anonymous POSTs —
+    a stateful-session behaviour an agent client must be prepared to carry or discard.
+
+dry_run_mode:
+  supported: partial
+  note: >-
+    Not a general dry-run flag, but the checkout surface publishes genuine estimate-only
+    operations that compute without committing: POST /V1/guest-carts/{cartId}/estimate-shipping-methods,
+    POST /V1/guest-carts/{cartId}/totals-information, and the GraphQL estimateShippingMethods and
+    estimateTotals mutations. Order placement itself has no dry-run.
+
+reversibility:
+  grade: documented
+  na: false
+  note: >-
+    The contract NAMES reversal operations on every write surface, but the deployment's own
+    machine-readable configuration says the two that matter are switched off. A live anonymous
+    query of storeConfig on 2026-09-04 returned order_cancellation_enabled: false and
+    returns_enabled: "disabled". So cancelOrder and requestReturn are in the schema and will not
+    work here. No time window is stated anywhere Watchmaker publishes — /shipping-and-returns
+    returns 404 and /terms-of-use carries no order-cancellation window — so this grades
+    `documented`, not `verified`. NEVER assume a window here.
+  evidence:
+    url: https://www.watchmakergenomics.com/graphql
+    query: '{storeConfig{order_cancellation_enabled order_cancellation_reasons{description} returns_enabled}}'
+    http_status: 200
+    fetched: '2026-09-04'
+    result:
+      order_cancellation_enabled: false
+      returns_enabled: disabled
+      order_cancellation_reasons:
+      - The item(s) are no longer needed
+      - The order was placed by mistake
+      - Item(s) not arriving within the expected timeframe
+      - Found a better price elsewhere
+      - Other
+  write_surfaces:
+  - surface: Order placement
+    write_operation: 'GraphQL placeOrder; REST PUT /V1/guest-carts/{cartId}/order'
+    reversal_operation: 'GraphQL cancelOrder (input: CancelOrderInput! {order_id: ID!, reason: String!}) -> CancelOrderOutput {error, order}'
+    available: false
+    window: null
+    window_source: null
+    note: >-
+      Present in the SDL at line 560 of graphql/watchmaker-genomics-commerce.graphql, but
+      storeConfig.order_cancellation_enabled is false on this store, so an agent that places an
+      order here has no programmatic way to take it back. The five cancellation reasons the store
+      would accept are still published; the switch is off. Recovery is a human path:
+      orders@watchmakergenomics.com or +1-720-543-2174.
+  - surface: Returns / RMA
+    write_operation: 'GraphQL requestReturn'
+    reversal_operation: 'requestReturn, amended by addReturnComment / addReturnTracking / removeReturnTracking'
+    available: false
+    window: null
+    window_source: null
+    note: >-
+      The Returns type and requestReturn mutation are present in the SDL, but
+      storeConfig.returns_enabled is "disabled". No returns window, eligibility rule or RMA policy
+      is published on watchmakergenomics.com.
+  - surface: Cart mutations
+    write_operation: 'addProductsToCart / addSimpleProductsToCart / applyCouponToCart / setShippingAddressesOnCart'
+    reversal_operation: 'removeItemFromCart, updateCartItems (quantity 0), removeCouponFromCart, clearCart, setCartAsInactive'
+    window: 'Until the cart is converted by placeOrder'
+    window_source: >-
+      Derived from the contract: the cart id is consumed by placeOrder and subsequent cart
+      mutations against it fail. Not a Watchmaker-published statement.
+  - surface: Customer account
+    write_operation: 'createCustomerV2 / updateCustomerV2 / createCustomerAddress'
+    reversal_operation: 'deleteCustomer, deleteCustomerAddress, revokeCustomerToken'
+    window: null
+    window_source: null
+    note: >-
+      Deletion mutations exist in the SDL. Note that /customer/account/create/ and
+      /customer/account/login/ both return 404 on this storefront (probed 2026-09-04), so the
+      account surface is reachable through the API while the web UI for it is switched off.
+  read_only: false
+
+cross_links:
+  errors: errors/watchmaker-genomics-problem-types.yml
+  lifecycle: lifecycle/watchmaker-genomics-lifecycle.yml
+  authentication: authentication/watchmaker-genomics-authentication.yml
+  rate_limits: rate-limits/watchmaker-genomics-rate-limits.yml
+  data_model: data-model/watchmaker-genomics-data-model.yml

@@ -1,0 +1,93 @@
+generated: '2026-09-04'
+method: derived
+source: openapi/watchmaker-genomics-commerce-rest-swagger.json
+note: >-
+  Derived from the 4xx/5xx responses declared in the Swagger 2.0 document Watchmaker Genomics'
+  storefront self-serves at /rest/all/schema?services=all, plus one live 401 observed against
+  /rest/V1/store/storeConfigs. Watchmaker publishes no error reference of its own, so titles and
+  remediation are taken from the contract and from observed responses only — nothing here is
+  imported from Adobe platform documentation.
+format: magento-error-response
+rfc9457: false
+media_type: application/json
+envelope:
+  schema_ref: '#/definitions/error-response'
+  fields:
+    message:
+      type: string
+      required: true
+      description: >-
+        Human-readable error message. May contain %placeholder tokens substituted from
+        parameters[].
+    parameters:
+      type: array
+      description: 'Items of {resources, fieldName, fieldValue} — the ACL resource, missing or invalid field name, and the offending value.'
+    errors:
+      type: array
+      description: Nested {message, parameters} entries when several validations fail at once.
+    code:
+      type: integer
+      description: Numeric error code.
+    trace:
+      type: string
+      description: Stack trace. Present only when the deployment runs in developer mode; not observed on this production host.
+coverage:
+  operations_total: 70
+  operations_with_400: 28
+  operations_with_500: 17
+  operations_with_default: 70
+  note: >-
+    Every operation declares a `default` response bound to #/definitions/error-response, so the
+    envelope is uniform across the whole surface. Only 400 and 500 are enumerated as explicit
+    status codes in the document; 401 is returned in practice but never declared.
+problem_types:
+- status: 400
+  title: Bad Request
+  schema: '#/definitions/error-response'
+  description: >-
+    Validation failure on the request. Declared on 28 of 70 operations, concentrated on the
+    guest-cart, checkout, customer-creation and payment-configuration operations.
+  example_operations:
+  - PostV1Customers
+  - PostV1GuestcartsCartIdItems
+  - PutV1GuestcartsCartIdOrder
+  - PostV1GuestcartsCartIdPaymentinformation
+  remediation: Correct the field named in parameters[].fieldName and retry.
+- status: 401
+  title: Unauthorized
+  schema: '#/definitions/error-response'
+  declared_in_spec: false
+  observed: true
+  evidence:
+    url: https://www.watchmakergenomics.com/rest/V1/store/storeConfigs
+    http_status: 401
+    body: '{"message":"The consumer isn''t authorized to access %resources.","parameters":{"resources":"Magento_Backend::store"}}'
+  description: >-
+    Returned when an operation outside the anonymous slice is called without an integration token.
+    parameters.resources names the ACL resource that was required. This status is NOT declared on
+    any operation in the published schema — an agent reading the contract alone would not expect it.
+  remediation: >-
+    Obtain an integration token (POST /V1/integration/admin/token or
+    POST /V1/integration/customer/token) and send it as Authorization: Bearer <token>, or as the
+    api_key header declared in securityDefinitions.
+- status: 500
+  title: Internal Server Error
+  schema: '#/definitions/error-response'
+  description: >-
+    Declared on 17 of 70 operations. Also returned by the GraphQL endpoint for a malformed
+    document, in GraphQL's own errors[] envelope rather than this one — a GET /graphql with no
+    query returns 500 with {"errors":[{"message":"Syntax Error: Unexpected <EOF>"}]}.
+  remediation: Retry; if persistent, the failure is server-side and not correctable by the caller.
+graphql_errors:
+  envelope: 'GraphQL spec errors[] — {message, extensions.category}'
+  note: >-
+    The GraphQL surface does not use the REST error envelope. Magento GraphQL categories
+    (graphql-input, graphql-authorization, graphql-no-such-entity, graphql-authentication) are
+    the discriminators an agent must branch on. The SDL also declares an ErrorInterface with
+    NoSuchEntityUidError and InternalError implementations used by batch mutations
+    (BatchMutationStatus), so some mutations return partial success with per-item errors rather
+    than failing the whole request.
+gaps:
+- 'No error reference, error-code registry or status-code table is published by Watchmaker Genomics.'
+- '401 is returned but not declared on any operation in the published contract.'
+- 'No 403, 404, 409 or 429 response is declared anywhere in the 70-operation surface.'

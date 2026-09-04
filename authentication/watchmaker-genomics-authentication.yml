@@ -1,0 +1,117 @@
+generated: '2026-09-04'
+method: probed
+source: >-
+  openapi/watchmaker-genomics-commerce-rest-swagger.json (derived), plus live anonymous and
+  unauthorized requests to https://www.watchmakergenomics.com/rest/... and
+  https://www.watchmakergenomics.com/graphql on 2026-09-04
+note: >-
+  Watchmaker Genomics publishes no authentication documentation. This profile is the securityScheme
+  the self-served Swagger declares, corrected and extended by what the live host actually did. The
+  headline fact is that a large, useful slice of this API needs no credential at all, and the part
+  that does need one cannot be credentialed by a member of the public.
+summary:
+  types:
+  - apiKey
+  - http-bearer
+  api_key_in:
+  - header
+  anonymous_surface: true
+  public_credential_obtainable: false
+schemes:
+- name: api_key
+  type: apiKey
+  in: header
+  parameter: api_key
+  declared_in: openapi/watchmaker-genomics-commerce-rest-swagger.json
+  applied_to_operations: 0
+  note: >-
+    The only scheme in securityDefinitions. It is declared at document level and applied to NONE
+    of the 70 operations — there is no `security` block on any path — so the contract does not say
+    which operations need it. That has to be discovered by calling them.
+  sources:
+  - openapi/watchmaker-genomics-commerce-rest-swagger.json
+- name: bearer
+  type: http
+  scheme: bearer
+  in: header
+  parameter: Authorization
+  declared_in: null
+  note: >-
+    Magento integration tokens are accepted as `Authorization: Bearer <token>` as well as via the
+    api_key header. Not declared in the published document; inferred from the token-issuance
+    operations that ARE in it.
+token_issuance:
+- operationId: PostV1IntegrationAdminToken
+  path: /V1/integration/admin/token
+  method: POST
+  note: Admin token. Requires admin credentials, which are not publicly obtainable.
+- operationId: PostV1IntegrationCustomerToken
+  path: /V1/integration/customer/token
+  method: POST
+  note: >-
+    Customer token. Requires a customer account, and this storefront's registration and login
+    routes both return 404 (probed 2026-09-04).
+- field: generateCustomerToken
+  surface: graphql
+  note: The GraphQL equivalent. Same account precondition, same blocker.
+surfaces:
+- surface: rest
+  endpoint: https://www.watchmakergenomics.com/rest/all
+  anonymous_operations: 'the guest slice — directory, guest carts, checkout estimation and placement, customer creation and password reset, gift cards, in-store pickup, search, Magefan blog'
+  evidence:
+    verified_anonymous:
+      url: https://www.watchmakergenomics.com/rest/V1/directory/currency
+      status: 200
+      body_excerpt: '{"base_currency_code":"USD","base_currency_symbol":"$",...}'
+    verified_gated:
+      url: https://www.watchmakergenomics.com/rest/V1/store/storeConfigs
+      status: 401
+      body: '{"message":"The consumer isn''t authorized to access %resources.","parameters":{"resources":"Magento_Backend::store"}}'
+      note: >-
+        The 401 body names the exact Magento ACL resource required. That is unusually useful for a
+        caller, and it is the only place the contract's access model is expressed at all — 401 is
+        declared on no operation in the Swagger.
+- surface: graphql
+  endpoint: https://www.watchmakergenomics.com/graphql
+  anonymous_operations: 'catalog, categories, search, CMS, route resolution, storeConfig, guest cart, checkout estimation, contactUs, newsletter subscription, introspection'
+  authenticated_operations: 'customer, customerCart, customerOrders, wishlists, gift registries, returns, reward points, store credit'
+  auth_header: 'Authorization: Bearer <customer token>'
+  evidence:
+    verified_anonymous:
+      url: https://www.watchmakergenomics.com/graphql
+      status: 200
+      note: >-
+        Full IntrospectionQuery returned a 636-type schema with no credential — introspection is
+        not disabled on this deployment.
+- surface: soap
+  endpoint: https://www.watchmakergenomics.com/soap/all
+  anonymous_operations: 'none — contract retrieval only'
+  evidence:
+    verified_anonymous:
+      url: 'https://www.watchmakergenomics.com/soap/all?wsdl_list=1'
+      status: 200
+      note: 200 services enumerated without credentials. The WSDLs are public; invocation is not.
+oauth:
+  supported: false
+  evidence:
+  - {url: 'https://www.watchmakergenomics.com/.well-known/oauth-authorization-server', status: 404}
+  - {url: 'https://www.watchmakergenomics.com/.well-known/openid-configuration', status: 404}
+  note: >-
+    No oauth2 or openIdConnect securityScheme is declared and no discovery document is served, so
+    no scopes/ artifact is written for this provider.
+mtls:
+  supported: false
+transport_security:
+  https_required: true
+  tls_version: TLSv1.3
+  hsts: true
+  hsts_max_age: 31557600
+cookies:
+  note: >-
+    The GraphQL endpoint sets PHPSESSID and private_content_version on anonymous POSTs. They are
+    not required for any read operation; a stateless client should discard them.
+gaps:
+- 'No authentication documentation of any kind is published by Watchmaker Genomics.'
+- 'The declared api_key scheme is applied to zero operations, so the contract does not distinguish public from gated.'
+- '401 is returned but declared on no operation.'
+- 'No public path exists to obtain a credential — registration and login both 404.'

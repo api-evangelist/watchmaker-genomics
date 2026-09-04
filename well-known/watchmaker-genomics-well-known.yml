@@ -1,0 +1,76 @@
+generated: '2026-09-04'
+method: probed
+source: live HTTP probes of the RFC 8615 named path list on every host this record knows
+note: >-
+  Every named /.well-known/ path was probed on both hosts and every one missed. The apex
+  (watchmakergenomics.com) 302s to www for all of them; www returns a Magento 404 page
+  ("Whoops! Page not found") with an HTML body for each. NO WellKnown or SecurityTxt pointer is
+  emitted in apis.yml, because nothing here is served — this file records a verified absence, not
+  a presence. /llms.txt IS served on both hosts and is captured separately in llms/.
+hosts:
+- host: www.watchmakergenomics.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 404
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    file: null
+  - path: /.well-known/api-catalog
+    status: 404
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 404
+    file: null
+  - path: /.well-known/agent.json
+    status: 404
+    file: null
+  - path: /security.txt
+    status: 404
+    file: null
+- host: watchmakergenomics.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 302
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 302
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 302
+    file: null
+  - path: /.well-known/api-catalog
+    status: 302
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 302
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 302
+    file: null
+  - path: /.well-known/agent.json
+    status: 302
+    file: null
+related_hosts_checked:
+- host: api.watchmakergenomics.com
+  result: NXDOMAIN
+- host: docs.watchmakergenomics.com
+  result: NXDOMAIN
+- host: developer.watchmakergenomics.com
+  result: NXDOMAIN
+- host: status.watchmakergenomics.com
+  result: NXDOMAIN
+- host: trust.watchmakergenomics.com
+  result: NXDOMAIN
+- host: mcp.watchmakergenomics.com
+  result: NXDOMAIN
+- host: shop.watchmakergenomics.com
+  result: NXDOMAIN
+- host: store.watchmakergenomics.com
+  result: NXDOMAIN

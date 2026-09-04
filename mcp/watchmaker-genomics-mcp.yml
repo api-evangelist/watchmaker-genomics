@@ -1,0 +1,121 @@
+generated: '2026-09-04'
+method: derived
+source: >-
+  graphql/watchmaker-genomics-commerce.graphql and
+  openapi/watchmaker-genomics-commerce-rest-swagger.json
+status: candidate
+note: >-
+  Watchmaker Genomics ships NO MCP server. This is a derived candidate tool list, not a server —
+  nobody can connect to it. The search for a real one came back empty on every path checked, and
+  the tools below are proposals computed from operations that genuinely exist and genuinely answer
+  anonymously today.
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: none
+  verified: derived
+search_evidence:
+- {url: 'https://mcp.watchmakergenomics.com/', result: NXDOMAIN}
+- {url: 'https://www.watchmakergenomics.com/.well-known/ai-plugin.json', status: 404}
+- {url: 'https://www.watchmakergenomics.com/.well-known/agent-card.json', status: 404}
+- {url: 'https://www.watchmakergenomics.com/.well-known/agent.json', status: 404}
+- {query: 'web search: "Watchmaker Genomics" MCP server / SDK / developer', result: 'no first-party result'}
+- {registry: npm, query: '"watchmaker genomics"', result: 'no first-party package'}
+- {url: 'https://www.watchmakergenomics.com/llms.txt', status: 200, note: 'Served, but lists only marketing and product pages — no tools, no endpoints, no API mention.'}
+surfaces:
+  graphql:
+    endpoint: https://www.watchmakergenomics.com/graphql
+    gated: false
+    introspection: open
+    note: >-
+      The strongest agent surface this company has. Full introspection succeeds anonymously, so a
+      generic GraphQL-to-MCP bridge could drive it today with real input schemas — no schema
+      guessing required.
+  rest:
+    schema: https://www.watchmakergenomics.com/rest/all/schema?services=all
+    endpoint: https://www.watchmakergenomics.com/rest/all
+    gated: partially
+    note: 'The anonymous slice answers; anything outside it returns 401 with the required ACL resource named.'
+  soap:
+    endpoint: https://www.watchmakergenomics.com/soap/all
+    gated: true
+candidate_tools:
+- name: search_products
+  description: Search the Watchmaker Genomics reagent catalog by keyword and return SKU, name, URL key and price.
+  binding: 'graphql: products(search: String, pageSize: Int, currentPage: Int)'
+  verified_anonymous: true
+  consequence: read-only
+- name: get_product
+  description: Fetch one product by SKU or url_key, including description, media, tier prices and custom attributes.
+  binding: 'graphql: products(filter: ProductAttributeFilterInput)'
+  verified_anonymous: true
+  consequence: read-only
+- name: browse_categories
+  description: Walk the product category tree (DNA library prep, RNA library prep, enzymes, MDx tools, NGS accessories).
+  binding: 'graphql: categories(filters: CategoryFilterInput)'
+  verified_anonymous: true
+  consequence: read-only
+- name: resolve_url
+  description: Resolve a storefront URL path to the entity it addresses (product, category or CMS page).
+  binding: 'graphql: route(url: String!)'
+  verified_anonymous: true
+  consequence: read-only
+- name: get_cms_page
+  description: Fetch a CMS page or block by identifier.
+  binding: 'graphql: cmsPage(identifier: String), cmsBlocks(identifiers: [String])'
+  verified_anonymous: true
+  consequence: read-only
+- name: get_store_config
+  description: Read store configuration — currency, locale, guest checkout, cancellation and returns availability.
+  binding: 'graphql: storeConfig'
+  verified_anonymous: true
+  consequence: read-only
+- name: list_countries
+  description: List supported countries and their regions for address entry.
+  binding: 'rest: GetV1DirectoryCountries / graphql: countries'
+  verified_anonymous: true
+  consequence: read-only
+- name: create_guest_cart
+  description: Open an anonymous cart and return its id.
+  binding: 'graphql: createGuestCart / rest: PostV1Guestcarts'
+  verified_anonymous: false
+  consequence: write-low
+- name: add_products_to_cart
+  description: Add SKUs and quantities to a cart.
+  binding: 'graphql: addProductsToCart / rest: PostV1GuestcartsCartIdItems'
+  verified_anonymous: false
+  consequence: write-low
+- name: estimate_shipping_and_totals
+  description: Compute shipping methods and order totals for an address WITHOUT committing anything.
+  binding: 'graphql: estimateShippingMethods, estimateTotals / rest: PostV1GuestcartsCartIdEstimateshippingmethods, PostV1GuestcartsCartIdTotalsinformation'
+  verified_anonymous: false
+  consequence: read-only
+  note: The one genuine dry-run path on this surface.
+- name: place_order
+  description: Convert a cart into an order.
+  binding: 'graphql: placeOrder / rest: PutV1GuestcartsCartIdOrder'
+  verified_anonymous: false
+  consequence: write-irreversible
+  escalation: human-approval-required
+  note: >-
+    NOT REVERSIBLE ON THIS STORE. storeConfig.order_cancellation_enabled is false and
+    returns_enabled is "disabled" (queried live 2026-09-04), so cancelOrder and requestReturn
+    exist in the schema and will not work here. Any agent wiring this tool must require human
+    approval and must not present cancellation as available.
+- name: submit_contact_request
+  description: Send a message through the storefront contact form.
+  binding: 'graphql: contactUs(input: ContactUsInput!)'
+  verified_anonymous: true
+  consequence: write-low
+- name: subscribe_newsletter
+  description: Subscribe an email address to the Watchmaker newsletter.
+  binding: 'graphql: subscribeEmailToNewsletter(email: String!)'
+  verified_anonymous: true
+  consequence: write-low
+  note: Sends mail to a third party. Treat as consent-bearing.
+gaps:
+- 'No hosted MCP endpoint and no stdio package — mode: none.'
+- 'No tool inputSchemas are asserted here; a real server would inherit them from the SDL, which is open to introspection.'
+- 'These tools are proposals. Nothing in this file should be read as an agent surface Watchmaker Genomics operates.'

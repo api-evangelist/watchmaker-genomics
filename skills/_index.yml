@@ -1,0 +1,47 @@
+generated: '2026-09-04'
+method: generated
+source: >-
+  graphql/watchmaker-genomics-commerce.graphql,
+  openapi/watchmaker-genomics-commerce-rest-swagger.json,
+  conventions/watchmaker-genomics-conventions.yml
+note: >-
+  Watchmaker Genomics publishes no skills, no AGENTS.md and no developer documentation — searched
+  and not found. These are packaged by API Evangelist from the contracts its storefront self-serves.
+  Every operation, argument and field name is grounded in the live schema; nothing is invented.
+  Both skills stop short of placeOrder on purpose: order cancellation and returns are switched off
+  on this store, so the irreversible step is left to a human.
+skills:
+- name: watchmaker-genomics-browse-catalog
+  file: watchmaker-genomics-browse-catalog.md
+  api: Watchmaker Genomics Storefront GraphQL API
+  surface: graphql
+  auth: none
+  consequence: read-only
+  operations: [products, categories, route, search, storeConfig, cmsPage]
+  summary: >-
+    Search and read the reagent catalog — kits, enzymes, polymerases, reverse transcriptases, MDx
+    tools — with SKUs, descriptions, media, tier prices and stock status. The catalog has no REST
+    equivalent, so this is the only way in.
+- name: watchmaker-genomics-quote-a-basket
+  file: watchmaker-genomics-quote-a-basket.md
+  api: Watchmaker Genomics Storefront GraphQL API
+  surface: graphql
+  auth: none
+  consequence: write-low
+  operations: [createGuestCart, addProductsToCart, setGuestEmailOnCart, estimateShippingMethods, estimateTotals, removeItemFromCart, clearCart]
+  summary: >-
+    Build a guest cart and price it for a delivery address using the estimate-only mutations, then
+    hand the quote to a person. Explicitly does NOT place the order.
+excluded:
+- flow: place-an-order
+  reason: >-
+    Deliberately not packaged. storeConfig.order_cancellation_enabled is false and returns_enabled
+    is "disabled" on this store (queried live 2026-09-04), and there is no idempotency key on any
+    mutating operation, so an agent that places an order can neither undo it nor safely retry it.
+- flow: authenticated-customer-operations
+  reason: >-
+    /customer/account/create/ and /customer/account/login/ both return 404 on this storefront, so
+    no member of the public can obtain a customer token to ground the skill in.
+- flow: admin-rest-and-soap
+  reason: >-
+    Requires a Magento integration token issued from an admin that is not publicly reachable.

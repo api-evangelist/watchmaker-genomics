@@ -1,18 +1,100 @@
 aid: watchmaker-genomics
 name: Watchmaker Genomics
-description: 'Watchmaker Genomics is a company surfaced via the API Evangelist harvest backlog (source:
-  secondary-market) and added to the network as a stub for full-pipeline profiling.'
+description: >-
+  Watchmaker Genomics is a Boulder, Colorado life-science company that engineers and manufactures
+  high-performance enzymes and next-generation-sequencing library preparation kits for clinical,
+  translational and molecular-diagnostics workflows — DNA and RNA library prep, TAPS+ methylation
+  sequencing, EquiPlex normalization, Equinox Prime amplification, high-fidelity polymerases,
+  reverse transcriptases and MDx reagents. It is a reagents manufacturer rather than an API
+  company: it runs no developer program and publishes no API documentation, but its Adobe
+  Commerce (Magento 2) storefront at www.watchmakergenomics.com serves a live, publicly
+  introspectable GraphQL endpoint, a Swagger 2.0 REST schema and 200 SOAP WSDL services over its
+  own product catalog, and its GitHub organization publishes first-party bioinformatics tools
+  including the TAPS+ Variant Caller (TVC).
+image: https://www.watchmakergenomics.com/media/codazon/logo/22/default/Watchmaker_Logo_RGB_Wtext_500px.png
 url: https://raw.githubusercontent.com/api-evangelist/watchmaker-genomics/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
+position: Producing
 specificationVersion: '0.20'
 created: '2026-09-04'
 modified: '2026-09-04'
 tags:
-- Company
-apis: []
+- Genomics
+- Life Sciences
+- Next-Generation Sequencing
+- Molecular Diagnostics
+- Biotechnology
+- Reagents
+- Bioinformatics
+- E-Commerce
+- GraphQL
+- Adobe Commerce
+apis:
+- name: Watchmaker Genomics Storefront GraphQL API
+  description: >-
+    The Adobe Commerce (Magento 2) storefront GraphQL API instantiated on Watchmaker Genomics'
+    own host. Fully introspectable without credentials — 636 types, 54 root query fields and 99
+    mutations covering the Watchmaker product catalog, category tree, search, CMS pages, guest and
+    customer carts, checkout, shipping and payment method selection, order placement, wishlists,
+    gift registry, product reviews, newsletter subscription and the contact-us form. Live queries
+    return Watchmaker's own SKUs and storeConfig.base_url resolves to
+    https://www.watchmakergenomics.com/.
+  humanURL: https://www.watchmakergenomics.com/products
+  baseURL: https://www.watchmakergenomics.com/graphql
+  tags:
+  - E-Commerce
+  - GraphQL
+  - Product Catalog
+  - Adobe Commerce
+  properties:
+  - type: GraphQL
+    url: graphql/watchmaker-genomics-commerce.graphql
+  - type: DataModel
+    url: data-model/watchmaker-genomics-data-model.yml
+  - type: Authentication
+    url: authentication/watchmaker-genomics-authentication.yml
+- name: Watchmaker Genomics Storefront REST API
+  description: >-
+    The Adobe Commerce REST API on Watchmaker Genomics' own host, self-describing at
+    /rest/all/schema?services=all as a Swagger 2.0 document with 61 paths and 70 operations. The
+    anonymous slice — directory currency and countries, product render info, guest carts, shipping
+    and payment estimation, guest order placement, customer account creation and password reset,
+    gift cards, in-store pickup locations, search and the Magefan blog module — answers without a
+    token; everything else requires a Magento integration API key.
+  humanURL: https://www.watchmakergenomics.com/rest/all/schema?services=all
+  baseURL: https://www.watchmakergenomics.com/rest/all
+  tags:
+  - E-Commerce
+  - REST
+  - Product Catalog
+  - Adobe Commerce
+  properties:
+  - type: OpenAPI
+    url: openapi/watchmaker-genomics-commerce-rest-swagger.json
+  - type: Overlay
+    url: overlays/watchmaker-genomics-commerce-rest-overlay.yaml
+  - type: ErrorCatalog
+    url: errors/watchmaker-genomics-problem-types.yml
+  - type: Authentication
+    url: authentication/watchmaker-genomics-authentication.yml
+  - type: DataModel
+    url: data-model/watchmaker-genomics-data-model.yml
+- name: Watchmaker Genomics Storefront SOAP API
+  description: >-
+    The Adobe Commerce SOAP surface on Watchmaker Genomics' own host. /soap/all?wsdl_list=1
+    enumerates 200 services and each returns a WSDL 1.1 contract whose target namespace is
+    https://www.watchmakergenomics.com/soap/all. A five-service sample covering directory,
+    store, guest cart and customer-account operations is captured verbatim.
+  humanURL: https://www.watchmakergenomics.com/soap/all?wsdl_list=1
+  baseURL: https://www.watchmakergenomics.com/soap/all
+  tags:
+  - E-Commerce
+  - SOAP
+  - Adobe Commerce
+  properties:
+  - type: WSDL
+    url: wsdl/watchmaker-genomics-commerce-soap.wsdl
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -20,4 +102,63 @@ maintainers:
   email: info@apis.io
 common:
 - type: Website
-  url: https://www.nasdaqprivatemarket.com/
+  url: https://www.watchmakergenomics.com/
+- type: Documentation
+  url: https://www.watchmakergenomics.com/find-a-resource-or-tool
+- type: Support
+  url: https://www.watchmakergenomics.com/technical-support
+- type: TermsOfService
+  url: https://www.watchmakergenomics.com/terms-of-use
+- type: PrivacyPolicy
+  url: https://www.watchmakergenomics.com/privacy-policy
+- type: Pricing
+  url: https://www.watchmakergenomics.com/request-quote
+- type: GitHubOrganization
+  url: https://github.com/watchmaker-genomics
+- type: LLMsTxt
+  url: llms/watchmaker-genomics-llms.txt
+- type: Conventions
+  url: conventions/watchmaker-genomics-conventions.yml
+- type: Lifecycle
+  url: lifecycle/watchmaker-genomics-lifecycle.yml
+- type: Conformance
+  url: conformance/watchmaker-genomics-conformance.yml
+- type: RateLimits
+  url: rate-limits/watchmaker-genomics-rate-limits.yml
+- type: Plans
+  url: plans/watchmaker-genomics-plans-pricing.yml
+- type: Packages
+  url: packages/watchmaker-genomics-packages.yml
+- type: CLI
+  url: cli/watchmaker-genomics-cli.yml
+- type: X-MCPServerCandidate
+  url: mcp/watchmaker-genomics-mcp.yml
+- type: ToolCrosswalk
+  url: mcp/watchmaker-genomics-tool-crosswalk.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: DomainSecurity
+  url: security/watchmaker-genomics-domain-security.yml
+x-enrichment:
+  date: '2026-09-04'
+  status: enriched
+  artifacts_added: 23
+  pass: local-v3
+x-coverage:
+  state: covered
+  reason: null
+  detail: >-
+    Contract discovery beat a "reagents company, no API" conclusion — the Adobe Commerce
+    storefront on watchmakergenomics.com self-serves a Swagger 2.0 schema at
+    /rest/all/schema?services=all (61 paths, 70 operations), an anonymously introspectable GraphQL
+    endpoint at /graphql (636 types, 54 queries, 99 mutations) and 200 SOAP WSDL services at
+    /soap/all. There is still no developer program, no API documentation and no /.well-known/
+    document of any kind.
+  evidence:
+  - {url: 'https://www.watchmakergenomics.com/rest/all/schema?services=all', status: 200}
+  - {url: 'https://www.watchmakergenomics.com/graphql', status: 200}
+  - {url: 'https://www.watchmakergenomics.com/soap/all?wsdl_list=1', status: 200}
+  - {url: 'https://www.watchmakergenomics.com/llms.txt', status: 200}
+  - {url: 'https://www.watchmakergenomics.com/.well-known/security.txt', status: 404}
+  - {url: 'https://www.watchmakergenomics.com/.well-known/agent-card.json', status: 404}
+  checked: '2026-09-04'

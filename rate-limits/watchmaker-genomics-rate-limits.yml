@@ -1,0 +1,51 @@
+generated: '2026-09-04'
+method: probed
+source: >-
+  Live anonymous responses from https://www.watchmakergenomics.com/rest/V1/directory/currency and
+  https://www.watchmakergenomics.com/graphql, observed 2026-09-04, plus a full read of
+  openapi/watchmaker-genomics-commerce-rest-swagger.json and
+  graphql/watchmaker-genomics-commerce.graphql
+limit_count: 0
+note: >-
+  Watchmaker Genomics publishes no rate limits. There is no developer documentation to state one,
+  the self-served Swagger declares no 429 response on any of its 70 operations, and no rate-limit
+  header of any kind was returned on the anonymous responses observed. An honest zero: this is a
+  measurement, not an absence of limits — an undeclared limit almost certainly exists in the
+  Fastly edge and the Adobe Commerce application in front of this store, and an agent will meet it
+  without warning.
+limits: []
+response_headers:
+  observed: []
+  checked:
+  - RateLimit-Limit
+  - RateLimit-Remaining
+  - RateLimit-Reset
+  - RateLimit-Policy
+  - X-RateLimit-Limit
+  - X-RateLimit-Remaining
+  - X-RateLimit-Reset
+  - Retry-After
+  note: None of these were present on either observed response.
+status_on_exhaustion: null
+declared_429_responses: 0
+observed_response_headers:
+  rest:
+  - 'cache-control: no-store'
+  - 'strict-transport-security: max-age=31557600'
+  - 'x-frame-options: SAMEORIGIN'
+  - 'x-served-by / x-cache / x-cache-hits (Fastly)'
+  - 'x-platform-server (Adobe Commerce Cloud instance id)'
+  - 'traceresponse (W3C trace context)'
+  graphql:
+  - 'cache-control: max-age=0, must-revalidate, no-cache, no-store'
+  - 'x-magento-cache-id'
+  - 'x-content-type-options: nosniff'
+  - 'x-xss-protection: 1; mode=block'
+  - 'set-cookie: PHPSESSID, private_content_version'
+graphql_query_cost:
+  published: false
+  note: >-
+    No query-complexity or depth limit is declared in the schema and no cost extension appears in
+    responses. A full IntrospectionQuery returning a 1.0 MB / 636-type document was served without
+    throttling, which is itself the strongest evidence available that no complexity budget is
+    enforced on anonymous callers.

@@ -1,0 +1,116 @@
+generated: '2026-09-04'
+method: probed
+source: >-
+  Live probes of watchmakergenomics.com on 2026-09-04 plus
+  openapi/watchmaker-genomics-commerce-rest-swagger.json and
+  graphql/watchmaker-genomics-commerce.graphql
+note: >-
+  Watchmaker Genomics runs no developer program, so there is no API lifecycle policy to find. This
+  file records what was probed and what came back, so the absences are evidenced rather than
+  assumed. No StatusPage or Deprecation pointer is wired into apis.yml, because neither exists.
+
+versioning:
+  scheme: path-segment-major
+  rest_current: V1
+  document_version: '2.4'
+  document_version_meaning: >-
+    info.version in the self-served Swagger is the Adobe Commerce platform release, not a
+    Watchmaker-assigned API version. There is no Watchmaker version number on any surface.
+  graphql_current: unversioned
+  policy_published: false
+
+deprecation:
+  policy_published: false
+  policy_url: null
+  sunset_header: false
+  deprecation_header: false
+  rfc8594_conformant: false
+  deprecated_operations_in_contract:
+  - surface: graphql
+    scope: root Query fields
+    count: 6
+    fields:
+    - {name: category, reason: 'Use `categories` instead.'}
+    - {name: categoryList, reason: 'Use `categories` instead.'}
+    - {name: customAttributeMetadata, reason: 'Use `customAttributeMetadataV2` query instead.'}
+    - {name: customerOrders, reason: 'Use the `customer` query instead.'}
+    - {name: urlResolver, reason: 'Use the `route` query instead.'}
+    - {name: wishlist, reason: 'Moved under `Customer.wishlist`.'}
+  - surface: graphql
+    scope: root Mutation fields
+    count: 2
+    fields:
+    - {name: createEmptyCart, reason: 'Use `Mutation.createGuestCart` or `Query.customerCart` for logged in customer'}
+    - {name: setPaymentMethodAndPlaceOrder, reason: 'Should use setPaymentMethodOnCart and placeOrder mutations in single request.'}
+  - surface: graphql
+    scope: all fields, schema-wide
+    count: 260
+    note: >-
+      260 fields across the 636-type schema carry an @deprecated directive with a machine-readable
+      reason string. This is the only deprecation signal Watchmaker's surface carries, it is
+      inherited from the Adobe Commerce platform, and Watchmaker publishes no notice, timeline or
+      removal date of its own. Read it from graphql/watchmaker-genomics-commerce.graphql.
+  deprecated_operations_in_swagger: []
+
+status_page:
+  published: false
+  probes:
+  - url: https://status.watchmakergenomics.com/
+    result: NXDOMAIN
+  - url: https://www.watchmakergenomics.com/service-unavailable
+    result: 'listed in the sitemap as a Magento maintenance page, not a status page'
+  note: >-
+    No status page, uptime history or incident feed is published. The storefront is hosted on
+    Adobe Commerce Cloud (x-platform-server header) behind Fastly (x-served-by, x-cache), whose
+    own status pages are the vendors', not Watchmaker's, and are not cited here as if they were.
+
+sla:
+  published: false
+  url: null
+
+support:
+  channels:
+  - type: form
+    url: https://www.watchmakergenomics.com/technical-support
+    status: 200
+  - type: form
+    url: https://www.watchmakergenomics.com/contact-us
+    status: 200
+  - type: email
+    value: support@watchmakergenomics.com
+    scope: technical support
+  - type: email
+    value: orders@watchmakergenomics.com
+    scope: orders
+  - type: phone
+    value: '+1-720-543-2174'
+  note: >-
+    All support channels are for the reagent products, not for the storefront APIs. There is no
+    developer support channel.
+
+changelog:
+  published: false
+  note: >-
+    No dated API changelog or release-notes page exists. The company publishes product and
+    corporate news at https://www.watchmakergenomics.com/news (200), which is press-release
+    content and is not a change log for any interface — it is deliberately NOT wired as a
+    ChangeLog pointer.
+
+open_source_lifecycle:
+  note: >-
+    The first-party bioinformatics tools in the GitHub organization DO carry dated releases and
+    are the only versioned, tagged artifacts Watchmaker publishes.
+  releases:
+  - repo: watchmaker-genomics/TVC
+    latest: v1.1.1
+    published: '2026-08-13'
+    prior:
+    - {version: v1.1.1-rc, published: '2026-05-14'}
+    - {version: v1.1.0, published: '2026-02-16'}
+  - repo: watchmaker-genomics/nf-cgroup-metrics
+    latest: v1.0.1
+    published: '2026-02-26'
+  - repo: watchmaker-genomics/taps-foundry
+    latest: null
+    published: null
+    note: No tagged release; last push 2026-06-04.

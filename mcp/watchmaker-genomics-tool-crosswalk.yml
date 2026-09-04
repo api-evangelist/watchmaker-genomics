@@ -1,0 +1,155 @@
+generated: '2026-09-04'
+method: derived
+source: >-
+  graphql/watchmaker-genomics-commerce.graphql (636 types, 54 queries, 99 mutations, from live
+  anonymous introspection) and openapi/watchmaker-genomics-commerce-rest-swagger.json (61 paths,
+  70 operations, self-served at /rest/all/schema?services=all)
+note: >-
+  Emitted because two machine-readable contracts coexist on this host and they are NOT the same
+  surface. There is no MCP server, so the `tool` column is the derived candidate tool list in
+  mcp/watchmaker-genomics-mcp.yml. The finding worth carrying forward is the divergence: the
+  ENTIRE product catalog — the only part of this API an outside consumer would plausibly want —
+  exists in GraphQL and has no REST equivalent at all.
+surfaces:
+  openapi:
+    path: openapi/watchmaker-genomics-commerce-rest-swagger.json
+    endpoint: https://www.watchmakergenomics.com/rest/all
+    gated: partially
+    note: 'Anonymous slice answers; the rest returns 401 naming the required Magento ACL resource.'
+  graphql:
+    path: graphql/watchmaker-genomics-commerce.graphql
+    endpoint: https://www.watchmakergenomics.com/graphql
+    gated: false
+    note: Full introspection succeeds without credentials.
+  soap:
+    path: wsdl/watchmaker-genomics-commerce-soap.wsdl
+    endpoint: https://www.watchmakergenomics.com/soap/all
+    gated: true
+    note: '200 services enumerated at ?wsdl_list=1; contracts are public, invocation is not.'
+  mcp:
+    url: null
+    gated: null
+    note: No MCP server exists. Tools below are candidates, not a shipped surface.
+coverage:
+  candidate_tools: 14
+  graphql_query_fields: 54
+  graphql_mutation_fields: 99
+  rest_operations: 70
+  soap_services: 200
+  crosswalk_rows: 8
+  graphql_only_rows: 6
+  rest_only_rows: 5
+crosswalk:
+- tool: list_countries
+  category: directory
+  graphql: [countries, country]
+  rest: [GetV1DirectoryCountries, GetV1DirectoryCountriesCountryId]
+  binding: one-to-one
+  confidence: high
+- tool: get_currency
+  category: directory
+  graphql: [currency]
+  rest: [GetV1DirectoryCurrency]
+  binding: one-to-one
+  confidence: high
+  note: The only operation on the whole surface verified live and anonymous on BOTH transports.
+- tool: create_guest_cart
+  category: cart
+  graphql: [createGuestCart, createEmptyCart]
+  rest: [PostV1Guestcarts]
+  binding: one-to-one
+  confidence: high
+  note: 'createEmptyCart is @deprecated in the SDL in favour of createGuestCart; the REST operation is not.'
+- tool: add_products_to_cart
+  category: cart
+  graphql: [addProductsToCart]
+  rest: [PostV1GuestcartsCartIdItems, PutV1GuestcartsCartIdItemsItemId, DeleteV1GuestcartsCartIdItemsItemId]
+  binding: one-to-many
+  confidence: high
+- tool: apply_coupon
+  category: cart
+  graphql: [applyCouponToCart, applyCouponsToCart, removeCouponFromCart, removeCouponsFromCart]
+  rest: [PutV1GuestcartsCartIdCouponsCouponCode, DeleteV1GuestcartsCartIdCoupons, GetV1GuestcartsCartIdCoupons]
+  binding: many-to-many
+  confidence: high
+- tool: estimate_shipping_and_totals
+  category: checkout
+  graphql: [estimateShippingMethods, estimateTotals]
+  rest: [PostV1GuestcartsCartIdEstimateshippingmethods, PostV1GuestcartsCartIdTotalsinformation, GetV1GuestcartsCartIdShippingmethods, GetV1GuestcartsCartIdTotals]
+  binding: many-to-many
+  confidence: high
+  note: The dry-run path — computes without committing on both transports.
+- tool: place_order
+  category: checkout
+  graphql: [placeOrder, setPaymentMethodAndPlaceOrder]
+  rest: [PutV1GuestcartsCartIdOrder, PostV1GuestcartsCartIdPaymentinformation]
+  binding: many-to-many
+  confidence: high
+  note: >-
+    setPaymentMethodAndPlaceOrder is @deprecated in the SDL. Irreversible on this store —
+    order_cancellation_enabled is false.
+- tool: create_customer_account
+  category: customer
+  graphql: [createCustomerV2, createCustomer, isEmailAvailable, requestPasswordResetEmail, resetPassword]
+  rest: [PostV1Customers, PostV1CustomersIsEmailAvailable, PostV1CustomersResetPassword, PutV1CustomersPassword, GetV1CustomersCustomerIdPasswordResetLinkTokenResetPasswordLinkToken]
+  binding: many-to-many
+  confidence: high
+  note: >-
+    Both transports carry the full account-creation flow while the storefront's own
+    /customer/account/create/ and /customer/account/login/ routes return 404. The API is open on a
+    surface the web UI has switched off.
+graphql_only:
+- tool: search_products
+  fields: [products, search]
+  reason: >-
+    THE HEADLINE DIVERGENCE. There is no product-read operation in the REST surface. The Swagger
+    exposes only GetV1Productsrenderinfo (a price/render-block helper) and GetV1Search (a generic
+    quick-search). Everything an integrator would actually want — SKUs, descriptions, media, tier
+    prices, stock, custom attributes — is GraphQL-only.
+- tool: browse_categories
+  fields: [categories, category, categoryList]
+  reason: 'No category endpoint exists in REST at all. category and categoryList are @deprecated in favour of categories.'
+- tool: get_cms_page
+  fields: [cmsPage, cmsBlocks, dynamicBlocks]
+  reason: No CMS surface in the REST schema.
+- tool: resolve_url
+  fields: [route, urlResolver]
+  reason: 'URL-to-entity resolution is GraphQL-only. urlResolver is @deprecated in favour of route.'
+- tool: get_store_config
+  fields: [storeConfig, availableStores]
+  reason: >-
+    REST GET /V1/store/storeConfigs exists but returned 401 (Magento_Backend::store ACL), while
+    GraphQL storeConfig answers anonymously — the same information, gated on one transport and
+    open on the other.
+- tool: manage_wishlist_and_compare
+  fields: [wishlist, compareList, createWishlist, addProductsToWishlist, createCompareList, addProductsToCompareList]
+  reason: No wishlist or compare-list operations in the REST schema.
+rest_only:
+- operation: GetV1Productsrenderinfo
+  reason: A storefront price/render-block helper with no GraphQL analogue.
+- operations: [GetV1BlogPostListTypeTermStore_idPageLimit, GetV1BlogPostViewIdStore_id, GetV1BlogCategoryListTypeTermStore_idPageLimit, GetV1BlogAuthorViewIdStore_id, GetV1BlogTagListTypeTermStore_idPageLimit, GetV1BlogCommentViewIdStore_id, GetV1BlogVersion]
+  reason: >-
+    The Magefan blog module exposes 12 REST endpoints. It ALSO exposes blogPosts/blogPost/
+    blogCategories/blogTags in GraphQL, so this is partial overlap rather than pure REST-only —
+    but the list/view path-parameter shape has no GraphQL equivalent. Note the storefront's own
+    /blog route serves the homepage (soft-404), so the blog API is live over content the site no
+    longer surfaces.
+- operations: [PostV1IntegrationAdminToken, PostV1IntegrationCustomerToken]
+  reason: >-
+    Token issuance is REST-only in the Swagger. GraphQL has generateCustomerToken but no admin
+    equivalent.
+- operations: [GetV1PaymentsconfigApplepayLocation, GetV1PaymentsconfigGooglepayLocation, GetV1PaymentsconfigHostedfieldsLocation, GetV1PaymentsconfigSmartbuttonsLocation, GetV1ApplepayAuth, GetV1PaymentssdkLocation]
+  reason: >-
+    Adobe Payment Services configuration endpoints. GraphQL has getPaymentConfig/getPaymentSDK but
+    the Apple Pay merchant-validation and hosted-fields config paths are REST-only.
+- operations: [GetV1InventoryInstorepickupPickuplocations]
+  reason: >-
+    Present in both (GraphQL pickupLocations), but the REST version carries the searchCriteria
+    filter shape the GraphQL field does not.
+soap_note: >-
+  The 200 SOAP services are a third projection, and it is the widest of the three by service
+  count — it includes admin-side repositories (storeStoreRepositoryV1, eavAttributeSetRepositoryV1,
+  customerGroupRepositoryV1, adobeIoEventsClientConfigurationCheckV1) that appear in neither the
+  anonymous REST schema nor the GraphQL SDL. The contracts are public; invocation requires an
+  integration token that cannot be obtained by a member of the public. Not crosswalked
+  operation-by-operation because no anonymous caller can exercise them.

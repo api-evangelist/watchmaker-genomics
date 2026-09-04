@@ -1,0 +1,132 @@
+generated: '2026-09-04'
+method: derived
+source: >-
+  graphql/watchmaker-genomics-commerce.graphql (built from live anonymous introspection of
+  https://www.watchmakergenomics.com/graphql) and
+  openapi/watchmaker-genomics-commerce-rest-swagger.json (124 definitions)
+note: >-
+  The entity graph of the Adobe Commerce data core as it is instantiated on Watchmaker Genomics'
+  own host. Types and field names are read from the contracts; the identifiers and the module set
+  (gift registry, gift cards, reward points, store credit, in-store pickup, Magefan blog, Codazon
+  theme, Adobe Payment Services, Braintree) are what THIS deployment actually carries. Only the
+  entities reachable from an anonymous caller are described in detail — the rest are named.
+scale:
+  graphql_types: 636
+  graphql_query_fields: 54
+  graphql_mutation_fields: 99
+  graphql_deprecated_fields: 260
+  swagger_definitions: 124
+identifiers:
+  product: 'SKU — a Watchmaker catalog number, sometimes a hyphen-joined family (7K0113; 7K0116-7K0117-7K0118-7K0120-7K0121). No external identifier scheme (GTIN, GS1) is attached.'
+  cart: 'Opaque masked quote id (String) for guest carts; integer quote id server-side.'
+  entity_uid: 'Base64-encoded uid on catalog entities (ProductInterface.uid, CategoryInterface.uid), the modern replacement for the integer id fields.'
+  order: 'order_number (human) plus an opaque order id used by cancelOrder.'
+entities:
+- name: ProductInterface
+  root: true
+  fields: 55
+  description: A reagent, kit or enzyme in the Watchmaker catalog. Implemented by SimpleProduct, ConfigurableProduct, BundleProduct, GroupedProduct, VirtualProduct, DownloadableProduct.
+  key_fields: [sku, name, url_key, uid, stock_status, only_x_left_in_stock]
+  relationships:
+  - {to: CategoryInterface, type: has_many, via: categories}
+  - {to: ProductInterface, type: has_many, via: related_products}
+  - {to: ProductInterface, type: has_many, via: crosssell_products}
+  - {to: ProductInterface, type: has_many, via: upsell_products}
+  - {to: MediaGalleryInterface, type: has_many, via: media_gallery}
+  - {to: ProductPrices, type: has_one, via: price_range}
+  - {to: TierPrice, type: has_many, via: price_tiers}
+  - {to: ProductReviews, type: has_many, via: reviews}
+  - {to: ProductCustomAttributes, type: has_one, via: custom_attributesV2}
+  - {to: ComplexTextValue, type: has_one, via: description}
+- name: CategoryInterface
+  root: true
+  fields: 38
+  description: A node in the Watchmaker product taxonomy (DNA library prep, RNA library prep, enzymes, MDx tools, NGS accessories).
+  relationships:
+  - {to: CategoryProducts, type: has_many, via: products}
+  - {to: Breadcrumb, type: has_many, via: breadcrumbs}
+  - {to: CmsBlock, type: has_one, via: cms_block}
+  - {to: CategoryTree, type: has_many, via: 'children (declared on CategoryTree, which extends CategoryInterface — not on the interface itself)'}
+- name: Cart
+  root: true
+  fields: 21
+  description: A guest or customer cart. Created by createGuestCart, consumed by placeOrder.
+  relationships:
+  - {to: CartItemInterface, type: has_many, via: items}
+  - {to: BillingCartAddress, type: has_one, via: billing_address}
+  - {to: ShippingCartAddress, type: has_many, via: shipping_addresses}
+  - {to: AvailablePaymentMethod, type: has_many, via: available_payment_methods}
+  - {to: SelectedPaymentMethod, type: has_one, via: selected_payment_method}
+  - {to: CartPrices, type: has_one, via: prices}
+  - {to: AppliedCoupon, type: has_many, via: applied_coupons}
+  - {to: AppliedGiftCard, type: has_many, via: applied_gift_cards}
+  - {to: AppliedStoreCredit, type: has_one, via: applied_store_credit}
+  - {to: RewardPointsAmount, type: has_one, via: applied_reward_points}
+  - {to: GiftMessage, type: has_one, via: gift_message}
+  - {to: GiftWrapping, type: has_one, via: gift_wrapping}
+- name: CartItemInterface
+  fields: 7
+  relationships:
+  - {to: ProductInterface, type: belongs_to, via: product}
+  - {to: CartItemPrices, type: has_one, via: prices}
+  - {to: CartItemError, type: has_many, via: errors}
+- name: Customer
+  root: true
+  fields: 32
+  description: An account holder. Reachable only with a customer bearer token.
+  relationships:
+  - {to: CustomerAddress, type: has_many, via: addresses}
+  - {to: CustomerOrders, type: has_many, via: orders}
+  - {to: Wishlist, type: has_many, via: wishlists}
+  - {to: CompareList, type: has_many, via: compare_list}
+  - {to: GiftRegistry, type: has_many, via: gift_registries}
+  - {to: Returns, type: has_many, via: returns}
+  - {to: ProductReviews, type: has_many, via: reviews}
+  - {to: RewardPoints, type: has_one, via: reward_points}
+  - {to: CustomerStoreCredit, type: has_one, via: store_credit}
+  - {to: AttributeValueInterface, type: has_many, via: custom_attributes}
+- name: CustomerOrder
+  fields: 28
+  description: A placed order. Terminal on this store — see the reversibility note.
+  relationships:
+  - {to: OrderItemInterface, type: has_many, via: items}
+  - {to: OrderItemInterface, type: has_many, via: items_eligible_for_return}
+  - {to: OrderAddress, type: has_one, via: billing_address}
+  - {to: OrderAddress, type: has_one, via: shipping_address}
+  - {to: OrderPaymentMethod, type: has_many, via: payment_methods}
+  - {to: Invoice, type: has_many, via: invoices}
+  - {to: OrderShipment, type: has_many, via: shipments}
+  - {to: CreditMemo, type: has_many, via: credit_memos}
+  - {to: Returns, type: has_many, via: returns}
+  - {to: OrderTotal, type: has_one, via: total}
+  - {to: SalesCommentItem, type: has_many, via: comments}
+- name: OrderItemInterface
+  fields: 20
+  relationships:
+  - {to: ProductInterface, type: belongs_to, via: product}
+  - {to: Discount, type: has_many, via: discounts}
+  - {to: OrderItemOption, type: has_many, via: selected_options}
+- name: StoreConfig
+  fields: 304
+  root: true
+  description: >-
+    Store-wide configuration, readable anonymously. Carries the operationally decisive flags this
+    profile relied on — is_guest_checkout_enabled (true), order_cancellation_enabled (false),
+    returns_enabled ("disabled"), plus order_cancellation_reasons.
+  relationships:
+  - {to: CancellationReason, type: has_many, via: order_cancellation_reasons}
+  - {to: SendFriendConfiguration, type: has_one, via: send_friend}
+- name: Wishlist
+  relationships:
+  - {to: WishlistItem, type: has_many, via: items_v2}
+- name: CmsPage
+  root: true
+  description: Storefront content pages. Watchmaker's product, application and resource pages are Magento CMS content.
+rest_definitions_note: >-
+  The Swagger's 124 definitions cover the same core but only where the anonymous REST slice
+  touches it — customer-data-customer-interface, quote-data-cart-interface,
+  quote-data-totals-interface, quote-data-shipping-method-interface,
+  directory-data-country-information-interface, catalog-data-product-render-interface,
+  inventory-in-store-pickup-api-data-pickup-location-interface, plus the Magefan blog models and
+  the error-response family. There is NO product or category definition in the REST schema —
+  see mcp/watchmaker-genomics-tool-crosswalk.yml.
