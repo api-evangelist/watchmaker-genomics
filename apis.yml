@@ -33,13 +33,12 @@ tags:
 apis:
 - name: Watchmaker Genomics Storefront GraphQL API
   description: >-
-    The Adobe Commerce (Magento 2) storefront GraphQL API instantiated on Watchmaker Genomics'
-    own host. Fully introspectable without credentials — 636 types, 54 root query fields and 99
-    mutations covering the Watchmaker product catalog, category tree, search, CMS pages, guest and
-    customer carts, checkout, shipping and payment method selection, order placement, wishlists,
-    gift registry, product reviews, newsletter subscription and the contact-us form. Live queries
-    return Watchmaker's own SKUs and storeConfig.base_url resolves to
-    https://www.watchmakergenomics.com/.
+    The Adobe Commerce (Magento 2) storefront GraphQL API instantiated on Watchmaker Genomics' own host.
+    Fully introspectable without credentials — 636 types, 54 root query fields and 99 mutations covering
+    the Watchmaker product catalog, category tree, search, CMS pages, guest and customer carts, checkout,
+    shipping and payment method selection, order placement, wishlists, gift registry, product reviews,
+    newsletter subscription and the contact-us form. Live queries return Watchmaker's own SKUs and storeConfig.base_url
+    resolves to https://www.watchmakergenomics.com/.
   humanURL: https://www.watchmakergenomics.com/products
   baseURL: https://www.watchmakergenomics.com/graphql
   tags:
@@ -54,38 +53,12 @@ apis:
     url: data-model/watchmaker-genomics-data-model.yml
   - type: Authentication
     url: authentication/watchmaker-genomics-authentication.yml
-- name: Watchmaker Genomics Storefront REST API
-  description: >-
-    The Adobe Commerce REST API on Watchmaker Genomics' own host, self-describing at
-    /rest/all/schema?services=all as a Swagger 2.0 document with 61 paths and 70 operations. The
-    anonymous slice — directory currency and countries, product render info, guest carts, shipping
-    and payment estimation, guest order placement, customer account creation and password reset,
-    gift cards, in-store pickup locations, search and the Magefan blog module — answers without a
-    token; everything else requires a Magento integration API key.
-  humanURL: https://www.watchmakergenomics.com/rest/all/schema?services=all
-  baseURL: https://www.watchmakergenomics.com/rest/all
-  tags:
-  - E-Commerce
-  - REST
-  - Product Catalog
-  - Adobe Commerce
-  properties:
-  - type: OpenAPI
-    url: openapi/watchmaker-genomics-commerce-rest-swagger.json
-  - type: Overlay
-    url: overlays/watchmaker-genomics-commerce-rest-overlay.yaml
-  - type: ErrorCatalog
-    url: errors/watchmaker-genomics-problem-types.yml
-  - type: Authentication
-    url: authentication/watchmaker-genomics-authentication.yml
-  - type: DataModel
-    url: data-model/watchmaker-genomics-data-model.yml
 - name: Watchmaker Genomics Storefront SOAP API
   description: >-
-    The Adobe Commerce SOAP surface on Watchmaker Genomics' own host. /soap/all?wsdl_list=1
-    enumerates 200 services and each returns a WSDL 1.1 contract whose target namespace is
-    https://www.watchmakergenomics.com/soap/all. A five-service sample covering directory,
-    store, guest cart and customer-account operations is captured verbatim.
+    The Adobe Commerce SOAP surface on Watchmaker Genomics' own host. /soap/all?wsdl_list=1 enumerates
+    200 services and each returns a WSDL 1.1 contract whose target namespace is https://www.watchmakergenomics.com/soap/all.
+    A five-service sample covering directory, store, guest cart and customer-account operations is captured
+    verbatim.
   humanURL: https://www.watchmakergenomics.com/soap/all?wsdl_list=1
   baseURL: https://www.watchmakergenomics.com/soap/all
   tags:
@@ -95,12 +68,662 @@ apis:
   properties:
   - type: WSDL
     url: wsdl/watchmaker-genomics-commerce-soap.wsdl
+- aid: >-
+    watchmaker-genomics:watchmaker-genomics-asyncorderasyncpaymentinformationguestpublisherv1-api
+  name: Watchmaker Genomics Async Order Async Payment Information Guest Publisher V1 API
+  description: Interface AsyncPaymentInformationGuestPublisherInterface
+  humanURL: https://www.watchmakergenomics.com/products
+  baseURL: https://www.watchmakergenomics.com/graphql
+  tags:
+  - asyncOrderAsyncPaymentInformationGuestPublisherV1
+  properties:
+  - type: OpenAPI
+    url: >-
+      openapi/watchmaker-genomics-asyncorderasyncpaymentinformationguestpublisherv1-api-openapi.yml
+  - type: ErrorCatalog
+    url: errors/watchmaker-genomics-problem-types.yml
+  - type: Authentication
+    url: authentication/watchmaker-genomics-authentication.yml
+  - type: DataModel
+    url: data-model/watchmaker-genomics-data-model.yml
+- aid: watchmaker-genomics:watchmaker-genomics-catalogproductrenderlistv1-api
+  name: Watchmaker Genomics Catalog Product Render List V1 API
+  description: Interface which provides product renders information for products.
+  humanURL: https://www.watchmakergenomics.com/products
+  baseURL: https://www.watchmakergenomics.com/graphql
+  tags:
+  - catalogProductRenderListV1
+  properties:
+  - type: OpenAPI
+    url: openapi/watchmaker-genomics-catalogproductrenderlistv1-api-openapi.yml
+  - type: ErrorCatalog
+    url: errors/watchmaker-genomics-problem-types.yml
+  - type: Authentication
+    url: authentication/watchmaker-genomics-authentication.yml
+  - type: DataModel
+    url: data-model/watchmaker-genomics-data-model.yml
+- aid: watchmaker-genomics:watchmaker-genomics-checkoutguestpaymentinformationmanagementv1-api
+  name: Watchmaker Genomics Checkout Guest Payment Information Management V1 API
+  description: Interface for managing guest payment information
+  humanURL: https://www.watchmakergenomics.com/products
+  baseURL: https://www.watchmakergenomics.com/graphql
+  tags:
+  - checkoutGuestPaymentInformationManagementV1
+  properties:
+  - type: OpenAPI
+    url: openapi/watchmaker-genomics-checkoutguestpaymentinformationmanagementv1-api-openapi.yml
+  - type: ErrorCatalog
+    url: errors/watchmaker-genomics-problem-types.yml
+  - type: Authentication
+    url: authentication/watchmaker-genomics-authentication.yml
+  - type: DataModel
+    url: data-model/watchmaker-genomics-data-model.yml
+- aid: watchmaker-genomics:watchmaker-genomics-checkoutguestshippinginformationmanagementv1-api
+  name: Watchmaker Genomics Checkout Guest Shipping Information Management V1 API
+  description: Interface for managing guest shipping address information
+  humanURL: https://www.watchmakergenomics.com/products
+  baseURL: https://www.watchmakergenomics.com/graphql
+  tags:
+  - checkoutGuestShippingInformationManagementV1
+  properties:
+  - type: OpenAPI
+    url: openapi/watchmaker-genomics-checkoutguestshippinginformationmanagementv1-api-openapi.yml
+  - type: ErrorCatalog
+    url: errors/watchmaker-genomics-problem-types.yml
+  - type: Authentication
+    url: authentication/watchmaker-genomics-authentication.yml
+  - type: DataModel
+    url: data-model/watchmaker-genomics-data-model.yml
+- aid: watchmaker-genomics:watchmaker-genomics-checkoutguesttotalsinformationmanagementv1-api
+  name: Watchmaker Genomics Checkout Guest Totals Information Management V1 API
+  description: Interface for guest quote totals calculation
+  humanURL: https://www.watchmakergenomics.com/products
+  baseURL: https://www.watchmakergenomics.com/graphql
+  tags:
+  - checkoutGuestTotalsInformationManagementV1
+  properties:
+  - type: OpenAPI
+    url: openapi/watchmaker-genomics-checkoutguesttotalsinformationmanagementv1-api-openapi.yml
+  - type: ErrorCatalog
+    url: errors/watchmaker-genomics-problem-types.yml
+  - type: Authentication
+    url: authentication/watchmaker-genomics-authentication.yml
+  - type: DataModel
+    url: data-model/watchmaker-genomics-data-model.yml
+- aid: >-
+    watchmaker-genomics:watchmaker-genomics-codazonsalesproguestshippinginformationmanagementv1-api
+  name: Watchmaker Genomics Codazon Sales Pro Guest Shipping Information Management V1 API
+  description: Interface for managing guest shipping address information
+  humanURL: https://www.watchmakergenomics.com/products
+  baseURL: https://www.watchmakergenomics.com/graphql
+  tags:
+  - codazonSalesProGuestShippingInformationManagementV1
+  properties:
+  - type: OpenAPI
+    url: >-
+      openapi/watchmaker-genomics-codazonsalesproguestshippinginformationmanagementv1-api-openapi.yml
+  - type: ErrorCatalog
+    url: errors/watchmaker-genomics-problem-types.yml
+  - type: Authentication
+    url: authentication/watchmaker-genomics-authentication.yml
+  - type: DataModel
+    url: data-model/watchmaker-genomics-data-model.yml
+- aid: watchmaker-genomics:watchmaker-genomics-customeraccountmanagementv1-api
+  name: Watchmaker Genomics Customer Account Management V1 API
+  description: Interface for managing customers accounts.
+  humanURL: https://www.watchmakergenomics.com/products
+  baseURL: https://www.watchmakergenomics.com/graphql
+  tags:
+  - customerAccountManagementV1
+  properties:
+  - type: OpenAPI
+    url: openapi/watchmaker-genomics-customeraccountmanagementv1-api-openapi.yml
+  - type: ErrorCatalog
+    url: errors/watchmaker-genomics-problem-types.yml
+  - type: Authentication
+    url: authentication/watchmaker-genomics-authentication.yml
+  - type: DataModel
+    url: data-model/watchmaker-genomics-data-model.yml
+- aid: watchmaker-genomics:watchmaker-genomics-directorycountryinformationacquirerv1-api
+  name: Watchmaker Genomics Directory Country Information Acquirer V1 API
+  description: Country information acquirer interface
+  humanURL: https://www.watchmakergenomics.com/products
+  baseURL: https://www.watchmakergenomics.com/graphql
+  tags:
+  - directoryCountryInformationAcquirerV1
+  properties:
+  - type: OpenAPI
+    url: openapi/watchmaker-genomics-directorycountryinformationacquirerv1-api-openapi.yml
+  - type: ErrorCatalog
+    url: errors/watchmaker-genomics-problem-types.yml
+  - type: Authentication
+    url: authentication/watchmaker-genomics-authentication.yml
+  - type: DataModel
+    url: data-model/watchmaker-genomics-data-model.yml
+- aid: watchmaker-genomics:watchmaker-genomics-directorycurrencyinformationacquirerv1-api
+  name: Watchmaker Genomics Directory Currency Information Acquirer V1 API
+  description: Currency information acquirer interface
+  humanURL: https://www.watchmakergenomics.com/products
+  baseURL: https://www.watchmakergenomics.com/graphql
+  tags:
+  - directoryCurrencyInformationAcquirerV1
+  properties:
+  - type: OpenAPI
+    url: openapi/watchmaker-genomics-directorycurrencyinformationacquirerv1-api-openapi.yml
+  - type: ErrorCatalog
+    url: errors/watchmaker-genomics-problem-types.yml
+  - type: Authentication
+    url: authentication/watchmaker-genomics-authentication.yml
+  - type: DataModel
+    url: data-model/watchmaker-genomics-data-model.yml
+- aid: >-
+    watchmaker-genomics:watchmaker-genomics-giftcardaccountguestgiftcardaccountmanagementv1-api
+  name: Watchmaker Genomics Gift Card Account Guest Gift Card Account Management V1 API
+  description: Interface GuestGiftCardAccountManagementInterface
+  humanURL: https://www.watchmakergenomics.com/products
+  baseURL: https://www.watchmakergenomics.com/graphql
+  tags:
+  - giftCardAccountGuestGiftCardAccountManagementV1
+  properties:
+  - type: OpenAPI
+    url: >-
+      openapi/watchmaker-genomics-giftcardaccountguestgiftcardaccountmanagementv1-api-openapi.yml
+  - type: ErrorCatalog
+    url: errors/watchmaker-genomics-problem-types.yml
+  - type: Authentication
+    url: authentication/watchmaker-genomics-authentication.yml
+  - type: DataModel
+    url: data-model/watchmaker-genomics-data-model.yml
+- aid: watchmaker-genomics:watchmaker-genomics-giftmessageguestcartrepositoryv1-api
+  name: Watchmaker Genomics Gift Message Guest Cart Repository V1 API
+  description: Interface GuestCartRepositoryInterface
+  humanURL: https://www.watchmakergenomics.com/products
+  baseURL: https://www.watchmakergenomics.com/graphql
+  tags:
+  - giftMessageGuestCartRepositoryV1
+  properties:
+  - type: OpenAPI
+    url: openapi/watchmaker-genomics-giftmessageguestcartrepositoryv1-api-openapi.yml
+  - type: ErrorCatalog
+    url: errors/watchmaker-genomics-problem-types.yml
+  - type: Authentication
+    url: authentication/watchmaker-genomics-authentication.yml
+  - type: DataModel
+    url: data-model/watchmaker-genomics-data-model.yml
+- aid: watchmaker-genomics:watchmaker-genomics-giftmessageguestitemrepositoryv1-api
+  name: Watchmaker Genomics Gift Message Guest Item Repository V1 API
+  description: Interface GuestItemRepositoryInterface
+  humanURL: https://www.watchmakergenomics.com/products
+  baseURL: https://www.watchmakergenomics.com/graphql
+  tags:
+  - giftMessageGuestItemRepositoryV1
+  properties:
+  - type: OpenAPI
+    url: openapi/watchmaker-genomics-giftmessageguestitemrepositoryv1-api-openapi.yml
+  - type: ErrorCatalog
+    url: errors/watchmaker-genomics-problem-types.yml
+  - type: Authentication
+    url: authentication/watchmaker-genomics-authentication.yml
+  - type: DataModel
+    url: data-model/watchmaker-genomics-data-model.yml
+- aid: >-
+    watchmaker-genomics:watchmaker-genomics-giftregistryguestcartshippingmethodmanagementv1-api
+  name: Watchmaker Genomics Gift Registry Guest Cart Shipping Method Management V1 API
+  description: Interface ShippingMethodManagementInterface
+  humanURL: https://www.watchmakergenomics.com/products
+  baseURL: https://www.watchmakergenomics.com/graphql
+  tags:
+  - giftRegistryGuestCartShippingMethodManagementV1
+  properties:
+  - type: OpenAPI
+    url: >-
+      openapi/watchmaker-genomics-giftregistryguestcartshippingmethodmanagementv1-api-openapi.yml
+  - type: ErrorCatalog
+    url: errors/watchmaker-genomics-problem-types.yml
+  - type: Authentication
+    url: authentication/watchmaker-genomics-authentication.yml
+  - type: DataModel
+    url: data-model/watchmaker-genomics-data-model.yml
+- aid: watchmaker-genomics:watchmaker-genomics-integrationadmintokenservicev1-api
+  name: Watchmaker Genomics Integration Admin Token Service V1 API
+  description: Interface providing token generation for Admins
+  humanURL: https://www.watchmakergenomics.com/products
+  baseURL: https://www.watchmakergenomics.com/graphql
+  tags:
+  - integrationAdminTokenServiceV1
+  properties:
+  - type: OpenAPI
+    url: openapi/watchmaker-genomics-integrationadmintokenservicev1-api-openapi.yml
+  - type: ErrorCatalog
+    url: errors/watchmaker-genomics-problem-types.yml
+  - type: Authentication
+    url: authentication/watchmaker-genomics-authentication.yml
+  - type: DataModel
+    url: data-model/watchmaker-genomics-data-model.yml
+- aid: watchmaker-genomics:watchmaker-genomics-integrationcustomertokenservicev1-api
+  name: Watchmaker Genomics Integration Customer Token Service V1 API
+  description: Interface providing token generation for Customers
+  humanURL: https://www.watchmakergenomics.com/products
+  baseURL: https://www.watchmakergenomics.com/graphql
+  tags:
+  - integrationCustomerTokenServiceV1
+  properties:
+  - type: OpenAPI
+    url: openapi/watchmaker-genomics-integrationcustomertokenservicev1-api-openapi.yml
+  - type: ErrorCatalog
+    url: errors/watchmaker-genomics-problem-types.yml
+  - type: Authentication
+    url: authentication/watchmaker-genomics-authentication.yml
+  - type: DataModel
+    url: data-model/watchmaker-genomics-data-model.yml
+- aid: >-
+    watchmaker-genomics:watchmaker-genomics-inventoryinstorepickupapigetpickuplocationsv1-api
+  name: Watchmaker Genomics Inventory In Store Pickup API Get Pickup Locations V1 API
+  description: >-
+    Get Pickup Locations filtered by provided Search Request. Pickup Location entities are Immutable object
+    and can not be changed after creation. All modification of Pickup Location must be done through @see
+    \Magento\InventoryApi\Api\SourceRepositoryInterface
+  humanURL: https://www.watchmakergenomics.com/products
+  baseURL: https://www.watchmakergenomics.com/graphql
+  tags:
+  - inventoryInStorePickupApiGetPickupLocationsV1
+  properties:
+  - type: OpenAPI
+    url: >-
+      openapi/watchmaker-genomics-inventoryinstorepickupapigetpickuplocationsv1-api-openapi.yml
+  - type: ErrorCatalog
+    url: errors/watchmaker-genomics-problem-types.yml
+  - type: Authentication
+    url: authentication/watchmaker-genomics-authentication.yml
+  - type: DataModel
+    url: data-model/watchmaker-genomics-data-model.yml
+- aid: watchmaker-genomics:watchmaker-genomics-magefanblogauthorauthormanagementv1-api
+  name: Watchmaker Genomics Magefan Blog Author Author Management V1 API
+  description: >-
+    The magefanBlogAuthorAuthorManagementV1 API from Watchmaker Genomics — 2 operation(s) for magefanblogauthorauthormanagementv1.
+  humanURL: https://www.watchmakergenomics.com/products
+  baseURL: https://www.watchmakergenomics.com/graphql
+  tags:
+  - magefanBlogAuthorAuthorManagementV1
+  properties:
+  - type: OpenAPI
+    url: openapi/watchmaker-genomics-magefanblogauthorauthormanagementv1-api-openapi.yml
+  - type: ErrorCatalog
+    url: errors/watchmaker-genomics-problem-types.yml
+  - type: Authentication
+    url: authentication/watchmaker-genomics-authentication.yml
+  - type: DataModel
+    url: data-model/watchmaker-genomics-data-model.yml
+- aid: watchmaker-genomics:watchmaker-genomics-magefanblogcategorymanagementv1-api
+  name: Watchmaker Genomics Magefan Blog Category Management V1 API
+  description: >-
+    The magefanBlogCategoryManagementV1 API from Watchmaker Genomics — 2 operation(s) for magefanblogcategorymanagementv1.
+  humanURL: https://www.watchmakergenomics.com/products
+  baseURL: https://www.watchmakergenomics.com/graphql
+  tags:
+  - magefanBlogCategoryManagementV1
+  properties:
+  - type: OpenAPI
+    url: openapi/watchmaker-genomics-magefanblogcategorymanagementv1-api-openapi.yml
+  - type: ErrorCatalog
+    url: errors/watchmaker-genomics-problem-types.yml
+  - type: Authentication
+    url: authentication/watchmaker-genomics-authentication.yml
+  - type: DataModel
+    url: data-model/watchmaker-genomics-data-model.yml
+- aid: watchmaker-genomics:watchmaker-genomics-magefanblogcommentmanagementv1-api
+  name: Watchmaker Genomics Magefan Blog Comment Management V1 API
+  description: >-
+    The magefanBlogCommentManagementV1 API from Watchmaker Genomics — 2 operation(s) for magefanblogcommentmanagementv1.
+  humanURL: https://www.watchmakergenomics.com/products
+  baseURL: https://www.watchmakergenomics.com/graphql
+  tags:
+  - magefanBlogCommentManagementV1
+  properties:
+  - type: OpenAPI
+    url: openapi/watchmaker-genomics-magefanblogcommentmanagementv1-api-openapi.yml
+  - type: ErrorCatalog
+    url: errors/watchmaker-genomics-problem-types.yml
+  - type: Authentication
+    url: authentication/watchmaker-genomics-authentication.yml
+  - type: DataModel
+    url: data-model/watchmaker-genomics-data-model.yml
+- aid: watchmaker-genomics:watchmaker-genomics-magefanblogimportwpimportmanagementv1-api
+  name: Watchmaker Genomics Magefan Blog Import Wp Import Management V1 API
+  description: >-
+    The magefanBlogImportWpImportManagementV1 API from Watchmaker Genomics — 1 operation(s) for magefanblogimportwpimportmanagementv1.
+  humanURL: https://www.watchmakergenomics.com/products
+  baseURL: https://www.watchmakergenomics.com/graphql
+  tags:
+  - magefanBlogImportWpImportManagementV1
+  properties:
+  - type: OpenAPI
+    url: openapi/watchmaker-genomics-magefanblogimportwpimportmanagementv1-api-openapi.yml
+  - type: ErrorCatalog
+    url: errors/watchmaker-genomics-problem-types.yml
+  - type: Authentication
+    url: authentication/watchmaker-genomics-authentication.yml
+  - type: DataModel
+    url: data-model/watchmaker-genomics-data-model.yml
+- aid: watchmaker-genomics:watchmaker-genomics-magefanblogpostmanagementv1-api
+  name: Watchmaker Genomics Magefan Blog Post Management V1 API
+  description: >-
+    The magefanBlogPostManagementV1 API from Watchmaker Genomics — 2 operation(s) for magefanblogpostmanagementv1.
+  humanURL: https://www.watchmakergenomics.com/products
+  baseURL: https://www.watchmakergenomics.com/graphql
+  tags:
+  - magefanBlogPostManagementV1
+  properties:
+  - type: OpenAPI
+    url: openapi/watchmaker-genomics-magefanblogpostmanagementv1-api-openapi.yml
+  - type: ErrorCatalog
+    url: errors/watchmaker-genomics-problem-types.yml
+  - type: Authentication
+    url: authentication/watchmaker-genomics-authentication.yml
+  - type: DataModel
+    url: data-model/watchmaker-genomics-data-model.yml
+- aid: watchmaker-genomics:watchmaker-genomics-magefanblogtagmanagementv1-api
+  name: Watchmaker Genomics Magefan Blog Tag Management V1 API
+  description: >-
+    The magefanBlogTagManagementV1 API from Watchmaker Genomics — 2 operation(s) for magefanblogtagmanagementv1.
+  humanURL: https://www.watchmakergenomics.com/products
+  baseURL: https://www.watchmakergenomics.com/graphql
+  tags:
+  - magefanBlogTagManagementV1
+  properties:
+  - type: OpenAPI
+    url: openapi/watchmaker-genomics-magefanblogtagmanagementv1-api-openapi.yml
+  - type: ErrorCatalog
+    url: errors/watchmaker-genomics-problem-types.yml
+  - type: Authentication
+    url: authentication/watchmaker-genomics-authentication.yml
+  - type: DataModel
+    url: data-model/watchmaker-genomics-data-model.yml
+- aid: watchmaker-genomics:watchmaker-genomics-magefanblogversionv1-api
+  name: Watchmaker Genomics Magefan Blog Version V1 API
+  description: >-
+    The magefanBlogVersionV1 API from Watchmaker Genomics — 1 operation(s) for magefanblogversionv1.
+  humanURL: https://www.watchmakergenomics.com/products
+  baseURL: https://www.watchmakergenomics.com/graphql
+  tags:
+  - magefanBlogVersionV1
+  properties:
+  - type: OpenAPI
+    url: openapi/watchmaker-genomics-magefanblogversionv1-api-openapi.yml
+  - type: ErrorCatalog
+    url: errors/watchmaker-genomics-problem-types.yml
+  - type: Authentication
+    url: authentication/watchmaker-genomics-authentication.yml
+  - type: DataModel
+    url: data-model/watchmaker-genomics-data-model.yml
+- aid: watchmaker-genomics:watchmaker-genomics-paymentservicespaypalcompleteorderv1-api
+  name: Watchmaker Genomics Payment Services Paypal Complete Order V1 API
+  description: >-
+    The paymentServicesPaypalCompleteOrderV1 API from Watchmaker Genomics — 1 operation(s) for paymentservicespaypalcompleteorderv1.
+  humanURL: https://www.watchmakergenomics.com/products
+  baseURL: https://www.watchmakergenomics.com/graphql
+  tags:
+  - paymentServicesPaypalCompleteOrderV1
+  properties:
+  - type: OpenAPI
+    url: openapi/watchmaker-genomics-paymentservicespaypalcompleteorderv1-api-openapi.yml
+  - type: ErrorCatalog
+    url: errors/watchmaker-genomics-problem-types.yml
+  - type: Authentication
+    url: authentication/watchmaker-genomics-authentication.yml
+  - type: DataModel
+    url: data-model/watchmaker-genomics-data-model.yml
+- aid: watchmaker-genomics:watchmaker-genomics-paymentservicespaypalpaymentconfigrequestv1-api
+  name: Watchmaker Genomics Payment Services Paypal Payment Config Request V1 API
+  description: >-
+    The paymentServicesPaypalPaymentConfigRequestV1 API from Watchmaker Genomics — 5 operation(s) for
+    paymentservicespaypalpaymentconfigrequestv1.
+  humanURL: https://www.watchmakergenomics.com/products
+  baseURL: https://www.watchmakergenomics.com/graphql
+  tags:
+  - paymentServicesPaypalPaymentConfigRequestV1
+  properties:
+  - type: OpenAPI
+    url: openapi/watchmaker-genomics-paymentservicespaypalpaymentconfigrequestv1-api-openapi.yml
+  - type: ErrorCatalog
+    url: errors/watchmaker-genomics-problem-types.yml
+  - type: Authentication
+    url: authentication/watchmaker-genomics-authentication.yml
+  - type: DataModel
+    url: data-model/watchmaker-genomics-data-model.yml
+- aid: watchmaker-genomics:watchmaker-genomics-paymentservicespaypalpaymentorderrequestv1-api
+  name: Watchmaker Genomics Payment Services Paypal Payment Order Request V1 API
+  description: An interface for the REST WebAPI request to create an order
+  humanURL: https://www.watchmakergenomics.com/products
+  baseURL: https://www.watchmakergenomics.com/graphql
+  tags:
+  - paymentServicesPaypalPaymentOrderRequestV1
+  properties:
+  - type: OpenAPI
+    url: openapi/watchmaker-genomics-paymentservicespaypalpaymentorderrequestv1-api-openapi.yml
+  - type: ErrorCatalog
+    url: errors/watchmaker-genomics-problem-types.yml
+  - type: Authentication
+    url: authentication/watchmaker-genomics-authentication.yml
+  - type: DataModel
+    url: data-model/watchmaker-genomics-data-model.yml
+- aid: watchmaker-genomics:watchmaker-genomics-paymentservicespaypalpaymentsdkrequestv1-api
+  name: Watchmaker Genomics Payment Services Paypal Payment SDK Request V1 API
+  description: An interface for the REST WebAPI to get payment sdk urls
+  humanURL: https://www.watchmakergenomics.com/products
+  baseURL: https://www.watchmakergenomics.com/graphql
+  tags:
+  - paymentServicesPaypalPaymentSdkRequestV1
+  properties:
+  - type: OpenAPI
+    url: openapi/watchmaker-genomics-paymentservicespaypalpaymentsdkrequestv1-api-openapi.yml
+  - type: ErrorCatalog
+    url: errors/watchmaker-genomics-problem-types.yml
+  - type: Authentication
+    url: authentication/watchmaker-genomics-authentication.yml
+  - type: DataModel
+    url: data-model/watchmaker-genomics-data-model.yml
+- aid: watchmaker-genomics:watchmaker-genomics-paypalbraintreeauthv1-api
+  name: Watchmaker Genomics Pay Pal Braintree Auth V1 API
+  description: Interface AuthInterface
+  humanURL: https://www.watchmakergenomics.com/products
+  baseURL: https://www.watchmakergenomics.com/graphql
+  tags:
+  - payPalBraintreeAuthV1
+  properties:
+  - type: OpenAPI
+    url: openapi/watchmaker-genomics-paypalbraintreeauthv1-api-openapi.yml
+  - type: ErrorCatalog
+    url: errors/watchmaker-genomics-problem-types.yml
+  - type: Authentication
+    url: authentication/watchmaker-genomics-authentication.yml
+  - type: DataModel
+    url: data-model/watchmaker-genomics-data-model.yml
+- aid: watchmaker-genomics:watchmaker-genomics-quoteguestbillingaddressmanagementv1-api
+  name: Watchmaker Genomics Quote Guest Billing Address Management V1 API
+  description: Billing address management interface for guest carts.
+  humanURL: https://www.watchmakergenomics.com/products
+  baseURL: https://www.watchmakergenomics.com/graphql
+  tags:
+  - quoteGuestBillingAddressManagementV1
+  properties:
+  - type: OpenAPI
+    url: openapi/watchmaker-genomics-quoteguestbillingaddressmanagementv1-api-openapi.yml
+  - type: ErrorCatalog
+    url: errors/watchmaker-genomics-problem-types.yml
+  - type: Authentication
+    url: authentication/watchmaker-genomics-authentication.yml
+  - type: DataModel
+    url: data-model/watchmaker-genomics-data-model.yml
+- aid: watchmaker-genomics:watchmaker-genomics-quoteguestcartitemrepositoryv1-api
+  name: Watchmaker Genomics Quote Guest Cart Item Repository V1 API
+  description: Cart Item repository interface for guest carts.
+  humanURL: https://www.watchmakergenomics.com/products
+  baseURL: https://www.watchmakergenomics.com/graphql
+  tags:
+  - quoteGuestCartItemRepositoryV1
+  properties:
+  - type: OpenAPI
+    url: openapi/watchmaker-genomics-quoteguestcartitemrepositoryv1-api-openapi.yml
+  - type: ErrorCatalog
+    url: errors/watchmaker-genomics-problem-types.yml
+  - type: Authentication
+    url: authentication/watchmaker-genomics-authentication.yml
+  - type: DataModel
+    url: data-model/watchmaker-genomics-data-model.yml
+- aid: watchmaker-genomics:watchmaker-genomics-quoteguestcartmanagementv1-api
+  name: Watchmaker Genomics Quote Guest Cart Management V1 API
+  description: Cart Management interface for guest carts.
+  humanURL: https://www.watchmakergenomics.com/products
+  baseURL: https://www.watchmakergenomics.com/graphql
+  tags:
+  - quoteGuestCartManagementV1
+  properties:
+  - type: OpenAPI
+    url: openapi/watchmaker-genomics-quoteguestcartmanagementv1-api-openapi.yml
+  - type: ErrorCatalog
+    url: errors/watchmaker-genomics-problem-types.yml
+  - type: Authentication
+    url: authentication/watchmaker-genomics-authentication.yml
+  - type: DataModel
+    url: data-model/watchmaker-genomics-data-model.yml
+- aid: watchmaker-genomics:watchmaker-genomics-quoteguestcartrepositoryv1-api
+  name: Watchmaker Genomics Quote Guest Cart Repository V1 API
+  description: Cart Repository interface for guest carts.
+  humanURL: https://www.watchmakergenomics.com/products
+  baseURL: https://www.watchmakergenomics.com/graphql
+  tags:
+  - quoteGuestCartRepositoryV1
+  properties:
+  - type: OpenAPI
+    url: openapi/watchmaker-genomics-quoteguestcartrepositoryv1-api-openapi.yml
+  - type: ErrorCatalog
+    url: errors/watchmaker-genomics-problem-types.yml
+  - type: Authentication
+    url: authentication/watchmaker-genomics-authentication.yml
+  - type: DataModel
+    url: data-model/watchmaker-genomics-data-model.yml
+- aid: watchmaker-genomics:watchmaker-genomics-quoteguestcarttotalmanagementv1-api
+  name: Watchmaker Genomics Quote Guest Cart Total Management V1 API
+  description: >-
+    Bundled API to collect totals for cart based on shipping/payment methods and additional data.
+  humanURL: https://www.watchmakergenomics.com/products
+  baseURL: https://www.watchmakergenomics.com/graphql
+  tags:
+  - quoteGuestCartTotalManagementV1
+  properties:
+  - type: OpenAPI
+    url: openapi/watchmaker-genomics-quoteguestcarttotalmanagementv1-api-openapi.yml
+  - type: ErrorCatalog
+    url: errors/watchmaker-genomics-problem-types.yml
+  - type: Authentication
+    url: authentication/watchmaker-genomics-authentication.yml
+  - type: DataModel
+    url: data-model/watchmaker-genomics-data-model.yml
+- aid: watchmaker-genomics:watchmaker-genomics-quoteguestcarttotalrepositoryv1-api
+  name: Watchmaker Genomics Quote Guest Cart Total Repository V1 API
+  description: Cart totals repository interface for guest carts.
+  humanURL: https://www.watchmakergenomics.com/products
+  baseURL: https://www.watchmakergenomics.com/graphql
+  tags:
+  - quoteGuestCartTotalRepositoryV1
+  properties:
+  - type: OpenAPI
+    url: openapi/watchmaker-genomics-quoteguestcarttotalrepositoryv1-api-openapi.yml
+  - type: ErrorCatalog
+    url: errors/watchmaker-genomics-problem-types.yml
+  - type: Authentication
+    url: authentication/watchmaker-genomics-authentication.yml
+  - type: DataModel
+    url: data-model/watchmaker-genomics-data-model.yml
+- aid: watchmaker-genomics:watchmaker-genomics-quoteguestcouponmanagementv1-api
+  name: Watchmaker Genomics Quote Guest Coupon Management V1 API
+  description: Coupon management interface for guest carts.
+  humanURL: https://www.watchmakergenomics.com/products
+  baseURL: https://www.watchmakergenomics.com/graphql
+  tags:
+  - quoteGuestCouponManagementV1
+  properties:
+  - type: OpenAPI
+    url: openapi/watchmaker-genomics-quoteguestcouponmanagementv1-api-openapi.yml
+  - type: ErrorCatalog
+    url: errors/watchmaker-genomics-problem-types.yml
+  - type: Authentication
+    url: authentication/watchmaker-genomics-authentication.yml
+  - type: DataModel
+    url: data-model/watchmaker-genomics-data-model.yml
+- aid: watchmaker-genomics:watchmaker-genomics-quoteguestpaymentmethodmanagementv1-api
+  name: Watchmaker Genomics Quote Guest Payment Method Management V1 API
+  description: Payment method management interface for guest carts.
+  humanURL: https://www.watchmakergenomics.com/products
+  baseURL: https://www.watchmakergenomics.com/graphql
+  tags:
+  - quoteGuestPaymentMethodManagementV1
+  properties:
+  - type: OpenAPI
+    url: openapi/watchmaker-genomics-quoteguestpaymentmethodmanagementv1-api-openapi.yml
+  - type: ErrorCatalog
+    url: errors/watchmaker-genomics-problem-types.yml
+  - type: Authentication
+    url: authentication/watchmaker-genomics-authentication.yml
+  - type: DataModel
+    url: data-model/watchmaker-genomics-data-model.yml
+- aid: watchmaker-genomics:watchmaker-genomics-quoteguestshipmentestimationv1-api
+  name: Watchmaker Genomics Quote Guest Shipment Estimation V1 API
+  description: Interface GuestShipmentEstimationInterface
+  humanURL: https://www.watchmakergenomics.com/products
+  baseURL: https://www.watchmakergenomics.com/graphql
+  tags:
+  - quoteGuestShipmentEstimationV1
+  properties:
+  - type: OpenAPI
+    url: openapi/watchmaker-genomics-quoteguestshipmentestimationv1-api-openapi.yml
+  - type: ErrorCatalog
+    url: errors/watchmaker-genomics-problem-types.yml
+  - type: Authentication
+    url: authentication/watchmaker-genomics-authentication.yml
+  - type: DataModel
+    url: data-model/watchmaker-genomics-data-model.yml
+- aid: watchmaker-genomics:watchmaker-genomics-quoteguestshippingmethodmanagementv1-api
+  name: Watchmaker Genomics Quote Guest Shipping Method Management V1 API
+  description: Shipping method management interface for guest carts.
+  humanURL: https://www.watchmakergenomics.com/products
+  baseURL: https://www.watchmakergenomics.com/graphql
+  tags:
+  - quoteGuestShippingMethodManagementV1
+  properties:
+  - type: OpenAPI
+    url: openapi/watchmaker-genomics-quoteguestshippingmethodmanagementv1-api-openapi.yml
+  - type: ErrorCatalog
+    url: errors/watchmaker-genomics-problem-types.yml
+  - type: Authentication
+    url: authentication/watchmaker-genomics-authentication.yml
+  - type: DataModel
+    url: data-model/watchmaker-genomics-data-model.yml
+- aid: watchmaker-genomics:watchmaker-genomics-search-v1-api
+  name: Watchmaker Genomics search V1 API
+  description: Search API for all requests
+  humanURL: https://www.watchmakergenomics.com/products
+  baseURL: https://www.watchmakergenomics.com/graphql
+  tags:
+  - search V1
+  properties:
+  - type: OpenAPI
+    url: openapi/watchmaker-genomics-search-v1-api-openapi.yml
+  - type: ErrorCatalog
+    url: errors/watchmaker-genomics-problem-types.yml
+  - type: Authentication
+    url: authentication/watchmaker-genomics-authentication.yml
+  - type: DataModel
+    url: data-model/watchmaker-genomics-data-model.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: Overlay
+  url: overlays/watchmaker-genomics-commerce-rest-overlay.yaml
 - type: Website
   url: https://www.watchmakergenomics.com/
 - type: Documentation
