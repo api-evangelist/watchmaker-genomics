@@ -1,0 +1,257 @@
+openapi: 3.2.0
+info:
+  version: '2.4'
+  title: Magento Enterprise Gift Card Account Guest Gift Card…
+  description: Interface GuestGiftCardAccountManagementInterface
+servers:
+- url: https://www.watchmakergenomics.com/rest/all
+tags:
+- name: giftCardAccountGuestGiftCardAccountManagementV1
+  description: Interface GuestGiftCardAccountManagementInterface
+paths:
+  /V1/carts/guest-carts/{cartId}/giftCards/{giftCardCode}:
+    delete:
+      tags:
+      - giftCardAccountGuestGiftCardAccountManagementV1
+      description: Remove GiftCard Account entity.
+      operationId: DeleteV1CartsGuestcartsCartIdGiftCardsGiftCardCode
+      parameters:
+      - name: cartId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: giftCardCode
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: 200 Success.
+          content:
+            application/json:
+              schema:
+                type: boolean
+            application/xml:
+              schema:
+                type: boolean
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      summary: Delete V1 carts guestcarts cart id gift cards gift card code
+      x-summary-source: derived
+  /V1/carts/guest-carts/{cartId}/giftCards:
+    post:
+      tags:
+      - giftCardAccountGuestGiftCardAccountManagementV1
+      description: Add gift card to the cart.
+      operationId: PostV1CartsGuestcartsCartIdGiftCards
+      parameters:
+      - name: cartId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: 200 Success.
+          content:
+            application/json:
+              schema:
+                type: boolean
+            application/xml:
+              schema:
+                type: boolean
+        '500':
+          description: Internal Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - giftCardAccountData
+              properties:
+                giftCardAccountData:
+                  $ref: '#/components/schemas/gift-card-account-data-gift-card-account-interface'
+              type: object
+              xml:
+                name: request
+          application/xml:
+            schema:
+              required:
+              - giftCardAccountData
+              properties:
+                giftCardAccountData:
+                  $ref: '#/components/schemas/gift-card-account-data-gift-card-account-interface'
+              type: object
+              xml:
+                name: request
+      summary: Post V1 carts guestcarts cart id gift cards
+      x-summary-source: derived
+  /V1/carts/guest-carts/{cartId}/checkGiftCard/{giftCardCode}:
+    get:
+      tags:
+      - giftCardAccountGuestGiftCardAccountManagementV1
+      description: Check gift card balance if added to the cart.
+      operationId: GetV1CartsGuestcartsCartIdCheckGiftCardGiftCardCode
+      parameters:
+      - name: cartId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: giftCardCode
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: 200 Success.
+          content:
+            application/json:
+              schema:
+                type: number
+            application/xml:
+              schema:
+                type: number
+        '400':
+          description: 400 Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+        '500':
+          description: Internal Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      summary: Get V1 carts guestcarts cart id check gift card gift card code
+      x-summary-source: derived
+components:
+  schemas:
+    gift-card-account-data-gift-card-account-interface:
+      type: object
+      description: Gift Card Account data
+      properties:
+        gift_cards:
+          type: array
+          description: Cards codes.
+          items:
+            type: string
+        gift_cards_amount:
+          type: number
+          description: Cards amount in quote currency.
+        base_gift_cards_amount:
+          type: number
+          description: Cards amount in base currency.
+        gift_cards_amount_used:
+          type: number
+          description: Cards amount used in quote currency.
+        base_gift_cards_amount_used:
+          type: number
+          description: Cards amount used in base currency.
+        extension_attributes:
+          $ref: '#/components/schemas/gift-card-account-data-gift-card-account-extension-interface'
+      required:
+      - gift_cards_amount
+      - base_gift_cards_amount
+      - gift_cards_amount_used
+      - base_gift_cards_amount_used
+    error-parameters:
+      type: array
+      description: Error parameters list
+      items:
+        $ref: '#/components/schemas/error-parameters-item'
+    gift-card-account-data-gift-card-account-extension-interface:
+      type: object
+      description: ExtensionInterface class for @see \Magento\GiftCardAccount\Api\Data\GiftCardAccountInterface
+    error-parameters-item:
+      type: object
+      description: Error parameters item
+      properties:
+        resources:
+          type: string
+          description: ACL resource
+        fieldName:
+          type: string
+          description: Missing or invalid field name
+        fieldValue:
+          type: string
+          description: Incorrect field value
+    error-response:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+        errors:
+          $ref: '#/components/schemas/error-errors'
+        code:
+          type: integer
+          description: Error code
+        parameters:
+          $ref: '#/components/schemas/error-parameters'
+        trace:
+          type: string
+          description: Stack trace
+      required:
+      - message
+    error-errors:
+      type: array
+      description: Errors list
+      items:
+        $ref: '#/components/schemas/error-errors-item'
+    error-errors-item:
+      type: object
+      description: Error details
+      properties:
+        message:
+          type: string
+          description: Error message
+        parameters:
+          $ref: '#/components/schemas/error-parameters'
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header

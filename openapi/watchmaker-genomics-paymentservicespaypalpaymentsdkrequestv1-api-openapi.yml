@@ -1,0 +1,171 @@
+openapi: 3.2.0
+info:
+  version: '2.4'
+  title: Magento Enterprise Payment Services Paypal Payment SDK…
+  description: An interface for the REST WebAPI to get payment sdk urls
+servers:
+- url: https://www.watchmakergenomics.com/rest/all
+tags:
+- name: paymentServicesPaypalPaymentSdkRequestV1
+  description: An interface for the REST WebAPI to get payment sdk urls
+paths:
+  /V1/payments-sdk/{location}:
+    get:
+      tags:
+      - paymentServicesPaypalPaymentSdkRequestV1
+      description: Get payment sdk url by location
+      operationId: GetV1PaymentssdkLocation
+      parameters:
+      - name: location
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: 200 Success.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/payment-services-paypal-data-payment-sdk-params-interface'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/payment-services-paypal-data-payment-sdk-params-interface'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      summary: Get V1 paymentssdk location
+      x-summary-source: derived
+  /V1/payments-sdk/{location}/{methodCode}:
+    get:
+      tags:
+      - paymentServicesPaypalPaymentSdkRequestV1
+      description: Get payment sdk url by location and methodCode
+      operationId: GetV1PaymentssdkLocationMethodCode
+      parameters:
+      - name: location
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: methodCode
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: 200 Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/payment-services-paypal-data-payment-sdk-params-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/payment-services-paypal-data-payment-sdk-params-interface'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      summary: Get V1 paymentssdk location method code
+      x-summary-source: derived
+components:
+  schemas:
+    error-parameters:
+      type: array
+      description: Error parameters list
+      items:
+        $ref: '#/components/schemas/error-parameters-item'
+    payment-services-paypal-data-payment-config-sdk-params-interface:
+      type: object
+      description: ''
+      properties:
+        name:
+          type: string
+          description: Code
+        value:
+          type: string
+          description: Config
+      required:
+      - name
+      - value
+    payment-services-paypal-data-payment-sdk-params-interface:
+      type: object
+      description: ''
+      properties:
+        code:
+          type: string
+          description: The payments sdk code
+        params:
+          type: array
+          description: The payments sdk params
+          items:
+            $ref: '#/components/schemas/payment-services-paypal-data-payment-config-sdk-params-interface'
+      required:
+      - code
+      - params
+    error-parameters-item:
+      type: object
+      description: Error parameters item
+      properties:
+        resources:
+          type: string
+          description: ACL resource
+        fieldName:
+          type: string
+          description: Missing or invalid field name
+        fieldValue:
+          type: string
+          description: Incorrect field value
+    error-response:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+        errors:
+          $ref: '#/components/schemas/error-errors'
+        code:
+          type: integer
+          description: Error code
+        parameters:
+          $ref: '#/components/schemas/error-parameters'
+        trace:
+          type: string
+          description: Stack trace
+      required:
+      - message
+    error-errors:
+      type: array
+      description: Errors list
+      items:
+        $ref: '#/components/schemas/error-errors-item'
+    error-errors-item:
+      type: object
+      description: Error details
+      properties:
+        message:
+          type: string
+          description: Error message
+        parameters:
+          $ref: '#/components/schemas/error-parameters'
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
