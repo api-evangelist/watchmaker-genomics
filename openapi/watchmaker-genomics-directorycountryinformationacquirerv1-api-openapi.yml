@@ -84,36 +84,33 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    directory-data-region-information-interface:
+    error-errors-item:
       type: object
-      description: Region Information interface.
+      description: Error details
       properties:
-        id:
+        message:
           type: string
-          description: Region id
-        code:
+          description: Error message
+        parameters:
+          $ref: '#/components/schemas/error-parameters'
+    error-parameters-item:
+      type: object
+      description: Error parameters item
+      properties:
+        resources:
           type: string
-          description: Region code
-        name:
+          description: ACL resource
+        fieldName:
           type: string
-          description: Region name
-        extension_attributes:
-          $ref: '#/components/schemas/directory-data-region-information-extension-interface'
-      required:
-      - id
-      - code
-      - name
-    error-parameters:
+          description: Missing or invalid field name
+        fieldValue:
+          type: string
+          description: Incorrect field value
+    error-errors:
       type: array
-      description: Error parameters list
+      description: Errors list
       items:
-        $ref: '#/components/schemas/error-parameters-item'
-    directory-data-region-information-extension-interface:
-      type: object
-      description: ExtensionInterface class for @see \Magento\Directory\Api\Data\RegionInformationInterface
-    directory-data-country-information-extension-interface:
-      type: object
-      description: ExtensionInterface class for @see \Magento\Directory\Api\Data\CountryInformationInterface
+        $ref: '#/components/schemas/error-errors-item'
     directory-data-country-information-interface:
       type: object
       description: Country Information interface.
@@ -146,19 +143,11 @@ components:
       - three_letter_abbreviation
       - full_name_locale
       - full_name_english
-    error-parameters-item:
-      type: object
-      description: Error parameters item
-      properties:
-        resources:
-          type: string
-          description: ACL resource
-        fieldName:
-          type: string
-          description: Missing or invalid field name
-        fieldValue:
-          type: string
-          description: Incorrect field value
+    error-parameters:
+      type: array
+      description: Error parameters list
+      items:
+        $ref: '#/components/schemas/error-parameters-item'
     error-response:
       type: object
       properties:
@@ -177,20 +166,31 @@ components:
           description: Stack trace
       required:
       - message
-    error-errors:
-      type: array
-      description: Errors list
-      items:
-        $ref: '#/components/schemas/error-errors-item'
-    error-errors-item:
+    directory-data-region-information-extension-interface:
       type: object
-      description: Error details
+      description: ExtensionInterface class for @see \Magento\Directory\Api\Data\RegionInformationInterface
+    directory-data-country-information-extension-interface:
+      type: object
+      description: ExtensionInterface class for @see \Magento\Directory\Api\Data\CountryInformationInterface
+    directory-data-region-information-interface:
+      type: object
+      description: Region Information interface.
       properties:
-        message:
+        id:
           type: string
-          description: Error message
-        parameters:
-          $ref: '#/components/schemas/error-parameters'
+          description: Region id
+        code:
+          type: string
+          description: Region code
+        name:
+          type: string
+          description: Region name
+        extension_attributes:
+          $ref: '#/components/schemas/directory-data-region-information-extension-interface'
+      required:
+      - id
+      - code
+      - name
   securitySchemes:
     api_key:
       type: apiKey

@@ -240,60 +240,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    gift-card-data-gift-card-option-extension-interface:
-      type: object
-      description: ExtensionInterface class for @see \Magento\GiftCard\Api\Data\GiftCardOptionInterface
-      properties:
-        giftcard_created_codes:
-          type: array
-          items:
-            type: string
-    quote-data-product-option-interface:
-      type: object
-      description: Product option interface
-      properties:
-        extension_attributes:
-          $ref: '#/components/schemas/quote-data-product-option-extension-interface'
-    error-parameters:
-      type: array
-      description: Error parameters list
-      items:
-        $ref: '#/components/schemas/error-parameters-item'
-    grouped-product-data-grouped-options-extension-interface:
-      type: object
-      description: ExtensionInterface class for @see \Magento\GroupedProduct\Api\Data\GroupedOptionsInterface
-    quote-data-cart-item-interface:
-      type: object
-      description: Interface CartItemInterface
-      properties:
-        item_id:
-          type: integer
-          description: Item ID. Otherwise, null.
-        sku:
-          type: string
-          description: Product SKU. Otherwise, null.
-        qty:
-          type: number
-          description: Product quantity.
-        name:
-          type: string
-          description: Product name. Otherwise, null.
-        price:
-          type: number
-          description: Product price. Otherwise, null.
-        product_type:
-          type: string
-          description: Product type. Otherwise, null.
-        quote_id:
-          type: string
-          description: Quote id.
-        product_option:
-          $ref: '#/components/schemas/quote-data-product-option-interface'
-        extension_attributes:
-          $ref: '#/components/schemas/quote-data-cart-item-extension-interface'
-      required:
-      - qty
-      - quote_id
     error-parameters-item:
       type: object
       description: Error parameters item
@@ -307,81 +253,6 @@ components:
         fieldValue:
           type: string
           description: Incorrect field value
-    error-response:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message
-        errors:
-          $ref: '#/components/schemas/error-errors'
-        code:
-          type: integer
-          description: Error code
-        parameters:
-          $ref: '#/components/schemas/error-parameters'
-        trace:
-          type: string
-          description: Stack trace
-      required:
-      - message
-    catalog-data-custom-option-interface:
-      type: object
-      description: Interface CustomOptionInterface
-      properties:
-        option_id:
-          type: string
-          description: Option id
-        option_value:
-          type: string
-          description: Option value
-        extension_attributes:
-          $ref: '#/components/schemas/catalog-data-custom-option-extension-interface'
-      required:
-      - option_id
-      - option_value
-    sales-rule-data-discount-data-interface:
-      type: object
-      description: Discount Data Interface
-      properties:
-        amount:
-          type: number
-          description: Amount
-        base_amount:
-          type: number
-          description: Base Amount
-        original_amount:
-          type: number
-          description: Original Amount
-        base_original_amount:
-          type: number
-          description: Base Original Amount
-      required:
-      - amount
-      - base_amount
-      - original_amount
-      - base_original_amount
-    bundle-data-bundle-option-interface:
-      type: object
-      description: Interface BundleOptionInterface
-      properties:
-        option_id:
-          type: integer
-          description: Bundle option id.
-        option_qty:
-          type: integer
-          description: Bundle option quantity.
-        option_selections:
-          type: array
-          description: Bundle option selection ids.
-          items:
-            type: integer
-        extension_attributes:
-          $ref: '#/components/schemas/bundle-data-bundle-option-extension-interface'
-      required:
-      - option_id
-      - option_qty
-      - option_selections
     framework-data-image-content-interface:
       type: object
       description: Image Content data interface
@@ -415,20 +286,68 @@ components:
       - discount_data
       - rule_label
       - rule_i_d
-    configurable-product-data-configurable-item-option-value-interface:
+    sales-rule-data-discount-data-interface:
       type: object
-      description: Interface ConfigurableItemOptionValueInterface
+      description: Discount Data Interface
       properties:
-        option_id:
-          type: string
-          description: Option SKU
-        option_value:
-          type: integer
-          description: Item id
-        extension_attributes:
-          $ref: '#/components/schemas/configurable-product-data-configurable-item-option-value-extension-interface'
+        amount:
+          type: number
+          description: Amount
+        base_amount:
+          type: number
+          description: Base Amount
+        original_amount:
+          type: number
+          description: Original Amount
+        base_original_amount:
+          type: number
+          description: Base Original Amount
       required:
-      - option_id
+      - amount
+      - base_amount
+      - original_amount
+      - base_original_amount
+    quote-data-cart-item-interface:
+      type: object
+      description: Interface CartItemInterface
+      properties:
+        item_id:
+          type: integer
+          description: Item ID. Otherwise, null.
+        sku:
+          type: string
+          description: Product SKU. Otherwise, null.
+        qty:
+          type: number
+          description: Product quantity.
+        name:
+          type: string
+          description: Product name. Otherwise, null.
+        price:
+          type: number
+          description: Product price. Otherwise, null.
+        product_type:
+          type: string
+          description: Product type. Otherwise, null.
+        quote_id:
+          type: string
+          description: Quote id.
+        product_option:
+          $ref: '#/components/schemas/quote-data-product-option-interface'
+        extension_attributes:
+          $ref: '#/components/schemas/quote-data-cart-item-extension-interface'
+      required:
+      - qty
+      - quote_id
+    error-errors-item:
+      type: object
+      description: Error details
+      properties:
+        message:
+          type: string
+          description: Error message
+        parameters:
+          $ref: '#/components/schemas/error-parameters'
     downloadable-data-downloadable-option-interface:
       type: object
       description: Downloadable Option
@@ -440,6 +359,21 @@ components:
             type: integer
       required:
       - downloadable_links
+    catalog-data-custom-option-interface:
+      type: object
+      description: Interface CustomOptionInterface
+      properties:
+        option_id:
+          type: string
+          description: Option id
+        option_value:
+          type: string
+          description: Option value
+        extension_attributes:
+          $ref: '#/components/schemas/catalog-data-custom-option-extension-interface'
+      required:
+      - option_id
+      - option_value
     quote-data-cart-item-extension-interface:
       type: object
       description: ExtensionInterface class for @see \Magento\Quote\Api\Data\CartItemInterface
@@ -448,17 +382,84 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/sales-rule-data-rule-discount-interface'
+    quote-data-product-option-interface:
+      type: object
+      description: Product option interface
+      properties:
+        extension_attributes:
+          $ref: '#/components/schemas/quote-data-product-option-extension-interface'
+    quote-data-product-option-extension-interface:
+      type: object
+      description: ExtensionInterface class for @see \Magento\Quote\Api\Data\ProductOptionInterface
+      properties:
+        custom_options:
+          type: array
+          items:
+            $ref: '#/components/schemas/catalog-data-custom-option-interface'
+        bundle_options:
+          type: array
+          items:
+            $ref: '#/components/schemas/bundle-data-bundle-option-interface'
+        downloadable_option:
+          $ref: '#/components/schemas/downloadable-data-downloadable-option-interface'
+        giftcard_item_option:
+          $ref: '#/components/schemas/gift-card-data-gift-card-option-interface'
+        configurable_item_options:
+          type: array
+          items:
+            $ref: '#/components/schemas/configurable-product-data-configurable-item-option-value-interface'
+        grouped_options:
+          type: array
+          items:
+            $ref: '#/components/schemas/grouped-product-data-grouped-options-interface'
+    bundle-data-bundle-option-interface:
+      type: object
+      description: Interface BundleOptionInterface
+      properties:
+        option_id:
+          type: integer
+          description: Bundle option id.
+        option_qty:
+          type: integer
+          description: Bundle option quantity.
+        option_selections:
+          type: array
+          description: Bundle option selection ids.
+          items:
+            type: integer
+        extension_attributes:
+          $ref: '#/components/schemas/bundle-data-bundle-option-extension-interface'
+      required:
+      - option_id
+      - option_qty
+      - option_selections
+    bundle-data-bundle-option-extension-interface:
+      type: object
+      description: ExtensionInterface class for @see \Magento\Bundle\Api\Data\BundleOptionInterface
+    error-response:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+        errors:
+          $ref: '#/components/schemas/error-errors'
+        code:
+          type: integer
+          description: Error code
+        parameters:
+          $ref: '#/components/schemas/error-parameters'
+        trace:
+          type: string
+          description: Stack trace
+      required:
+      - message
     catalog-data-custom-option-extension-interface:
       type: object
       description: ExtensionInterface class for @see \Magento\Catalog\Api\Data\CustomOptionInterface
       properties:
         file_info:
           $ref: '#/components/schemas/framework-data-image-content-interface'
-    error-errors:
-      type: array
-      description: Errors list
-      items:
-        $ref: '#/components/schemas/error-errors-item'
     grouped-product-data-grouped-options-interface:
       type: object
       description: Represents `product item id with qty` of a grouped product.
@@ -471,9 +472,11 @@ components:
           description: Associated product qty
         extension_attributes:
           $ref: '#/components/schemas/grouped-product-data-grouped-options-extension-interface'
-    bundle-data-bundle-option-extension-interface:
-      type: object
-      description: ExtensionInterface class for @see \Magento\Bundle\Api\Data\BundleOptionInterface
+    error-errors:
+      type: array
+      description: Errors list
+      items:
+        $ref: '#/components/schemas/error-errors-item'
     gift-card-data-gift-card-option-interface:
       type: object
       description: Interface GiftCardOptionInterface
@@ -507,42 +510,39 @@ components:
       - giftcard_recipient_name
       - giftcard_sender_email
       - giftcard_recipient_email
+    grouped-product-data-grouped-options-extension-interface:
+      type: object
+      description: ExtensionInterface class for @see \Magento\GroupedProduct\Api\Data\GroupedOptionsInterface
+    configurable-product-data-configurable-item-option-value-interface:
+      type: object
+      description: Interface ConfigurableItemOptionValueInterface
+      properties:
+        option_id:
+          type: string
+          description: Option SKU
+        option_value:
+          type: integer
+          description: Item id
+        extension_attributes:
+          $ref: '#/components/schemas/configurable-product-data-configurable-item-option-value-extension-interface'
+      required:
+      - option_id
+    error-parameters:
+      type: array
+      description: Error parameters list
+      items:
+        $ref: '#/components/schemas/error-parameters-item'
     configurable-product-data-configurable-item-option-value-extension-interface:
       type: object
       description: ExtensionInterface class for @see \Magento\ConfigurableProduct\Api\Data\ConfigurableItemOptionValueInterface
-    quote-data-product-option-extension-interface:
+    gift-card-data-gift-card-option-extension-interface:
       type: object
-      description: ExtensionInterface class for @see \Magento\Quote\Api\Data\ProductOptionInterface
+      description: ExtensionInterface class for @see \Magento\GiftCard\Api\Data\GiftCardOptionInterface
       properties:
-        custom_options:
+        giftcard_created_codes:
           type: array
           items:
-            $ref: '#/components/schemas/catalog-data-custom-option-interface'
-        bundle_options:
-          type: array
-          items:
-            $ref: '#/components/schemas/bundle-data-bundle-option-interface'
-        downloadable_option:
-          $ref: '#/components/schemas/downloadable-data-downloadable-option-interface'
-        giftcard_item_option:
-          $ref: '#/components/schemas/gift-card-data-gift-card-option-interface'
-        configurable_item_options:
-          type: array
-          items:
-            $ref: '#/components/schemas/configurable-product-data-configurable-item-option-value-interface'
-        grouped_options:
-          type: array
-          items:
-            $ref: '#/components/schemas/grouped-product-data-grouped-options-interface'
-    error-errors-item:
-      type: object
-      description: Error details
-      properties:
-        message:
-          type: string
-          description: Error message
-        parameters:
-          $ref: '#/components/schemas/error-parameters'
+            type: string
   securitySchemes:
     api_key:
       type: apiKey

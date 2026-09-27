@@ -86,39 +86,15 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    error-parameters:
-      type: array
-      description: Error parameters list
-      items:
-        $ref: '#/components/schemas/error-parameters-item'
-    payment-services-paypal-data-payment-config-sdk-params-interface:
+    error-errors-item:
       type: object
-      description: ''
+      description: Error details
       properties:
-        name:
+        message:
           type: string
-          description: Code
-        value:
-          type: string
-          description: Config
-      required:
-      - name
-      - value
-    payment-services-paypal-data-payment-sdk-params-interface:
-      type: object
-      description: ''
-      properties:
-        code:
-          type: string
-          description: The payments sdk code
-        params:
-          type: array
-          description: The payments sdk params
-          items:
-            $ref: '#/components/schemas/payment-services-paypal-data-payment-config-sdk-params-interface'
-      required:
-      - code
-      - params
+          description: Error message
+        parameters:
+          $ref: '#/components/schemas/error-parameters'
     error-parameters-item:
       type: object
       description: Error parameters item
@@ -132,6 +108,16 @@ components:
         fieldValue:
           type: string
           description: Incorrect field value
+    error-errors:
+      type: array
+      description: Errors list
+      items:
+        $ref: '#/components/schemas/error-errors-item'
+    error-parameters:
+      type: array
+      description: Error parameters list
+      items:
+        $ref: '#/components/schemas/error-parameters-item'
     error-response:
       type: object
       properties:
@@ -150,20 +136,34 @@ components:
           description: Stack trace
       required:
       - message
-    error-errors:
-      type: array
-      description: Errors list
-      items:
-        $ref: '#/components/schemas/error-errors-item'
-    error-errors-item:
+    payment-services-paypal-data-payment-sdk-params-interface:
       type: object
-      description: Error details
+      description: ''
       properties:
-        message:
+        code:
           type: string
-          description: Error message
-        parameters:
-          $ref: '#/components/schemas/error-parameters'
+          description: The payments sdk code
+        params:
+          type: array
+          description: The payments sdk params
+          items:
+            $ref: '#/components/schemas/payment-services-paypal-data-payment-config-sdk-params-interface'
+      required:
+      - code
+      - params
+    payment-services-paypal-data-payment-config-sdk-params-interface:
+      type: object
+      description: ''
+      properties:
+        name:
+          type: string
+          description: Code
+        value:
+          type: string
+          description: Config
+      required:
+      - name
+      - value
   securitySchemes:
     api_key:
       type: apiKey
