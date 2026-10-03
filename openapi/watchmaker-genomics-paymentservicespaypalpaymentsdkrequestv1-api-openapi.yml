@@ -86,6 +86,29 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    error-errors:
+      type: array
+      description: Errors list
+      items:
+        $ref: '#/components/schemas/error-errors-item'
+    error-response:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+        errors:
+          $ref: '#/components/schemas/error-errors'
+        code:
+          type: integer
+          description: Error code
+        parameters:
+          $ref: '#/components/schemas/error-parameters'
+        trace:
+          type: string
+          description: Stack trace
+      required:
+      - message
     error-errors-item:
       type: object
       description: Error details
@@ -108,34 +131,24 @@ components:
         fieldValue:
           type: string
           description: Incorrect field value
-    error-errors:
-      type: array
-      description: Errors list
-      items:
-        $ref: '#/components/schemas/error-errors-item'
     error-parameters:
       type: array
       description: Error parameters list
       items:
         $ref: '#/components/schemas/error-parameters-item'
-    error-response:
+    payment-services-paypal-data-payment-config-sdk-params-interface:
       type: object
+      description: ''
       properties:
-        message:
+        name:
           type: string
-          description: Error message
-        errors:
-          $ref: '#/components/schemas/error-errors'
-        code:
-          type: integer
-          description: Error code
-        parameters:
-          $ref: '#/components/schemas/error-parameters'
-        trace:
+          description: Code
+        value:
           type: string
-          description: Stack trace
+          description: Config
       required:
-      - message
+      - name
+      - value
     payment-services-paypal-data-payment-sdk-params-interface:
       type: object
       description: ''
@@ -151,19 +164,6 @@ components:
       required:
       - code
       - params
-    payment-services-paypal-data-payment-config-sdk-params-interface:
-      type: object
-      description: ''
-      properties:
-        name:
-          type: string
-          description: Code
-        value:
-          type: string
-          description: Config
-      required:
-      - name
-      - value
   securitySchemes:
     api_key:
       type: apiKey

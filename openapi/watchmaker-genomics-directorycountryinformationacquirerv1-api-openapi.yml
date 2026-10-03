@@ -84,6 +84,29 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    error-errors:
+      type: array
+      description: Errors list
+      items:
+        $ref: '#/components/schemas/error-errors-item'
+    error-response:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+        errors:
+          $ref: '#/components/schemas/error-errors'
+        code:
+          type: integer
+          description: Error code
+        parameters:
+          $ref: '#/components/schemas/error-parameters'
+        trace:
+          type: string
+          description: Stack trace
+      required:
+      - message
     error-errors-item:
       type: object
       description: Error details
@@ -106,11 +129,6 @@ components:
         fieldValue:
           type: string
           description: Incorrect field value
-    error-errors:
-      type: array
-      description: Errors list
-      items:
-        $ref: '#/components/schemas/error-errors-item'
     directory-data-country-information-interface:
       type: object
       description: Country Information interface.
@@ -148,30 +166,12 @@ components:
       description: Error parameters list
       items:
         $ref: '#/components/schemas/error-parameters-item'
-    error-response:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message
-        errors:
-          $ref: '#/components/schemas/error-errors'
-        code:
-          type: integer
-          description: Error code
-        parameters:
-          $ref: '#/components/schemas/error-parameters'
-        trace:
-          type: string
-          description: Stack trace
-      required:
-      - message
-    directory-data-region-information-extension-interface:
-      type: object
-      description: ExtensionInterface class for @see \Magento\Directory\Api\Data\RegionInformationInterface
     directory-data-country-information-extension-interface:
       type: object
       description: ExtensionInterface class for @see \Magento\Directory\Api\Data\CountryInformationInterface
+    directory-data-region-information-extension-interface:
+      type: object
+      description: ExtensionInterface class for @see \Magento\Directory\Api\Data\RegionInformationInterface
     directory-data-region-information-interface:
       type: object
       description: Region Information interface.

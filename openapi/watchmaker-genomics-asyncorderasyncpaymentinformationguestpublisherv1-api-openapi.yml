@@ -87,6 +87,29 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    error-errors:
+      type: array
+      description: Errors list
+      items:
+        $ref: '#/components/schemas/error-errors-item'
+    error-response:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+        errors:
+          $ref: '#/components/schemas/error-errors'
+        code:
+          type: integer
+          description: Error code
+        parameters:
+          $ref: '#/components/schemas/error-parameters'
+        trace:
+          type: string
+          description: Stack trace
+      required:
+      - message
     error-errors-item:
       type: object
       description: Error details
@@ -96,49 +119,6 @@ components:
           description: Error message
         parameters:
           $ref: '#/components/schemas/error-parameters'
-    error-parameters-item:
-      type: object
-      description: Error parameters item
-      properties:
-        resources:
-          type: string
-          description: ACL resource
-        fieldName:
-          type: string
-          description: Missing or invalid field name
-        fieldValue:
-          type: string
-          description: Incorrect field value
-    error-errors:
-      type: array
-      description: Errors list
-      items:
-        $ref: '#/components/schemas/error-errors-item'
-    quote-data-address-extension-interface:
-      type: object
-      description: ExtensionInterface class for @see \Magento\Quote\Api\Data\AddressInterface
-      properties:
-        discounts:
-          type: array
-          items:
-            $ref: '#/components/schemas/sales-rule-data-rule-discount-interface'
-        gift_registry_id:
-          type: integer
-        pickup_location_code:
-          type: string
-    framework-attribute-interface:
-      type: object
-      description: Interface for custom attribute value.
-      properties:
-        attribute_code:
-          type: string
-          description: Attribute code
-        value:
-          type: string
-          description: Attribute value
-      required:
-      - attribute_code
-      - value
     sales-rule-data-rule-discount-interface:
       type: object
       description: Rule discount Interface
@@ -155,32 +135,32 @@ components:
       - discount_data
       - rule_label
       - rule_i_d
-    sales-rule-data-discount-data-interface:
+    framework-attribute-interface:
       type: object
-      description: Discount Data Interface
+      description: Interface for custom attribute value.
       properties:
-        amount:
-          type: number
-          description: Amount
-        base_amount:
-          type: number
-          description: Base Amount
-        original_amount:
-          type: number
-          description: Original Amount
-        base_original_amount:
-          type: number
-          description: Base Original Amount
+        attribute_code:
+          type: string
+          description: Attribute code
+        value:
+          type: string
+          description: Attribute value
       required:
-      - amount
-      - base_amount
-      - original_amount
-      - base_original_amount
-    error-parameters:
-      type: array
-      description: Error parameters list
-      items:
-        $ref: '#/components/schemas/error-parameters-item'
+      - attribute_code
+      - value
+    error-parameters-item:
+      type: object
+      description: Error parameters item
+      properties:
+        resources:
+          type: string
+          description: ACL resource
+        fieldName:
+          type: string
+          description: Missing or invalid field name
+        fieldValue:
+          type: string
+          description: Incorrect field value
     quote-data-address-interface:
       type: object
       description: Interface AddressInterface
@@ -272,24 +252,11 @@ components:
       - firstname
       - lastname
       - email
-    error-response:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message
-        errors:
-          $ref: '#/components/schemas/error-errors'
-        code:
-          type: integer
-          description: Error code
-        parameters:
-          $ref: '#/components/schemas/error-parameters'
-        trace:
-          type: string
-          description: Stack trace
-      required:
-      - message
+    error-parameters:
+      type: array
+      description: Error parameters list
+      items:
+        $ref: '#/components/schemas/error-parameters-item'
     quote-data-payment-interface:
       type: object
       description: Interface PaymentInterface
@@ -309,6 +276,27 @@ components:
           $ref: '#/components/schemas/quote-data-payment-extension-interface'
       required:
       - method
+    sales-rule-data-discount-data-interface:
+      type: object
+      description: Discount Data Interface
+      properties:
+        amount:
+          type: number
+          description: Amount
+        base_amount:
+          type: number
+          description: Base Amount
+        original_amount:
+          type: number
+          description: Original Amount
+        base_original_amount:
+          type: number
+          description: Base Original Amount
+      required:
+      - amount
+      - base_amount
+      - original_amount
+      - base_original_amount
     quote-data-payment-extension-interface:
       type: object
       description: ExtensionInterface class for @see \Magento\Quote\Api\Data\PaymentInterface
@@ -317,6 +305,18 @@ components:
           type: array
           items:
             type: string
+    quote-data-address-extension-interface:
+      type: object
+      description: ExtensionInterface class for @see \Magento\Quote\Api\Data\AddressInterface
+      properties:
+        discounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/sales-rule-data-rule-discount-interface'
+        gift_registry_id:
+          type: integer
+        pickup_location_code:
+          type: string
   securitySchemes:
     api_key:
       type: apiKey

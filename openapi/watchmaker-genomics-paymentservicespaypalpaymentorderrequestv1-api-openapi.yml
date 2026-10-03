@@ -190,6 +190,29 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    error-errors:
+      type: array
+      description: Errors list
+      items:
+        $ref: '#/components/schemas/error-errors-item'
+    error-response:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+        errors:
+          $ref: '#/components/schemas/error-errors'
+        code:
+          type: integer
+          description: Error code
+        parameters:
+          $ref: '#/components/schemas/error-parameters'
+        trace:
+          type: string
+          description: Stack trace
+      required:
+      - message
     error-errors-item:
       type: object
       description: Error details
@@ -199,33 +222,6 @@ components:
           description: Error message
         parameters:
           $ref: '#/components/schemas/error-parameters'
-    error-parameters-item:
-      type: object
-      description: Error parameters item
-      properties:
-        resources:
-          type: string
-          description: ACL resource
-        fieldName:
-          type: string
-          description: Missing or invalid field name
-        fieldValue:
-          type: string
-          description: Incorrect field value
-    error-errors:
-      type: array
-      description: Errors list
-      items:
-        $ref: '#/components/schemas/error-errors-item'
-    payment-services-paypal-data-payment-card-bin-details-interface:
-      type: object
-      description: ''
-      properties:
-        bin:
-          type: string
-          description: Bin
-      required:
-      - bin
     payment-services-paypal-data-payment-order-details-interface:
       type: object
       description: Interface PaymentOrderDetailsInterface
@@ -254,29 +250,57 @@ components:
       - status
       - amount
       - currency_code
+    payment-services-paypal-data-payment-card-bin-details-interface:
+      type: object
+      description: ''
+      properties:
+        bin:
+          type: string
+          description: Bin
+      required:
+      - bin
+    error-parameters-item:
+      type: object
+      description: Error parameters item
+      properties:
+        resources:
+          type: string
+          description: ACL resource
+        fieldName:
+          type: string
+          description: Missing or invalid field name
+        fieldValue:
+          type: string
+          description: Incorrect field value
     error-parameters:
       type: array
       description: Error parameters list
       items:
         $ref: '#/components/schemas/error-parameters-item'
-    error-response:
+    payment-services-paypal-data-payment-card-details-interface:
       type: object
+      description: ''
       properties:
-        message:
+        name:
           type: string
-          description: Error message
-        errors:
-          $ref: '#/components/schemas/error-errors'
-        code:
-          type: integer
-          description: Error code
-        parameters:
-          $ref: '#/components/schemas/error-parameters'
-        trace:
+          description: Name
+        last_digits:
           type: string
-          description: Stack trace
+          description: Last digits
+        card_expiry_month:
+          type: string
+          description: Card expiry month
+        card_expiry_year:
+          type: string
+          description: Card expiry year
+        bin_details:
+          $ref: '#/components/schemas/payment-services-paypal-data-payment-card-bin-details-interface'
       required:
-      - message
+      - name
+      - last_digits
+      - card_expiry_month
+      - card_expiry_year
+      - bin_details
     payment-services-paypal-data-payment-source-details-interface:
       type: object
       description: ''
@@ -310,30 +334,6 @@ components:
       - status
       - amount
       - currency_code
-    payment-services-paypal-data-payment-card-details-interface:
-      type: object
-      description: ''
-      properties:
-        name:
-          type: string
-          description: Name
-        last_digits:
-          type: string
-          description: Last digits
-        card_expiry_month:
-          type: string
-          description: Card expiry month
-        card_expiry_year:
-          type: string
-          description: Card expiry year
-        bin_details:
-          $ref: '#/components/schemas/payment-services-paypal-data-payment-card-bin-details-interface'
-      required:
-      - name
-      - last_digits
-      - card_expiry_month
-      - card_expiry_year
-      - bin_details
   securitySchemes:
     api_key:
       type: apiKey
