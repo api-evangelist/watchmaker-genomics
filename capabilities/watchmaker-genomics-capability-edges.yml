@@ -1,0 +1,24 @@
+slug: watchmaker-genomics
+provider: Watchmaker Genomics
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 1
+edges:
+- tag: magefanBlogPostManagementV1
+  spec_file: watchmaker-genomics-magefanblogpostmanagementv1-api-openapi.yml
+  capability_id: BC-400.70
+  capability_id_l1: BC-400
+  capability_name: Content Marketing Management
+  confidence: 0.75
+  evidence: GET /V1/blog/post/view/{id}/{store_id}; GET /V1/blog/post/list/{type}/{term}/{store_id}/{page}/{limit}
+  reason: Retrieval of blog posts published on the company storefront — editorial content production and
+    distribution, squarely content marketing.

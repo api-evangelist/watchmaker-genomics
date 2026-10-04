@@ -722,6 +722,9 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: CapabilityMap
+  url: capabilities/watchmaker-genomics-capability-edges.yml
+  name: Watchmaker Genomics Business Capability Map
 - type: Overlay
   url: overlays/watchmaker-genomics-commerce-rest-overlay.yaml
 - type: Website
