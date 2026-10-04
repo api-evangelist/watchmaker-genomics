@@ -124,67 +124,27 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    error-errors:
-      type: array
-      description: Errors list
-      items:
-        $ref: '#/components/schemas/error-errors-item'
-    error-response:
+    sales-rule-data-discount-data-interface:
       type: object
+      description: Discount Data Interface
       properties:
-        message:
-          type: string
-          description: Error message
-        errors:
-          $ref: '#/components/schemas/error-errors'
-        code:
-          type: integer
-          description: Error code
-        parameters:
-          $ref: '#/components/schemas/error-parameters'
-        trace:
-          type: string
-          description: Stack trace
+        amount:
+          type: number
+          description: Amount
+        base_amount:
+          type: number
+          description: Base Amount
+        original_amount:
+          type: number
+          description: Original Amount
+        base_original_amount:
+          type: number
+          description: Base Original Amount
       required:
-      - message
-    error-errors-item:
-      type: object
-      description: Error details
-      properties:
-        message:
-          type: string
-          description: Error message
-        parameters:
-          $ref: '#/components/schemas/error-parameters'
-    sales-rule-data-rule-discount-interface:
-      type: object
-      description: Rule discount Interface
-      properties:
-        discount_data:
-          $ref: '#/components/schemas/sales-rule-data-discount-data-interface'
-        rule_label:
-          type: string
-          description: Rule Label
-        rule_i_d:
-          type: integer
-          description: Rule ID
-      required:
-      - discount_data
-      - rule_label
-      - rule_i_d
-    framework-attribute-interface:
-      type: object
-      description: Interface for custom attribute value.
-      properties:
-        attribute_code:
-          type: string
-          description: Attribute code
-        value:
-          type: string
-          description: Attribute value
-      required:
-      - attribute_code
-      - value
+      - amount
+      - base_amount
+      - original_amount
+      - base_original_amount
     error-parameters-item:
       type: object
       description: Error parameters item
@@ -198,6 +158,18 @@ components:
         fieldValue:
           type: string
           description: Incorrect field value
+    quote-data-address-extension-interface:
+      type: object
+      description: ExtensionInterface class for @see \Magento\Quote\Api\Data\AddressInterface
+      properties:
+        discounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/sales-rule-data-rule-discount-interface'
+        gift_registry_id:
+          type: integer
+        pickup_location_code:
+          type: string
     quote-data-address-interface:
       type: object
       description: Interface AddressInterface
@@ -289,44 +261,72 @@ components:
       - firstname
       - lastname
       - email
+    error-errors:
+      type: array
+      description: Errors list
+      items:
+        $ref: '#/components/schemas/error-errors-item'
     error-parameters:
       type: array
       description: Error parameters list
       items:
         $ref: '#/components/schemas/error-parameters-item'
-    sales-rule-data-discount-data-interface:
+    error-errors-item:
       type: object
-      description: Discount Data Interface
+      description: Error details
       properties:
-        amount:
-          type: number
-          description: Amount
-        base_amount:
-          type: number
-          description: Base Amount
-        original_amount:
-          type: number
-          description: Original Amount
-        base_original_amount:
-          type: number
-          description: Base Original Amount
-      required:
-      - amount
-      - base_amount
-      - original_amount
-      - base_original_amount
-    quote-data-address-extension-interface:
-      type: object
-      description: ExtensionInterface class for @see \Magento\Quote\Api\Data\AddressInterface
-      properties:
-        discounts:
-          type: array
-          items:
-            $ref: '#/components/schemas/sales-rule-data-rule-discount-interface'
-        gift_registry_id:
-          type: integer
-        pickup_location_code:
+        message:
           type: string
+          description: Error message
+        parameters:
+          $ref: '#/components/schemas/error-parameters'
+    error-response:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+        errors:
+          $ref: '#/components/schemas/error-errors'
+        code:
+          type: integer
+          description: Error code
+        parameters:
+          $ref: '#/components/schemas/error-parameters'
+        trace:
+          type: string
+          description: Stack trace
+      required:
+      - message
+    framework-attribute-interface:
+      type: object
+      description: Interface for custom attribute value.
+      properties:
+        attribute_code:
+          type: string
+          description: Attribute code
+        value:
+          type: string
+          description: Attribute value
+      required:
+      - attribute_code
+      - value
+    sales-rule-data-rule-discount-interface:
+      type: object
+      description: Rule discount Interface
+      properties:
+        discount_data:
+          $ref: '#/components/schemas/sales-rule-data-discount-data-interface'
+        rule_label:
+          type: string
+          description: Rule Label
+        rule_i_d:
+          type: integer
+          description: Rule ID
+      required:
+      - discount_data
+      - rule_label
+      - rule_i_d
   securitySchemes:
     api_key:
       type: apiKey

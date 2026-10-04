@@ -190,11 +190,72 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    error-parameters-item:
+      type: object
+      description: Error parameters item
+      properties:
+        resources:
+          type: string
+          description: ACL resource
+        fieldName:
+          type: string
+          description: Missing or invalid field name
+        fieldValue:
+          type: string
+          description: Incorrect field value
+    payment-services-paypal-data-payment-card-bin-details-interface:
+      type: object
+      description: ''
+      properties:
+        bin:
+          type: string
+          description: Bin
+      required:
+      - bin
+    payment-services-paypal-data-payment-order-interface:
+      type: object
+      description: Interface PaymentOrderInterface
+      properties:
+        id:
+          type: string
+          description: Payment order id
+        mp_order_id:
+          type: string
+          description: Payment order mpOrderId
+        status:
+          type: string
+          description: Payment order status
+        amount:
+          type: number
+          description: Payment order amount
+        currency_code:
+          type: string
+          description: Payment order currency code
+      required:
+      - id
+      - mp_order_id
+      - status
+      - amount
+      - currency_code
     error-errors:
       type: array
       description: Errors list
       items:
         $ref: '#/components/schemas/error-errors-item'
+    error-parameters:
+      type: array
+      description: Error parameters list
+      items:
+        $ref: '#/components/schemas/error-parameters-item'
+    error-errors-item:
+      type: object
+      description: Error details
+      properties:
+        message:
+          type: string
+          description: Error message
+        parameters:
+          $ref: '#/components/schemas/error-parameters'
     error-response:
       type: object
       properties:
@@ -213,70 +274,14 @@ components:
           description: Stack trace
       required:
       - message
-    error-errors-item:
-      type: object
-      description: Error details
-      properties:
-        message:
-          type: string
-          description: Error message
-        parameters:
-          $ref: '#/components/schemas/error-parameters'
-    payment-services-paypal-data-payment-order-details-interface:
-      type: object
-      description: Interface PaymentOrderDetailsInterface
-      properties:
-        payment_source_details:
-          $ref: '#/components/schemas/payment-services-paypal-data-payment-source-details-interface'
-        id:
-          type: string
-          description: Payment order id
-        mp_order_id:
-          type: string
-          description: Payment order mpOrderId
-        status:
-          type: string
-          description: Payment order status
-        amount:
-          type: number
-          description: Payment order amount
-        currency_code:
-          type: string
-          description: Payment order currency code
-      required:
-      - payment_source_details
-      - id
-      - mp_order_id
-      - status
-      - amount
-      - currency_code
-    payment-services-paypal-data-payment-card-bin-details-interface:
+    payment-services-paypal-data-payment-source-details-interface:
       type: object
       description: ''
       properties:
-        bin:
-          type: string
-          description: Bin
+        card:
+          $ref: '#/components/schemas/payment-services-paypal-data-payment-card-details-interface'
       required:
-      - bin
-    error-parameters-item:
-      type: object
-      description: Error parameters item
-      properties:
-        resources:
-          type: string
-          description: ACL resource
-        fieldName:
-          type: string
-          description: Missing or invalid field name
-        fieldValue:
-          type: string
-          description: Incorrect field value
-    error-parameters:
-      type: array
-      description: Error parameters list
-      items:
-        $ref: '#/components/schemas/error-parameters-item'
+      - card
     payment-services-paypal-data-payment-card-details-interface:
       type: object
       description: ''
@@ -301,18 +306,12 @@ components:
       - card_expiry_month
       - card_expiry_year
       - bin_details
-    payment-services-paypal-data-payment-source-details-interface:
+    payment-services-paypal-data-payment-order-details-interface:
       type: object
-      description: ''
+      description: Interface PaymentOrderDetailsInterface
       properties:
-        card:
-          $ref: '#/components/schemas/payment-services-paypal-data-payment-card-details-interface'
-      required:
-      - card
-    payment-services-paypal-data-payment-order-interface:
-      type: object
-      description: Interface PaymentOrderInterface
-      properties:
+        payment_source_details:
+          $ref: '#/components/schemas/payment-services-paypal-data-payment-source-details-interface'
         id:
           type: string
           description: Payment order id
@@ -329,6 +328,7 @@ components:
           type: string
           description: Payment order currency code
       required:
+      - payment_source_details
       - id
       - mp_order_id
       - status

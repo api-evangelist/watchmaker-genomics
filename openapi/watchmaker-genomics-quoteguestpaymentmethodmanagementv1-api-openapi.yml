@@ -169,11 +169,51 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    error-parameters-item:
+      type: object
+      description: Error parameters item
+      properties:
+        resources:
+          type: string
+          description: ACL resource
+        fieldName:
+          type: string
+          description: Missing or invalid field name
+        fieldValue:
+          type: string
+          description: Incorrect field value
+    quote-data-payment-method-interface:
+      type: object
+      description: Interface PaymentMethodInterface
+      properties:
+        code:
+          type: string
+          description: Payment method code
+        title:
+          type: string
+          description: Payment method title
+      required:
+      - code
+      - title
     error-errors:
       type: array
       description: Errors list
       items:
         $ref: '#/components/schemas/error-errors-item'
+    error-parameters:
+      type: array
+      description: Error parameters list
+      items:
+        $ref: '#/components/schemas/error-parameters-item'
+    error-errors-item:
+      type: object
+      description: Error details
+      properties:
+        message:
+          type: string
+          description: Error message
+        parameters:
+          $ref: '#/components/schemas/error-parameters'
     error-response:
       type: object
       properties:
@@ -192,33 +232,6 @@ components:
           description: Stack trace
       required:
       - message
-    error-errors-item:
-      type: object
-      description: Error details
-      properties:
-        message:
-          type: string
-          description: Error message
-        parameters:
-          $ref: '#/components/schemas/error-parameters'
-    error-parameters-item:
-      type: object
-      description: Error parameters item
-      properties:
-        resources:
-          type: string
-          description: ACL resource
-        fieldName:
-          type: string
-          description: Missing or invalid field name
-        fieldValue:
-          type: string
-          description: Incorrect field value
-    error-parameters:
-      type: array
-      description: Error parameters list
-      items:
-        $ref: '#/components/schemas/error-parameters-item'
     quote-data-payment-interface:
       type: object
       description: Interface PaymentInterface
@@ -246,19 +259,6 @@ components:
           type: array
           items:
             type: string
-    quote-data-payment-method-interface:
-      type: object
-      description: Interface PaymentMethodInterface
-      properties:
-        code:
-          type: string
-          description: Payment method code
-        title:
-          type: string
-          description: Payment method title
-      required:
-      - code
-      - title
   securitySchemes:
     api_key:
       type: apiKey

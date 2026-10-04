@@ -169,11 +169,41 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    gift-card-account-data-gift-card-account-extension-interface:
+      type: object
+      description: ExtensionInterface class for @see \Magento\GiftCardAccount\Api\Data\GiftCardAccountInterface
+    error-parameters-item:
+      type: object
+      description: Error parameters item
+      properties:
+        resources:
+          type: string
+          description: ACL resource
+        fieldName:
+          type: string
+          description: Missing or invalid field name
+        fieldValue:
+          type: string
+          description: Incorrect field value
     error-errors:
       type: array
       description: Errors list
       items:
         $ref: '#/components/schemas/error-errors-item'
+    error-parameters:
+      type: array
+      description: Error parameters list
+      items:
+        $ref: '#/components/schemas/error-parameters-item'
+    error-errors-item:
+      type: object
+      description: Error details
+      properties:
+        message:
+          type: string
+          description: Error message
+        parameters:
+          $ref: '#/components/schemas/error-parameters'
     error-response:
       type: object
       properties:
@@ -220,36 +250,6 @@ components:
       - base_gift_cards_amount
       - gift_cards_amount_used
       - base_gift_cards_amount_used
-    error-errors-item:
-      type: object
-      description: Error details
-      properties:
-        message:
-          type: string
-          description: Error message
-        parameters:
-          $ref: '#/components/schemas/error-parameters'
-    error-parameters-item:
-      type: object
-      description: Error parameters item
-      properties:
-        resources:
-          type: string
-          description: ACL resource
-        fieldName:
-          type: string
-          description: Missing or invalid field name
-        fieldValue:
-          type: string
-          description: Incorrect field value
-    error-parameters:
-      type: array
-      description: Error parameters list
-      items:
-        $ref: '#/components/schemas/error-parameters-item'
-    gift-card-account-data-gift-card-account-extension-interface:
-      type: object
-      description: ExtensionInterface class for @see \Magento\GiftCardAccount\Api\Data\GiftCardAccountInterface
   securitySchemes:
     api_key:
       type: apiKey

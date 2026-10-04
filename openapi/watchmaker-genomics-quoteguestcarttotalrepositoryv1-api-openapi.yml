@@ -54,96 +54,9 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    error-errors:
-      type: array
-      description: Errors list
-      items:
-        $ref: '#/components/schemas/error-errors-item'
-    error-response:
+    quote-data-totals-item-extension-interface:
       type: object
-      properties:
-        message:
-          type: string
-          description: Error message
-        errors:
-          $ref: '#/components/schemas/error-errors'
-        code:
-          type: integer
-          description: Error code
-        parameters:
-          $ref: '#/components/schemas/error-parameters'
-        trace:
-          type: string
-          description: Stack trace
-      required:
-      - message
-    error-errors-item:
-      type: object
-      description: Error details
-      properties:
-        message:
-          type: string
-          description: Error message
-        parameters:
-          $ref: '#/components/schemas/error-parameters'
-    quote-data-total-segment-interface:
-      type: object
-      description: Interface TotalsInterface
-      properties:
-        code:
-          type: string
-          description: Code
-        title:
-          type: string
-          description: Total title
-        value:
-          type: number
-          description: Total value
-        area:
-          type: string
-          description: Display area code.
-        extension_attributes:
-          $ref: '#/components/schemas/quote-data-total-segment-extension-interface'
-      required:
-      - code
-      - value
-    quote-data-totals-extension-interface:
-      type: object
-      description: ExtensionInterface class for @see \Magento\Quote\Api\Data\TotalsInterface
-      properties:
-        coupon_label:
-          type: string
-        base_customer_balance_amount:
-          type: number
-        customer_balance_amount:
-          type: number
-        coupon_codes:
-          type: array
-          items:
-            type: string
-        coupons_labels:
-          type: array
-          items:
-            type: string
-        reward_points_balance:
-          type: number
-        reward_currency_amount:
-          type: number
-        base_reward_currency_amount:
-          type: number
-    tax-data-grand-total-rates-interface:
-      type: object
-      description: Interface GrandTotalRatesInterface
-      properties:
-        percent:
-          type: string
-          description: Tax percentage value
-        title:
-          type: string
-          description: Rate title
-      required:
-      - percent
-      - title
+      description: ExtensionInterface class for @see \Magento\Quote\Api\Data\TotalsItemInterface
     error-parameters-item:
       type: object
       description: Error parameters item
@@ -157,9 +70,19 @@ components:
         fieldValue:
           type: string
           description: Incorrect field value
-    quote-data-totals-item-extension-interface:
+    tax-data-grand-total-rates-interface:
       type: object
-      description: ExtensionInterface class for @see \Magento\Quote\Api\Data\TotalsItemInterface
+      description: Interface GrandTotalRatesInterface
+      properties:
+        percent:
+          type: string
+          description: Tax percentage value
+        title:
+          type: string
+          description: Rate title
+      required:
+      - percent
+      - title
     quote-data-totals-item-interface:
       type: object
       description: Interface TotalsItemInterface
@@ -239,11 +162,6 @@ components:
       - options
       - weee_tax_applied_amount
       - weee_tax_applied
-    error-parameters:
-      type: array
-      description: Error parameters list
-      items:
-        $ref: '#/components/schemas/error-parameters-item'
     quote-data-total-segment-extension-interface:
       type: object
       description: ExtensionInterface class for @see \Magento\Quote\Api\Data\TotalSegmentInterface
@@ -319,6 +237,43 @@ components:
       - amount
       - rates
       - group_id
+    error-parameters:
+      type: array
+      description: Error parameters list
+      items:
+        $ref: '#/components/schemas/error-parameters-item'
+    error-errors:
+      type: array
+      description: Errors list
+      items:
+        $ref: '#/components/schemas/error-errors-item'
+    error-errors-item:
+      type: object
+      description: Error details
+      properties:
+        message:
+          type: string
+          description: Error message
+        parameters:
+          $ref: '#/components/schemas/error-parameters'
+    error-response:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+        errors:
+          $ref: '#/components/schemas/error-errors'
+        code:
+          type: integer
+          description: Error code
+        parameters:
+          $ref: '#/components/schemas/error-parameters'
+        trace:
+          type: string
+          description: Stack trace
+      required:
+      - message
     quote-data-totals-interface:
       type: object
       description: Interface TotalsInterface
@@ -413,6 +368,51 @@ components:
       required:
       - weee_tax_applied_amount
       - total_segments
+    quote-data-total-segment-interface:
+      type: object
+      description: Interface TotalsInterface
+      properties:
+        code:
+          type: string
+          description: Code
+        title:
+          type: string
+          description: Total title
+        value:
+          type: number
+          description: Total value
+        area:
+          type: string
+          description: Display area code.
+        extension_attributes:
+          $ref: '#/components/schemas/quote-data-total-segment-extension-interface'
+      required:
+      - code
+      - value
+    quote-data-totals-extension-interface:
+      type: object
+      description: ExtensionInterface class for @see \Magento\Quote\Api\Data\TotalsInterface
+      properties:
+        coupon_label:
+          type: string
+        base_customer_balance_amount:
+          type: number
+        customer_balance_amount:
+          type: number
+        coupon_codes:
+          type: array
+          items:
+            type: string
+        coupons_labels:
+          type: array
+          items:
+            type: string
+        reward_points_balance:
+          type: number
+        reward_currency_amount:
+          type: number
+        base_reward_currency_amount:
+          type: number
   securitySchemes:
     api_key:
       type: apiKey

@@ -38,38 +38,25 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    error-errors:
-      type: array
-      description: Errors list
-      items:
-        $ref: '#/components/schemas/error-errors-item'
-    error-response:
+    directory-data-exchange-rate-extension-interface:
       type: object
-      properties:
-        message:
-          type: string
-          description: Error message
-        errors:
-          $ref: '#/components/schemas/error-errors'
-        code:
-          type: integer
-          description: Error code
-        parameters:
-          $ref: '#/components/schemas/error-parameters'
-        trace:
-          type: string
-          description: Stack trace
-      required:
-      - message
-    error-errors-item:
+      description: ExtensionInterface class for @see \Magento\Directory\Api\Data\ExchangeRateInterface
+    directory-data-currency-information-extension-interface:
       type: object
-      description: Error details
+      description: ExtensionInterface class for @see \Magento\Directory\Api\Data\CurrencyInformationInterface
+    error-parameters-item:
+      type: object
+      description: Error parameters item
       properties:
-        message:
+        resources:
           type: string
-          description: Error message
-        parameters:
-          $ref: '#/components/schemas/error-parameters'
+          description: ACL resource
+        fieldName:
+          type: string
+          description: Missing or invalid field name
+        fieldValue:
+          type: string
+          description: Incorrect field value
     directory-data-currency-information-interface:
       type: object
       description: Currency Information interface.
@@ -105,30 +92,43 @@ components:
       - default_display_currency_symbol
       - available_currency_codes
       - exchange_rates
-    directory-data-exchange-rate-extension-interface:
-      type: object
-      description: ExtensionInterface class for @see \Magento\Directory\Api\Data\ExchangeRateInterface
-    error-parameters-item:
-      type: object
-      description: Error parameters item
-      properties:
-        resources:
-          type: string
-          description: ACL resource
-        fieldName:
-          type: string
-          description: Missing or invalid field name
-        fieldValue:
-          type: string
-          description: Incorrect field value
-    directory-data-currency-information-extension-interface:
-      type: object
-      description: ExtensionInterface class for @see \Magento\Directory\Api\Data\CurrencyInformationInterface
+    error-errors:
+      type: array
+      description: Errors list
+      items:
+        $ref: '#/components/schemas/error-errors-item'
     error-parameters:
       type: array
       description: Error parameters list
       items:
         $ref: '#/components/schemas/error-parameters-item'
+    error-errors-item:
+      type: object
+      description: Error details
+      properties:
+        message:
+          type: string
+          description: Error message
+        parameters:
+          $ref: '#/components/schemas/error-parameters'
+    error-response:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+        errors:
+          $ref: '#/components/schemas/error-errors'
+        code:
+          type: integer
+          description: Error code
+        parameters:
+          $ref: '#/components/schemas/error-parameters'
+        trace:
+          type: string
+          description: Stack trace
+      required:
+      - message
     directory-data-exchange-rate-interface:
       type: object
       description: Exchange Rate interface.
