@@ -49,42 +49,51 @@ paths:
             application/xml:
               schema:
                 $ref: '#/components/schemas/error-response'
-      summary: Get V1 guestcarts cart id
+      summary: Get V1Guestcarts cart id
       x-summary-source: derived
 components:
   schemas:
-    sales-rule-data-discount-data-interface:
+    quote-data-shipping-extension-interface:
       type: object
-      description: Discount Data Interface
+      description: ExtensionInterface class for @see \Magento\Quote\Api\Data\ShippingInterface
+    customer-data-region-interface:
+      type: object
+      description: Customer address region interface.
       properties:
-        amount:
-          type: number
-          description: Amount
-        base_amount:
-          type: number
-          description: Base Amount
-        original_amount:
-          type: number
-          description: Original Amount
-        base_original_amount:
-          type: number
-          description: Base Original Amount
-      required:
-      - amount
-      - base_amount
-      - original_amount
-      - base_original_amount
-    customer-data-address-extension-interface:
-      type: object
-      description: ExtensionInterface class for @see \Magento\Customer\Api\Data\AddressInterface
-    customer-data-customer-extension-interface:
-      type: object
-      description: ExtensionInterface class for @see \Magento\Customer\Api\Data\CustomerInterface
-      properties:
-        is_subscribed:
-          type: boolean
-        assistance_allowed:
+        region_code:
+          type: string
+          description: Region code
+        region:
+          type: string
+          description: Region
+        region_id:
           type: integer
+          description: Region id
+        extension_attributes:
+          $ref: '#/components/schemas/customer-data-region-extension-interface'
+      required:
+      - region_code
+      - region
+      - region_id
+    sales-rule-data-rule-discount-interface:
+      type: object
+      description: Rule discount Interface
+      properties:
+        discount_data:
+          $ref: '#/components/schemas/sales-rule-data-discount-data-interface'
+        rule_label:
+          type: string
+          description: Rule Label
+        rule_i_d:
+          type: integer
+          description: Rule ID
+      required:
+      - discount_data
+      - rule_label
+      - rule_i_d
+    customer-data-region-extension-interface:
+      type: object
+      description: ExtensionInterface class for @see \Magento\Customer\Api\Data\RegionInterface
     quote-data-shipping-assignment-interface:
       type: object
       description: Interface ShippingAssignmentInterface
@@ -100,6 +109,205 @@ components:
       required:
       - shipping
       - items
+    bundle-data-bundle-option-extension-interface:
+      type: object
+      description: ExtensionInterface class for @see \Magento\Bundle\Api\Data\BundleOptionInterface
+    quote-data-cart-interface:
+      type: object
+      description: Interface CartInterface
+      properties:
+        id:
+          type: integer
+          description: Cart/quote ID.
+        created_at:
+          type: string
+          description: Cart creation date and time. Otherwise, null.
+        updated_at:
+          type: string
+          description: Cart last update date and time. Otherwise, null.
+        converted_at:
+          type: string
+          description: Cart conversion date and time. Otherwise, null.
+        is_active:
+          type: boolean
+          description: Active status flag value. Otherwise, null.
+        is_virtual:
+          type: boolean
+          description: Virtual flag value. Otherwise, null.
+        items:
+          type: array
+          description: Array of items. Otherwise, null.
+          items:
+            $ref: '#/components/schemas/quote-data-cart-item-interface'
+        items_count:
+          type: integer
+          description: Number of different items or products in the cart. Otherwise, null.
+        items_qty:
+          type: number
+          description: Total quantity of all cart items. Otherwise, null.
+        customer:
+          $ref: '#/components/schemas/customer-data-customer-interface'
+        billing_address:
+          $ref: '#/components/schemas/quote-data-address-interface'
+        reserved_order_id:
+          type: string
+          description: Reserved order ID. Otherwise, null.
+        orig_order_id:
+          type: integer
+          description: Original order ID. Otherwise, null.
+        currency:
+          $ref: '#/components/schemas/quote-data-currency-interface'
+        customer_is_guest:
+          type: boolean
+          description: For guest customers, false for logged in customers
+        customer_note:
+          type: string
+          description: Notice text
+        customer_note_notify:
+          type: boolean
+          description: Customer notification flag
+        customer_tax_class_id:
+          type: integer
+          description: Customer tax class ID.
+        store_id:
+          type: integer
+          description: Store identifier
+        extension_attributes:
+          $ref: '#/components/schemas/quote-data-cart-extension-interface'
+      required:
+      - id
+      - customer
+      - store_id
+    error-errors-item:
+      type: object
+      description: Error details
+      properties:
+        message:
+          type: string
+          description: Error message
+        parameters:
+          $ref: '#/components/schemas/error-parameters'
+    configurable-product-data-configurable-item-option-value-extension-interface:
+      type: object
+      description: ExtensionInterface class for @see \Magento\ConfigurableProduct\Api\Data\ConfigurableItemOptionValueInterface
+    framework-attribute-interface:
+      type: object
+      description: Interface for custom attribute value.
+      properties:
+        attribute_code:
+          type: string
+          description: Attribute code
+        value:
+          type: string
+          description: Attribute value
+      required:
+      - attribute_code
+      - value
+    customer-data-customer-interface:
+      type: object
+      description: Customer entity interface for API handling.
+      properties:
+        id:
+          type: integer
+          description: Customer id
+        group_id:
+          type: integer
+          description: Group id
+        default_billing:
+          type: string
+          description: Default billing address id
+        default_shipping:
+          type: string
+          description: Default shipping address id
+        confirmation:
+          type: string
+          description: Confirmation
+        created_at:
+          type: string
+          description: Created at time
+        updated_at:
+          type: string
+          description: Updated at time
+        created_in:
+          type: string
+          description: Created in area
+        dob:
+          type: string
+          description: In keeping with current security and privacy best practices, be sure you are aware of any potential legal and security risks associated with the storage of customers’ full date of birth (month, day, year) along with other personal identifiers (e.g., full name) before collecting or processing such data.
+        email:
+          type: string
+          description: Email address
+        firstname:
+          type: string
+          description: First name
+        lastname:
+          type: string
+          description: Last name
+        middlename:
+          type: string
+          description: Middle name
+        prefix:
+          type: string
+          description: Prefix
+        suffix:
+          type: string
+          description: Suffix
+        gender:
+          type: integer
+          description: Gender
+        store_id:
+          type: integer
+          description: Store id
+        taxvat:
+          type: string
+          description: Tax Vat
+        website_id:
+          type: integer
+          description: Website id
+        addresses:
+          type: array
+          description: Customer addresses.
+          items:
+            $ref: '#/components/schemas/customer-data-address-interface'
+        disable_auto_group_change:
+          type: integer
+          description: Disable auto group change flag.
+        extension_attributes:
+          $ref: '#/components/schemas/customer-data-customer-extension-interface'
+        custom_attributes:
+          type: array
+          description: Custom attributes values.
+          items:
+            $ref: '#/components/schemas/framework-attribute-interface'
+      required:
+      - email
+      - firstname
+      - lastname
+    grouped-product-data-grouped-options-interface:
+      type: object
+      description: Represents `product item id with qty` of a grouped product.
+      properties:
+        id:
+          type: integer
+          description: Associated product id
+        qty:
+          type: integer
+          description: Associated product qty
+        extension_attributes:
+          $ref: '#/components/schemas/grouped-product-data-grouped-options-extension-interface'
+    error-parameters-item:
+      type: object
+      description: Error parameters item
+      properties:
+        resources:
+          type: string
+          description: ACL resource
+        fieldName:
+          type: string
+          description: Missing or invalid field name
+        fieldValue:
+          type: string
+          description: Incorrect field value
     customer-data-address-interface:
       type: object
       description: Customer address interface.
@@ -169,56 +377,55 @@ components:
           description: Custom attributes values.
           items:
             $ref: '#/components/schemas/framework-attribute-interface'
-    error-errors:
+    error-parameters:
       type: array
-      description: Errors list
+      description: Error parameters list
       items:
-        $ref: '#/components/schemas/error-errors-item'
-    quote-data-currency-interface:
+        $ref: '#/components/schemas/error-parameters-item'
+    quote-data-address-extension-interface:
       type: object
-      description: Interface CurrencyInterface
+      description: ExtensionInterface class for @see \Magento\Quote\Api\Data\AddressInterface
       properties:
-        global_currency_code:
+        discounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/sales-rule-data-rule-discount-interface'
+        gift_registry_id:
+          type: integer
+        pickup_location_code:
           type: string
-          description: Global currency code
-        base_currency_code:
-          type: string
-          description: Base currency code
-        store_currency_code:
-          type: string
-          description: Store currency code
-        quote_currency_code:
-          type: string
-          description: Quote currency code
-        store_to_base_rate:
-          type: number
-          description: Store currency to base currency rate
-        store_to_quote_rate:
-          type: number
-          description: Store currency to quote currency rate
-        base_to_global_rate:
-          type: number
-          description: Base currency to global currency rate
-        base_to_quote_rate:
-          type: number
-          description: Base currency to quote currency rate
-        extension_attributes:
-          $ref: '#/components/schemas/quote-data-currency-extension-interface'
-    catalog-data-custom-option-interface:
+    quote-data-cart-item-interface:
       type: object
-      description: Interface CustomOptionInterface
+      description: Interface CartItemInterface
       properties:
-        option_id:
+        item_id:
+          type: integer
+          description: Item ID. Otherwise, null.
+        sku:
           type: string
-          description: Option id
-        option_value:
+          description: Product SKU. Otherwise, null.
+        qty:
+          type: number
+          description: Product quantity.
+        name:
           type: string
-          description: Option value
+          description: Product name. Otherwise, null.
+        price:
+          type: number
+          description: Product price. Otherwise, null.
+        product_type:
+          type: string
+          description: Product type. Otherwise, null.
+        quote_id:
+          type: string
+          description: Quote id.
+        product_option:
+          $ref: '#/components/schemas/quote-data-product-option-interface'
         extension_attributes:
-          $ref: '#/components/schemas/catalog-data-custom-option-extension-interface'
+          $ref: '#/components/schemas/quote-data-cart-item-extension-interface'
       required:
-      - option_id
-      - option_value
+      - qty
+      - quote_id
     gift-card-data-gift-card-option-interface:
       type: object
       description: Interface GiftCardOptionInterface
@@ -252,33 +459,80 @@ components:
       - giftcard_recipient_name
       - giftcard_sender_email
       - giftcard_recipient_email
-    customer-data-region-extension-interface:
+    grouped-product-data-grouped-options-extension-interface:
       type: object
-      description: ExtensionInterface class for @see \Magento\Customer\Api\Data\RegionInterface
-    quote-data-product-option-extension-interface:
+      description: ExtensionInterface class for @see \Magento\GroupedProduct\Api\Data\GroupedOptionsInterface
+    configurable-product-data-configurable-item-option-value-interface:
       type: object
-      description: ExtensionInterface class for @see \Magento\Quote\Api\Data\ProductOptionInterface
+      description: Interface ConfigurableItemOptionValueInterface
       properties:
-        custom_options:
+        option_id:
+          type: string
+          description: Option SKU
+        option_value:
+          type: integer
+          description: Item id
+        extension_attributes:
+          $ref: '#/components/schemas/configurable-product-data-configurable-item-option-value-extension-interface'
+      required:
+      - option_id
+    customer-data-customer-extension-interface:
+      type: object
+      description: ExtensionInterface class for @see \Magento\Customer\Api\Data\CustomerInterface
+      properties:
+        is_subscribed:
+          type: boolean
+        assistance_allowed:
+          type: integer
+    quote-data-cart-item-extension-interface:
+      type: object
+      description: ExtensionInterface class for @see \Magento\Quote\Api\Data\CartItemInterface
+      properties:
+        discounts:
           type: array
           items:
-            $ref: '#/components/schemas/catalog-data-custom-option-interface'
-        bundle_options:
+            $ref: '#/components/schemas/sales-rule-data-rule-discount-interface'
+    quote-data-currency-interface:
+      type: object
+      description: Interface CurrencyInterface
+      properties:
+        global_currency_code:
+          type: string
+          description: Global currency code
+        base_currency_code:
+          type: string
+          description: Base currency code
+        store_currency_code:
+          type: string
+          description: Store currency code
+        quote_currency_code:
+          type: string
+          description: Quote currency code
+        store_to_base_rate:
+          type: number
+          description: Store currency to base currency rate
+        store_to_quote_rate:
+          type: number
+          description: Store currency to quote currency rate
+        base_to_global_rate:
+          type: number
+          description: Base currency to global currency rate
+        base_to_quote_rate:
+          type: number
+          description: Base currency to quote currency rate
+        extension_attributes:
+          $ref: '#/components/schemas/quote-data-currency-extension-interface'
+    gift-card-data-gift-card-option-extension-interface:
+      type: object
+      description: ExtensionInterface class for @see \Magento\GiftCard\Api\Data\GiftCardOptionInterface
+      properties:
+        giftcard_created_codes:
           type: array
           items:
-            $ref: '#/components/schemas/bundle-data-bundle-option-interface'
-        downloadable_option:
-          $ref: '#/components/schemas/downloadable-data-downloadable-option-interface'
-        giftcard_item_option:
-          $ref: '#/components/schemas/gift-card-data-gift-card-option-interface'
-        configurable_item_options:
-          type: array
-          items:
-            $ref: '#/components/schemas/configurable-product-data-configurable-item-option-value-interface'
-        grouped_options:
-          type: array
-          items:
-            $ref: '#/components/schemas/grouped-product-data-grouped-options-interface'
+            type: string
+    customer-data-address-extension-interface:
+      type: object
+      description: ExtensionInterface class for @see \Magento\Customer\Api\Data\AddressInterface
     quote-data-cart-extension-interface:
       type: object
       description: ExtensionInterface class for @see \Magento\Quote\Api\Data\CartInterface
@@ -291,177 +545,34 @@ components:
           type: array
           items:
             type: string
-    error-parameters-item:
+    downloadable-data-downloadable-option-interface:
       type: object
-      description: Error parameters item
+      description: Downloadable Option
       properties:
-        resources:
-          type: string
-          description: ACL resource
-        fieldName:
-          type: string
-          description: Missing or invalid field name
-        fieldValue:
-          type: string
-          description: Incorrect field value
-    configurable-product-data-configurable-item-option-value-extension-interface:
-      type: object
-      description: ExtensionInterface class for @see \Magento\ConfigurableProduct\Api\Data\ConfigurableItemOptionValueInterface
+        downloadable_links:
+          type: array
+          description: The list of downloadable links
+          items:
+            type: integer
+      required:
+      - downloadable_links
     quote-data-currency-extension-interface:
       type: object
       description: ExtensionInterface class for @see \Magento\Quote\Api\Data\CurrencyInterface
-    error-errors-item:
+    quote-data-shipping-interface:
       type: object
-      description: Error details
+      description: Interface ShippingInterface
       properties:
-        message:
-          type: string
-          description: Error message
-        parameters:
-          $ref: '#/components/schemas/error-parameters'
-    gift-card-data-gift-card-option-extension-interface:
-      type: object
-      description: ExtensionInterface class for @see \Magento\GiftCard\Api\Data\GiftCardOptionInterface
-      properties:
-        giftcard_created_codes:
-          type: array
-          items:
-            type: string
-    quote-data-product-option-interface:
-      type: object
-      description: Product option interface
-      properties:
-        extension_attributes:
-          $ref: '#/components/schemas/quote-data-product-option-extension-interface'
-    grouped-product-data-grouped-options-interface:
-      type: object
-      description: Represents `product item id with qty` of a grouped product.
-      properties:
-        id:
-          type: integer
-          description: Associated product id
-        qty:
-          type: integer
-          description: Associated product qty
-        extension_attributes:
-          $ref: '#/components/schemas/grouped-product-data-grouped-options-extension-interface'
-    sales-rule-data-rule-discount-interface:
-      type: object
-      description: Rule discount Interface
-      properties:
-        discount_data:
-          $ref: '#/components/schemas/sales-rule-data-discount-data-interface'
-        rule_label:
-          type: string
-          description: Rule Label
-        rule_i_d:
-          type: integer
-          description: Rule ID
-      required:
-      - discount_data
-      - rule_label
-      - rule_i_d
-    catalog-data-custom-option-extension-interface:
-      type: object
-      description: ExtensionInterface class for @see \Magento\Catalog\Api\Data\CustomOptionInterface
-      properties:
-        file_info:
-          $ref: '#/components/schemas/framework-data-image-content-interface'
-    framework-data-image-content-interface:
-      type: object
-      description: Image Content data interface
-      properties:
-        base64_encoded_data:
-          type: string
-          description: Media data (base64 encoded content)
-        type:
-          type: string
-          description: MIME type
-        name:
-          type: string
-          description: Image name
-      required:
-      - base64_encoded_data
-      - type
-      - name
-    quote-data-cart-interface:
-      type: object
-      description: Interface CartInterface
-      properties:
-        id:
-          type: integer
-          description: Cart/quote ID.
-        created_at:
-          type: string
-          description: Cart creation date and time. Otherwise, null.
-        updated_at:
-          type: string
-          description: Cart last update date and time. Otherwise, null.
-        converted_at:
-          type: string
-          description: Cart conversion date and time. Otherwise, null.
-        is_active:
-          type: boolean
-          description: Active status flag value. Otherwise, null.
-        is_virtual:
-          type: boolean
-          description: Virtual flag value. Otherwise, null.
-        items:
-          type: array
-          description: Array of items. Otherwise, null.
-          items:
-            $ref: '#/components/schemas/quote-data-cart-item-interface'
-        items_count:
-          type: integer
-          description: Number of different items or products in the cart. Otherwise, null.
-        items_qty:
-          type: number
-          description: Total quantity of all cart items. Otherwise, null.
-        customer:
-          $ref: '#/components/schemas/customer-data-customer-interface'
-        billing_address:
+        address:
           $ref: '#/components/schemas/quote-data-address-interface'
-        reserved_order_id:
+        method:
           type: string
-          description: Reserved order ID. Otherwise, null.
-        orig_order_id:
-          type: integer
-          description: Original order ID. Otherwise, null.
-        currency:
-          $ref: '#/components/schemas/quote-data-currency-interface'
-        customer_is_guest:
-          type: boolean
-          description: For guest customers, false for logged in customers
-        customer_note:
-          type: string
-          description: Notice text
-        customer_note_notify:
-          type: boolean
-          description: Customer notification flag
-        customer_tax_class_id:
-          type: integer
-          description: Customer tax class ID.
-        store_id:
-          type: integer
-          description: Store identifier
+          description: Shipping method
         extension_attributes:
-          $ref: '#/components/schemas/quote-data-cart-extension-interface'
+          $ref: '#/components/schemas/quote-data-shipping-extension-interface'
       required:
-      - id
-      - customer
-      - store_id
-    quote-data-address-extension-interface:
-      type: object
-      description: ExtensionInterface class for @see \Magento\Quote\Api\Data\AddressInterface
-      properties:
-        discounts:
-          type: array
-          items:
-            $ref: '#/components/schemas/sales-rule-data-rule-discount-interface'
-        gift_registry_id:
-          type: integer
-        pickup_location_code:
-          type: string
+      - address
+      - method
     bundle-data-bundle-option-interface:
       type: object
       description: Interface BundleOptionInterface
@@ -483,93 +594,23 @@ components:
       - option_id
       - option_qty
       - option_selections
-    quote-data-cart-item-interface:
+    framework-data-image-content-interface:
       type: object
-      description: Interface CartItemInterface
+      description: Image Content data interface
       properties:
-        item_id:
-          type: integer
-          description: Item ID. Otherwise, null.
-        sku:
+        base64_encoded_data:
           type: string
-          description: Product SKU. Otherwise, null.
-        qty:
-          type: number
-          description: Product quantity.
+          description: Media data (base64 encoded content)
+        type:
+          type: string
+          description: MIME type
         name:
           type: string
-          description: Product name. Otherwise, null.
-        price:
-          type: number
-          description: Product price. Otherwise, null.
-        product_type:
-          type: string
-          description: Product type. Otherwise, null.
-        quote_id:
-          type: string
-          description: Quote id.
-        product_option:
-          $ref: '#/components/schemas/quote-data-product-option-interface'
-        extension_attributes:
-          $ref: '#/components/schemas/quote-data-cart-item-extension-interface'
+          description: Image name
       required:
-      - qty
-      - quote_id
-    quote-data-shipping-extension-interface:
-      type: object
-      description: ExtensionInterface class for @see \Magento\Quote\Api\Data\ShippingInterface
-    framework-attribute-interface:
-      type: object
-      description: Interface for custom attribute value.
-      properties:
-        attribute_code:
-          type: string
-          description: Attribute code
-        value:
-          type: string
-          description: Attribute value
-      required:
-      - attribute_code
-      - value
-    quote-data-shipping-assignment-extension-interface:
-      type: object
-      description: ExtensionInterface class for @see \Magento\Quote\Api\Data\ShippingAssignmentInterface
-    downloadable-data-downloadable-option-interface:
-      type: object
-      description: Downloadable Option
-      properties:
-        downloadable_links:
-          type: array
-          description: The list of downloadable links
-          items:
-            type: integer
-      required:
-      - downloadable_links
-    grouped-product-data-grouped-options-extension-interface:
-      type: object
-      description: ExtensionInterface class for @see \Magento\GroupedProduct\Api\Data\GroupedOptionsInterface
-    configurable-product-data-configurable-item-option-value-interface:
-      type: object
-      description: Interface ConfigurableItemOptionValueInterface
-      properties:
-        option_id:
-          type: string
-          description: Option SKU
-        option_value:
-          type: integer
-          description: Item id
-        extension_attributes:
-          $ref: '#/components/schemas/configurable-product-data-configurable-item-option-value-extension-interface'
-      required:
-      - option_id
-    quote-data-cart-item-extension-interface:
-      type: object
-      description: ExtensionInterface class for @see \Magento\Quote\Api\Data\CartItemInterface
-      properties:
-        discounts:
-          type: array
-          items:
-            $ref: '#/components/schemas/sales-rule-data-rule-discount-interface'
+      - base64_encoded_data
+      - type
+      - name
     quote-data-address-interface:
       type: object
       description: Interface AddressInterface
@@ -661,30 +702,54 @@ components:
       - firstname
       - lastname
       - email
-    customer-data-region-interface:
+    catalog-data-custom-option-interface:
       type: object
-      description: Customer address region interface.
+      description: Interface CustomOptionInterface
       properties:
-        region_code:
+        option_id:
           type: string
-          description: Region code
-        region:
+          description: Option id
+        option_value:
           type: string
-          description: Region
-        region_id:
-          type: integer
-          description: Region id
+          description: Option value
         extension_attributes:
-          $ref: '#/components/schemas/customer-data-region-extension-interface'
+          $ref: '#/components/schemas/catalog-data-custom-option-extension-interface'
       required:
-      - region_code
-      - region
-      - region_id
-    error-parameters:
-      type: array
-      description: Error parameters list
-      items:
-        $ref: '#/components/schemas/error-parameters-item'
+      - option_id
+      - option_value
+    quote-data-shipping-assignment-extension-interface:
+      type: object
+      description: ExtensionInterface class for @see \Magento\Quote\Api\Data\ShippingAssignmentInterface
+    quote-data-product-option-interface:
+      type: object
+      description: Product option interface
+      properties:
+        extension_attributes:
+          $ref: '#/components/schemas/quote-data-product-option-extension-interface'
+    quote-data-product-option-extension-interface:
+      type: object
+      description: ExtensionInterface class for @see \Magento\Quote\Api\Data\ProductOptionInterface
+      properties:
+        custom_options:
+          type: array
+          items:
+            $ref: '#/components/schemas/catalog-data-custom-option-interface'
+        bundle_options:
+          type: array
+          items:
+            $ref: '#/components/schemas/bundle-data-bundle-option-interface'
+        downloadable_option:
+          $ref: '#/components/schemas/downloadable-data-downloadable-option-interface'
+        giftcard_item_option:
+          $ref: '#/components/schemas/gift-card-data-gift-card-option-interface'
+        configurable_item_options:
+          type: array
+          items:
+            $ref: '#/components/schemas/configurable-product-data-configurable-item-option-value-interface'
+        grouped_options:
+          type: array
+          items:
+            $ref: '#/components/schemas/grouped-product-data-grouped-options-interface'
     error-response:
       type: object
       properties:
@@ -703,103 +768,38 @@ components:
           description: Stack trace
       required:
       - message
-    quote-data-shipping-interface:
+    sales-rule-data-discount-data-interface:
       type: object
-      description: Interface ShippingInterface
+      description: Discount Data Interface
       properties:
-        address:
-          $ref: '#/components/schemas/quote-data-address-interface'
-        method:
-          type: string
-          description: Shipping method
-        extension_attributes:
-          $ref: '#/components/schemas/quote-data-shipping-extension-interface'
+        amount:
+          type: number
+          description: Amount
+        base_amount:
+          type: number
+          description: Base Amount
+        original_amount:
+          type: number
+          description: Original Amount
+        base_original_amount:
+          type: number
+          description: Base Original Amount
       required:
-      - address
-      - method
-    bundle-data-bundle-option-extension-interface:
+      - amount
+      - base_amount
+      - original_amount
+      - base_original_amount
+    catalog-data-custom-option-extension-interface:
       type: object
-      description: ExtensionInterface class for @see \Magento\Bundle\Api\Data\BundleOptionInterface
-    customer-data-customer-interface:
-      type: object
-      description: Customer entity interface for API handling.
+      description: ExtensionInterface class for @see \Magento\Catalog\Api\Data\CustomOptionInterface
       properties:
-        id:
-          type: integer
-          description: Customer id
-        group_id:
-          type: integer
-          description: Group id
-        default_billing:
-          type: string
-          description: Default billing address id
-        default_shipping:
-          type: string
-          description: Default shipping address id
-        confirmation:
-          type: string
-          description: Confirmation
-        created_at:
-          type: string
-          description: Created at time
-        updated_at:
-          type: string
-          description: Updated at time
-        created_in:
-          type: string
-          description: Created in area
-        dob:
-          type: string
-          description: In keeping with current security and privacy best practices, be sure you are aware of any potential legal and security risks associated with the storage of customers’ full date of birth (month, day, year) along with other personal identifiers (e.g., full name) before collecting or processing such data.
-        email:
-          type: string
-          description: Email address
-        firstname:
-          type: string
-          description: First name
-        lastname:
-          type: string
-          description: Last name
-        middlename:
-          type: string
-          description: Middle name
-        prefix:
-          type: string
-          description: Prefix
-        suffix:
-          type: string
-          description: Suffix
-        gender:
-          type: integer
-          description: Gender
-        store_id:
-          type: integer
-          description: Store id
-        taxvat:
-          type: string
-          description: Tax Vat
-        website_id:
-          type: integer
-          description: Website id
-        addresses:
-          type: array
-          description: Customer addresses.
-          items:
-            $ref: '#/components/schemas/customer-data-address-interface'
-        disable_auto_group_change:
-          type: integer
-          description: Disable auto group change flag.
-        extension_attributes:
-          $ref: '#/components/schemas/customer-data-customer-extension-interface'
-        custom_attributes:
-          type: array
-          description: Custom attributes values.
-          items:
-            $ref: '#/components/schemas/framework-attribute-interface'
-      required:
-      - email
-      - firstname
-      - lastname
+        file_info:
+          $ref: '#/components/schemas/framework-data-image-content-interface'
+    error-errors:
+      type: array
+      description: Errors list
+      items:
+        $ref: '#/components/schemas/error-errors-item'
   securitySchemes:
     api_key:
       type: apiKey

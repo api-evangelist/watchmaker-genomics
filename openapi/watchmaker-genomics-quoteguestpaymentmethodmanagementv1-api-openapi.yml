@@ -50,7 +50,7 @@ paths:
             application/xml:
               schema:
                 $ref: '#/components/schemas/error-response'
-      summary: Get V1 guestcarts cart id selectedpaymentmethod
+      summary: Get V1Guestcarts cart id selectedpaymentmethod
       x-summary-source: derived
     put:
       tags:
@@ -116,7 +116,7 @@ paths:
               type: object
               xml:
                 name: request
-      summary: Put V1 guestcarts cart id selectedpaymentmethod
+      summary: Put V1Guestcarts cart id selectedpaymentmethod
       x-summary-source: derived
   /V1/guest-carts/{cartId}/payment-methods:
     get:
@@ -165,23 +165,18 @@ paths:
             application/xml:
               schema:
                 $ref: '#/components/schemas/error-response'
-      summary: Get V1 guestcarts cart id paymentmethods
+      summary: Get V1Guestcarts cart id paymentmethods
       x-summary-source: derived
 components:
   schemas:
-    error-parameters-item:
+    quote-data-payment-extension-interface:
       type: object
-      description: Error parameters item
+      description: ExtensionInterface class for @see \Magento\Quote\Api\Data\PaymentInterface
       properties:
-        resources:
-          type: string
-          description: ACL resource
-        fieldName:
-          type: string
-          description: Missing or invalid field name
-        fieldValue:
-          type: string
-          description: Incorrect field value
+        agreement_ids:
+          type: array
+          items:
+            type: string
     quote-data-payment-method-interface:
       type: object
       description: Interface PaymentMethodInterface
@@ -195,43 +190,19 @@ components:
       required:
       - code
       - title
-    error-errors:
-      type: array
-      description: Errors list
-      items:
-        $ref: '#/components/schemas/error-errors-item'
-    error-parameters:
-      type: array
-      description: Error parameters list
-      items:
-        $ref: '#/components/schemas/error-parameters-item'
-    error-errors-item:
+    error-parameters-item:
       type: object
-      description: Error details
+      description: Error parameters item
       properties:
-        message:
+        resources:
           type: string
-          description: Error message
-        parameters:
-          $ref: '#/components/schemas/error-parameters'
-    error-response:
-      type: object
-      properties:
-        message:
+          description: ACL resource
+        fieldName:
           type: string
-          description: Error message
-        errors:
-          $ref: '#/components/schemas/error-errors'
-        code:
-          type: integer
-          description: Error code
-        parameters:
-          $ref: '#/components/schemas/error-parameters'
-        trace:
+          description: Missing or invalid field name
+        fieldValue:
           type: string
-          description: Stack trace
-      required:
-      - message
+          description: Incorrect field value
     quote-data-payment-interface:
       type: object
       description: Interface PaymentInterface
@@ -251,14 +222,43 @@ components:
           $ref: '#/components/schemas/quote-data-payment-extension-interface'
       required:
       - method
-    quote-data-payment-extension-interface:
+    error-response:
       type: object
-      description: ExtensionInterface class for @see \Magento\Quote\Api\Data\PaymentInterface
       properties:
-        agreement_ids:
-          type: array
-          items:
-            type: string
+        message:
+          type: string
+          description: Error message
+        errors:
+          $ref: '#/components/schemas/error-errors'
+        code:
+          type: integer
+          description: Error code
+        parameters:
+          $ref: '#/components/schemas/error-parameters'
+        trace:
+          type: string
+          description: Stack trace
+      required:
+      - message
+    error-parameters:
+      type: array
+      description: Error parameters list
+      items:
+        $ref: '#/components/schemas/error-parameters-item'
+    error-errors-item:
+      type: object
+      description: Error details
+      properties:
+        message:
+          type: string
+          description: Error message
+        parameters:
+          $ref: '#/components/schemas/error-parameters'
+    error-errors:
+      type: array
+      description: Errors list
+      items:
+        $ref: '#/components/schemas/error-errors-item'
   securitySchemes:
     api_key:
       type: apiKey

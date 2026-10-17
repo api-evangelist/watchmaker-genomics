@@ -52,7 +52,7 @@ paths:
             application/xml:
               schema:
                 $ref: '#/components/schemas/error-response'
-      summary: Get V1 guestcarts cart id coupons
+      summary: Get V1Guestcarts cart id coupons
       x-summary-source: derived
     delete:
       tags:
@@ -94,7 +94,7 @@ paths:
             application/xml:
               schema:
                 $ref: '#/components/schemas/error-response'
-      summary: Delete V1 guestcarts cart id coupons
+      summary: Delete V1Guestcarts cart id coupons
       x-summary-source: derived
   /V1/guest-carts/{cartId}/coupons/{couponCode}:
     put:
@@ -143,7 +143,7 @@ paths:
             application/xml:
               schema:
                 $ref: '#/components/schemas/error-response'
-      summary: Put V1 guestcarts cart id coupons coupon code
+      summary: Put V1Guestcarts cart id coupons coupon code
       x-summary-source: derived
 components:
   schemas:
@@ -160,25 +160,6 @@ components:
         fieldValue:
           type: string
           description: Incorrect field value
-    error-errors:
-      type: array
-      description: Errors list
-      items:
-        $ref: '#/components/schemas/error-errors-item'
-    error-parameters:
-      type: array
-      description: Error parameters list
-      items:
-        $ref: '#/components/schemas/error-parameters-item'
-    error-errors-item:
-      type: object
-      description: Error details
-      properties:
-        message:
-          type: string
-          description: Error message
-        parameters:
-          $ref: '#/components/schemas/error-parameters'
     error-response:
       type: object
       properties:
@@ -197,6 +178,25 @@ components:
           description: Stack trace
       required:
       - message
+    error-parameters:
+      type: array
+      description: Error parameters list
+      items:
+        $ref: '#/components/schemas/error-parameters-item'
+    error-errors-item:
+      type: object
+      description: Error details
+      properties:
+        message:
+          type: string
+          description: Error message
+        parameters:
+          $ref: '#/components/schemas/error-parameters'
+    error-errors:
+      type: array
+      description: Errors list
+      items:
+        $ref: '#/components/schemas/error-errors-item'
   securitySchemes:
     api_key:
       type: apiKey

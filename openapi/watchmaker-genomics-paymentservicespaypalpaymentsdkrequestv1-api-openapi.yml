@@ -44,7 +44,7 @@ paths:
             application/xml:
               schema:
                 $ref: '#/components/schemas/error-response'
-      summary: Get V1 paymentssdk location
+      summary: Get V1Paymentssdk location
       x-summary-source: derived
   /V1/payments-sdk/{location}/{methodCode}:
     get:
@@ -82,7 +82,7 @@ paths:
             application/xml:
               schema:
                 $ref: '#/components/schemas/error-response'
-      summary: Get V1 paymentssdk location method code
+      summary: Get V1Paymentssdk location method code
       x-summary-source: derived
 components:
   schemas:
@@ -101,6 +101,19 @@ components:
       required:
       - code
       - params
+    payment-services-paypal-data-payment-config-sdk-params-interface:
+      type: object
+      description: ''
+      properties:
+        name:
+          type: string
+          description: Code
+        value:
+          type: string
+          description: Config
+      required:
+      - name
+      - value
     error-parameters-item:
       type: object
       description: Error parameters item
@@ -114,25 +127,6 @@ components:
         fieldValue:
           type: string
           description: Incorrect field value
-    error-errors:
-      type: array
-      description: Errors list
-      items:
-        $ref: '#/components/schemas/error-errors-item'
-    error-parameters:
-      type: array
-      description: Error parameters list
-      items:
-        $ref: '#/components/schemas/error-parameters-item'
-    error-errors-item:
-      type: object
-      description: Error details
-      properties:
-        message:
-          type: string
-          description: Error message
-        parameters:
-          $ref: '#/components/schemas/error-parameters'
     error-response:
       type: object
       properties:
@@ -151,19 +145,25 @@ components:
           description: Stack trace
       required:
       - message
-    payment-services-paypal-data-payment-config-sdk-params-interface:
+    error-parameters:
+      type: array
+      description: Error parameters list
+      items:
+        $ref: '#/components/schemas/error-parameters-item'
+    error-errors-item:
       type: object
-      description: ''
+      description: Error details
       properties:
-        name:
+        message:
           type: string
-          description: Code
-        value:
-          type: string
-          description: Config
-      required:
-      - name
-      - value
+          description: Error message
+        parameters:
+          $ref: '#/components/schemas/error-parameters'
+    error-errors:
+      type: array
+      description: Errors list
+      items:
+        $ref: '#/components/schemas/error-errors-item'
   securitySchemes:
     api_key:
       type: apiKey

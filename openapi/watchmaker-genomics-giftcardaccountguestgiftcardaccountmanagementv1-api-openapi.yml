@@ -45,7 +45,7 @@ paths:
             application/xml:
               schema:
                 $ref: '#/components/schemas/error-response'
-      summary: Delete V1 carts guestcarts cart id gift cards gift card code
+      summary: Delete V1Carts guestcarts cart id gift cards gift card code
       x-summary-source: derived
   /V1/carts/guest-carts/{cartId}/giftCards:
     post:
@@ -109,7 +109,7 @@ paths:
               type: object
               xml:
                 name: request
-      summary: Post V1 carts guestcarts cart id gift cards
+      summary: Post V1Carts guestcarts cart id gift cards
       x-summary-source: derived
   /V1/carts/guest-carts/{cartId}/checkGiftCard/{giftCardCode}:
     get:
@@ -165,13 +165,10 @@ paths:
             application/xml:
               schema:
                 $ref: '#/components/schemas/error-response'
-      summary: Get V1 carts guestcarts cart id check gift card gift card code
+      summary: Get V1Carts guestcarts cart id check gift card gift card code
       x-summary-source: derived
 components:
   schemas:
-    gift-card-account-data-gift-card-account-extension-interface:
-      type: object
-      description: ExtensionInterface class for @see \Magento\GiftCardAccount\Api\Data\GiftCardAccountInterface
     error-parameters-item:
       type: object
       description: Error parameters item
@@ -185,25 +182,6 @@ components:
         fieldValue:
           type: string
           description: Incorrect field value
-    error-errors:
-      type: array
-      description: Errors list
-      items:
-        $ref: '#/components/schemas/error-errors-item'
-    error-parameters:
-      type: array
-      description: Error parameters list
-      items:
-        $ref: '#/components/schemas/error-parameters-item'
-    error-errors-item:
-      type: object
-      description: Error details
-      properties:
-        message:
-          type: string
-          description: Error message
-        parameters:
-          $ref: '#/components/schemas/error-parameters'
     error-response:
       type: object
       properties:
@@ -222,6 +200,28 @@ components:
           description: Stack trace
       required:
       - message
+    error-parameters:
+      type: array
+      description: Error parameters list
+      items:
+        $ref: '#/components/schemas/error-parameters-item'
+    error-errors-item:
+      type: object
+      description: Error details
+      properties:
+        message:
+          type: string
+          description: Error message
+        parameters:
+          $ref: '#/components/schemas/error-parameters'
+    error-errors:
+      type: array
+      description: Errors list
+      items:
+        $ref: '#/components/schemas/error-errors-item'
+    gift-card-account-data-gift-card-account-extension-interface:
+      type: object
+      description: ExtensionInterface class for @see \Magento\GiftCardAccount\Api\Data\GiftCardAccountInterface
     gift-card-account-data-gift-card-account-interface:
       type: object
       description: Gift Card Account data

@@ -56,7 +56,7 @@ paths:
             application/xml:
               schema:
                 $ref: '#/components/schemas/error-response'
-      summary: Get V1 guestcarts cart id giftmessage item id
+      summary: Get V1Guestcarts cart id giftmessage item id
       x-summary-source: derived
     post:
       tags:
@@ -126,7 +126,7 @@ paths:
               type: object
               xml:
                 name: request
-      summary: Post V1 guestcarts cart id giftmessage item id
+      summary: Post V1Guestcarts cart id giftmessage item id
       x-summary-source: derived
 components:
   schemas:
@@ -143,25 +143,6 @@ components:
         fieldValue:
           type: string
           description: Incorrect field value
-    error-errors:
-      type: array
-      description: Errors list
-      items:
-        $ref: '#/components/schemas/error-errors-item'
-    error-parameters:
-      type: array
-      description: Error parameters list
-      items:
-        $ref: '#/components/schemas/error-parameters-item'
-    error-errors-item:
-      type: object
-      description: Error details
-      properties:
-        message:
-          type: string
-          description: Error message
-        parameters:
-          $ref: '#/components/schemas/error-parameters'
     error-response:
       type: object
       properties:
@@ -180,6 +161,11 @@ components:
           description: Stack trace
       required:
       - message
+    error-parameters:
+      type: array
+      description: Error parameters list
+      items:
+        $ref: '#/components/schemas/error-parameters-item'
     gift-message-data-message-interface:
       type: object
       description: Interface MessageInterface
@@ -205,6 +191,20 @@ components:
       - sender
       - recipient
       - message
+    error-errors-item:
+      type: object
+      description: Error details
+      properties:
+        message:
+          type: string
+          description: Error message
+        parameters:
+          $ref: '#/components/schemas/error-parameters'
+    error-errors:
+      type: array
+      description: Errors list
+      items:
+        $ref: '#/components/schemas/error-errors-item'
     gift-message-data-message-extension-interface:
       type: object
       description: ExtensionInterface class for @see \Magento\GiftMessage\Api\Data\MessageInterface

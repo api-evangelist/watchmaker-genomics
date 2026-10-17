@@ -56,7 +56,7 @@ paths:
             application/xml:
               schema:
                 $ref: '#/components/schemas/error-response'
-      summary: Get V1 guestcarts cart id shippingmethods
+      summary: Get V1Guestcarts cart id shippingmethods
       x-summary-source: derived
 components:
   schemas:
@@ -118,28 +118,6 @@ components:
         fieldValue:
           type: string
           description: Incorrect field value
-    error-errors:
-      type: array
-      description: Errors list
-      items:
-        $ref: '#/components/schemas/error-errors-item'
-    error-parameters:
-      type: array
-      description: Error parameters list
-      items:
-        $ref: '#/components/schemas/error-parameters-item'
-    quote-data-shipping-method-extension-interface:
-      type: object
-      description: ExtensionInterface class for @see \Magento\Quote\Api\Data\ShippingMethodInterface
-    error-errors-item:
-      type: object
-      description: Error details
-      properties:
-        message:
-          type: string
-          description: Error message
-        parameters:
-          $ref: '#/components/schemas/error-parameters'
     error-response:
       type: object
       properties:
@@ -158,6 +136,28 @@ components:
           description: Stack trace
       required:
       - message
+    error-parameters:
+      type: array
+      description: Error parameters list
+      items:
+        $ref: '#/components/schemas/error-parameters-item'
+    quote-data-shipping-method-extension-interface:
+      type: object
+      description: ExtensionInterface class for @see \Magento\Quote\Api\Data\ShippingMethodInterface
+    error-errors-item:
+      type: object
+      description: Error details
+      properties:
+        message:
+          type: string
+          description: Error message
+        parameters:
+          $ref: '#/components/schemas/error-parameters'
+    error-errors:
+      type: array
+      description: Errors list
+      items:
+        $ref: '#/components/schemas/error-errors-item'
   securitySchemes:
     api_key:
       type: apiKey

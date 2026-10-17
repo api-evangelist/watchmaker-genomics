@@ -73,7 +73,7 @@ paths:
               type: object
               xml:
                 name: request
-      summary: Post V1 customers
+      summary: Post V1Customers
       x-summary-source: derived
   /V1/customers/{customerId}/password/resetLinkToken/{resetPasswordLinkToken}:
     get:
@@ -132,7 +132,7 @@ paths:
             application/xml:
               schema:
                 $ref: '#/components/schemas/error-response'
-      summary: Get V1 customers customer id password reset link token reset password link token
+      summary: Get V1Customers customer id password reset link token reset password link token
       x-summary-source: derived
   /V1/customers/password:
     put:
@@ -202,7 +202,7 @@ paths:
               type: object
               xml:
                 name: request
-      summary: Put V1 customers password
+      summary: Put V1Customers password
       x-summary-source: derived
   /V1/customers/resetPassword:
     post:
@@ -276,7 +276,7 @@ paths:
               type: object
               xml:
                 name: request
-      summary: Post V1 customers reset password
+      summary: Post V1Customers reset password
       x-summary-source: derived
   /V1/customers/isEmailAvailable:
     post:
@@ -340,21 +340,115 @@ paths:
               type: object
               xml:
                 name: request
-      summary: Post V1 customers is email available
+      summary: Post V1Customers is email available
       x-summary-source: derived
 components:
   schemas:
+    customer-data-customer-interface:
+      type: object
+      description: Customer entity interface for API handling.
+      properties:
+        id:
+          type: integer
+          description: Customer id
+        group_id:
+          type: integer
+          description: Group id
+        default_billing:
+          type: string
+          description: Default billing address id
+        default_shipping:
+          type: string
+          description: Default shipping address id
+        confirmation:
+          type: string
+          description: Confirmation
+        created_at:
+          type: string
+          description: Created at time
+        updated_at:
+          type: string
+          description: Updated at time
+        created_in:
+          type: string
+          description: Created in area
+        dob:
+          type: string
+          description: In keeping with current security and privacy best practices, be sure you are aware of any potential legal and security risks associated with the storage of customers’ full date of birth (month, day, year) along with other personal identifiers (e.g., full name) before collecting or processing such data.
+        email:
+          type: string
+          description: Email address
+        firstname:
+          type: string
+          description: First name
+        lastname:
+          type: string
+          description: Last name
+        middlename:
+          type: string
+          description: Middle name
+        prefix:
+          type: string
+          description: Prefix
+        suffix:
+          type: string
+          description: Suffix
+        gender:
+          type: integer
+          description: Gender
+        store_id:
+          type: integer
+          description: Store id
+        taxvat:
+          type: string
+          description: Tax Vat
+        website_id:
+          type: integer
+          description: Website id
+        addresses:
+          type: array
+          description: Customer addresses.
+          items:
+            $ref: '#/components/schemas/customer-data-address-interface'
+        disable_auto_group_change:
+          type: integer
+          description: Disable auto group change flag.
+        extension_attributes:
+          $ref: '#/components/schemas/customer-data-customer-extension-interface'
+        custom_attributes:
+          type: array
+          description: Custom attributes values.
+          items:
+            $ref: '#/components/schemas/framework-attribute-interface'
+      required:
+      - email
+      - firstname
+      - lastname
+    customer-data-region-interface:
+      type: object
+      description: Customer address region interface.
+      properties:
+        region_code:
+          type: string
+          description: Region code
+        region:
+          type: string
+          description: Region
+        region_id:
+          type: integer
+          description: Region id
+        extension_attributes:
+          $ref: '#/components/schemas/customer-data-region-extension-interface'
+      required:
+      - region_code
+      - region
+      - region_id
+    customer-data-region-extension-interface:
+      type: object
+      description: ExtensionInterface class for @see \Magento\Customer\Api\Data\RegionInterface
     customer-data-address-extension-interface:
       type: object
       description: ExtensionInterface class for @see \Magento\Customer\Api\Data\AddressInterface
-    customer-data-customer-extension-interface:
-      type: object
-      description: ExtensionInterface class for @see \Magento\Customer\Api\Data\CustomerInterface
-      properties:
-        is_subscribed:
-          type: boolean
-        assistance_allowed:
-          type: integer
     error-parameters-item:
       type: object
       description: Error parameters item
@@ -437,44 +531,6 @@ components:
           description: Custom attributes values.
           items:
             $ref: '#/components/schemas/framework-attribute-interface'
-    customer-data-region-interface:
-      type: object
-      description: Customer address region interface.
-      properties:
-        region_code:
-          type: string
-          description: Region code
-        region:
-          type: string
-          description: Region
-        region_id:
-          type: integer
-          description: Region id
-        extension_attributes:
-          $ref: '#/components/schemas/customer-data-region-extension-interface'
-      required:
-      - region_code
-      - region
-      - region_id
-    error-errors:
-      type: array
-      description: Errors list
-      items:
-        $ref: '#/components/schemas/error-errors-item'
-    error-parameters:
-      type: array
-      description: Error parameters list
-      items:
-        $ref: '#/components/schemas/error-parameters-item'
-    error-errors-item:
-      type: object
-      description: Error details
-      properties:
-        message:
-          type: string
-          description: Error message
-        parameters:
-          $ref: '#/components/schemas/error-parameters'
     error-response:
       type: object
       properties:
@@ -493,6 +549,33 @@ components:
           description: Stack trace
       required:
       - message
+    error-parameters:
+      type: array
+      description: Error parameters list
+      items:
+        $ref: '#/components/schemas/error-parameters-item'
+    customer-data-customer-extension-interface:
+      type: object
+      description: ExtensionInterface class for @see \Magento\Customer\Api\Data\CustomerInterface
+      properties:
+        is_subscribed:
+          type: boolean
+        assistance_allowed:
+          type: integer
+    error-errors-item:
+      type: object
+      description: Error details
+      properties:
+        message:
+          type: string
+          description: Error message
+        parameters:
+          $ref: '#/components/schemas/error-parameters'
+    error-errors:
+      type: array
+      description: Errors list
+      items:
+        $ref: '#/components/schemas/error-errors-item'
     framework-attribute-interface:
       type: object
       description: Interface for custom attribute value.
@@ -506,89 +589,6 @@ components:
       required:
       - attribute_code
       - value
-    customer-data-region-extension-interface:
-      type: object
-      description: ExtensionInterface class for @see \Magento\Customer\Api\Data\RegionInterface
-    customer-data-customer-interface:
-      type: object
-      description: Customer entity interface for API handling.
-      properties:
-        id:
-          type: integer
-          description: Customer id
-        group_id:
-          type: integer
-          description: Group id
-        default_billing:
-          type: string
-          description: Default billing address id
-        default_shipping:
-          type: string
-          description: Default shipping address id
-        confirmation:
-          type: string
-          description: Confirmation
-        created_at:
-          type: string
-          description: Created at time
-        updated_at:
-          type: string
-          description: Updated at time
-        created_in:
-          type: string
-          description: Created in area
-        dob:
-          type: string
-          description: In keeping with current security and privacy best practices, be sure you are aware of any potential legal and security risks associated with the storage of customers’ full date of birth (month, day, year) along with other personal identifiers (e.g., full name) before collecting or processing such data.
-        email:
-          type: string
-          description: Email address
-        firstname:
-          type: string
-          description: First name
-        lastname:
-          type: string
-          description: Last name
-        middlename:
-          type: string
-          description: Middle name
-        prefix:
-          type: string
-          description: Prefix
-        suffix:
-          type: string
-          description: Suffix
-        gender:
-          type: integer
-          description: Gender
-        store_id:
-          type: integer
-          description: Store id
-        taxvat:
-          type: string
-          description: Tax Vat
-        website_id:
-          type: integer
-          description: Website id
-        addresses:
-          type: array
-          description: Customer addresses.
-          items:
-            $ref: '#/components/schemas/customer-data-address-interface'
-        disable_auto_group_change:
-          type: integer
-          description: Disable auto group change flag.
-        extension_attributes:
-          $ref: '#/components/schemas/customer-data-customer-extension-interface'
-        custom_attributes:
-          type: array
-          description: Custom attributes values.
-          items:
-            $ref: '#/components/schemas/framework-attribute-interface'
-      required:
-      - email
-      - firstname
-      - lastname
   securitySchemes:
     api_key:
       type: apiKey

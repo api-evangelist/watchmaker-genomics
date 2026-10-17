@@ -45,7 +45,7 @@ paths:
             application/xml:
               schema:
                 $ref: '#/components/schemas/error-response'
-      summary: Post V1 guestcarts
+      summary: Post V1Guestcarts
       x-summary-source: derived
   /V1/guest-carts/{cartId}/order:
     put:
@@ -108,10 +108,18 @@ paths:
               type: object
               xml:
                 name: request
-      summary: Put V1 guestcarts cart id order
+      summary: Put V1Guestcarts cart id order
       x-summary-source: derived
 components:
   schemas:
+    quote-data-payment-extension-interface:
+      type: object
+      description: ExtensionInterface class for @see \Magento\Quote\Api\Data\PaymentInterface
+      properties:
+        agreement_ids:
+          type: array
+          items:
+            type: string
     error-parameters-item:
       type: object
       description: Error parameters item
@@ -125,43 +133,6 @@ components:
         fieldValue:
           type: string
           description: Incorrect field value
-    error-errors:
-      type: array
-      description: Errors list
-      items:
-        $ref: '#/components/schemas/error-errors-item'
-    error-parameters:
-      type: array
-      description: Error parameters list
-      items:
-        $ref: '#/components/schemas/error-parameters-item'
-    error-errors-item:
-      type: object
-      description: Error details
-      properties:
-        message:
-          type: string
-          description: Error message
-        parameters:
-          $ref: '#/components/schemas/error-parameters'
-    error-response:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message
-        errors:
-          $ref: '#/components/schemas/error-errors'
-        code:
-          type: integer
-          description: Error code
-        parameters:
-          $ref: '#/components/schemas/error-parameters'
-        trace:
-          type: string
-          description: Stack trace
-      required:
-      - message
     quote-data-payment-interface:
       type: object
       description: Interface PaymentInterface
@@ -181,14 +152,43 @@ components:
           $ref: '#/components/schemas/quote-data-payment-extension-interface'
       required:
       - method
-    quote-data-payment-extension-interface:
+    error-response:
       type: object
-      description: ExtensionInterface class for @see \Magento\Quote\Api\Data\PaymentInterface
       properties:
-        agreement_ids:
-          type: array
-          items:
-            type: string
+        message:
+          type: string
+          description: Error message
+        errors:
+          $ref: '#/components/schemas/error-errors'
+        code:
+          type: integer
+          description: Error code
+        parameters:
+          $ref: '#/components/schemas/error-parameters'
+        trace:
+          type: string
+          description: Stack trace
+      required:
+      - message
+    error-parameters:
+      type: array
+      description: Error parameters list
+      items:
+        $ref: '#/components/schemas/error-parameters-item'
+    error-errors-item:
+      type: object
+      description: Error details
+      properties:
+        message:
+          type: string
+          description: Error message
+        parameters:
+          $ref: '#/components/schemas/error-parameters'
+    error-errors:
+      type: array
+      description: Errors list
+      items:
+        $ref: '#/components/schemas/error-errors-item'
   securitySchemes:
     api_key:
       type: apiKey

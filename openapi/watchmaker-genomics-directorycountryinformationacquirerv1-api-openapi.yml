@@ -38,7 +38,7 @@ paths:
             application/xml:
               schema:
                 $ref: '#/components/schemas/error-response'
-      summary: Get V1 directory countries
+      summary: Get V1Directory countries
       x-summary-source: derived
   /V1/directory/countries/{countryId}:
     get:
@@ -80,42 +80,10 @@ paths:
             application/xml:
               schema:
                 $ref: '#/components/schemas/error-response'
-      summary: Get V1 directory countries country id
+      summary: Get V1Directory countries country id
       x-summary-source: derived
 components:
   schemas:
-    directory-data-country-information-interface:
-      type: object
-      description: Country Information interface.
-      properties:
-        id:
-          type: string
-          description: The country id for the store.
-        two_letter_abbreviation:
-          type: string
-          description: The country 2 letter abbreviation for the store.
-        three_letter_abbreviation:
-          type: string
-          description: The country 3 letter abbreviation for the store.
-        full_name_locale:
-          type: string
-          description: The country full name (in store locale) for the store.
-        full_name_english:
-          type: string
-          description: The country full name (in English) for the store.
-        available_regions:
-          type: array
-          description: The available regions for the store.
-          items:
-            $ref: '#/components/schemas/directory-data-region-information-interface'
-        extension_attributes:
-          $ref: '#/components/schemas/directory-data-country-information-extension-interface'
-      required:
-      - id
-      - two_letter_abbreviation
-      - three_letter_abbreviation
-      - full_name_locale
-      - full_name_english
     error-parameters-item:
       type: object
       description: Error parameters item
@@ -129,28 +97,9 @@ components:
         fieldValue:
           type: string
           description: Incorrect field value
-    directory-data-region-information-extension-interface:
+    directory-data-country-information-extension-interface:
       type: object
-      description: ExtensionInterface class for @see \Magento\Directory\Api\Data\RegionInformationInterface
-    error-errors:
-      type: array
-      description: Errors list
-      items:
-        $ref: '#/components/schemas/error-errors-item'
-    error-parameters:
-      type: array
-      description: Error parameters list
-      items:
-        $ref: '#/components/schemas/error-parameters-item'
-    error-errors-item:
-      type: object
-      description: Error details
-      properties:
-        message:
-          type: string
-          description: Error message
-        parameters:
-          $ref: '#/components/schemas/error-parameters'
+      description: ExtensionInterface class for @see \Magento\Directory\Api\Data\CountryInformationInterface
     error-response:
       type: object
       properties:
@@ -188,9 +137,60 @@ components:
       - id
       - code
       - name
-    directory-data-country-information-extension-interface:
+    error-parameters:
+      type: array
+      description: Error parameters list
+      items:
+        $ref: '#/components/schemas/error-parameters-item'
+    directory-data-country-information-interface:
       type: object
-      description: ExtensionInterface class for @see \Magento\Directory\Api\Data\CountryInformationInterface
+      description: Country Information interface.
+      properties:
+        id:
+          type: string
+          description: The country id for the store.
+        two_letter_abbreviation:
+          type: string
+          description: The country 2 letter abbreviation for the store.
+        three_letter_abbreviation:
+          type: string
+          description: The country 3 letter abbreviation for the store.
+        full_name_locale:
+          type: string
+          description: The country full name (in store locale) for the store.
+        full_name_english:
+          type: string
+          description: The country full name (in English) for the store.
+        available_regions:
+          type: array
+          description: The available regions for the store.
+          items:
+            $ref: '#/components/schemas/directory-data-region-information-interface'
+        extension_attributes:
+          $ref: '#/components/schemas/directory-data-country-information-extension-interface'
+      required:
+      - id
+      - two_letter_abbreviation
+      - three_letter_abbreviation
+      - full_name_locale
+      - full_name_english
+    directory-data-region-information-extension-interface:
+      type: object
+      description: ExtensionInterface class for @see \Magento\Directory\Api\Data\RegionInformationInterface
+    error-errors-item:
+      type: object
+      description: Error details
+      properties:
+        message:
+          type: string
+          description: Error message
+        parameters:
+          $ref: '#/components/schemas/error-parameters'
+    error-errors:
+      type: array
+      description: Errors list
+      items:
+        $ref: '#/components/schemas/error-errors-item'
   securitySchemes:
     api_key:
       type: apiKey
